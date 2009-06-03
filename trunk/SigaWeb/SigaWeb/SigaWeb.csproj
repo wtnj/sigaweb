@@ -1,0 +1,148 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B9738B51-31F1-49DE-AB7C-0BFB62FB7715}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SigaWeb</RootNamespace>
+    <AssemblyName>SigaWeb</AssemblyName>
+    <StartPageUrl>Form1.wgx</StartPageUrl>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <StartPageUrl>Form1.wgx</StartPageUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Gizmox.WebGUI.Common, Version=2.0.5701.0, Culture=neutral, PublicKeyToken=263fa4ef694acff6, processorArchitecture=MSIL" />
+    <Reference Include="Gizmox.WebGUI.Forms, Version=2.0.5701.0, Culture=neutral, PublicKeyToken=c508b41386c60f1d, processorArchitecture=MSIL" />
+    <Reference Include="Gizmox.WebGUI.Forms.Charts, Version=2.0.5701.0, Culture=neutral, PublicKeyToken=f1bb83df6a8597fb, processorArchitecture=MSIL" />
+    <Reference Include="Gizmox.WebGUI.Forms.Extended, Version=2.0.5701.0, Culture=neutral, PublicKeyToken=85eae29607c9f5f3, processorArchitecture=MSIL" />
+    <Reference Include="Gizmox.WebGUI.Forms.Themes_Net2.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\dotNet\VisualWebGui\themes\net2.0\Gizmox.WebGUI.Forms.Themes_Net2.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Gizmox.WebGUI.Forms.Windows_XP_Theme, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\dotNet\VisualWebGui\themes\net2.0\Gizmox.WebGUI.Forms.Themes_Assembly_Net2.0 - Windows XP Theme\Gizmox.WebGUI.Forms.Windows_XP_Theme.dll</HintPath>
+    </Reference>
+    <Reference Include="Gizmox.WebGUI.Server, Version=2.0.5701.0, Culture=neutral, PublicKeyToken=3de6eb684226c24d, processorArchitecture=MSIL" />
+    <Reference Include="Gizmox.WebGUI.Themes.Vista, Version=2.0.5701.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
+    <Reference Include="vjslib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\dotNet\PDF\vjslib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FormTeste.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTeste.Designer.cs">
+      <DependentUpon>FormTeste.cs</DependentUpon>
+    </Compile>
+    <Compile Include="mainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainForm.Designer.cs">
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SigaObjects.DLL.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Web.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FormTeste.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormTeste.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Carralero\Carralero.csproj">
+      <Project>{F105AC70-38FF-46AA-AB4D-67CE583DF459}</Project>
+      <Name>Carralero</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SigaControls\SigaControls.csproj">
+      <Project>{D89284D6-92BB-4811-AA6E-E92F304AEF96}</Project>
+      <Name>SigaControls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="index.html" />
+    <Content Include="Resources\Icons\basic\page_add.png" />
+    <Content Include="Resources\Icons\basic\page_delete.png" />
+    <Content Include="Resources\Icons\basic\page_edit.png" />
+    <Content Include="Resources\Icons\basic\page_excel.png" />
+    <Content Include="Resources\Icons\basic\page_pdf.png" />
+    <Content Include="Resources\Icons\basic\page_view.png" />
+    <Content Include="Resources\Icons\basic\search.png" />
+    <Content Include="Resources\Icons\status\aguardando.png" />
+    <Content Include="Resources\Icons\status\aprovado.png" />
+    <Content Include="Resources\Icons\status\bloqueado.png" />
+    <Content Include="Resources\Icons\status\recusado.png" />
+    <Content Include="Resources\Images\logo.png" />
+    <Content Include="teste.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="arquivos\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>45136</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

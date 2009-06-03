@@ -1,0 +1,96 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2CB237EB-69DE-41D0-875A-51183D923050}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SigaObjects</RootNamespace>
+    <AssemblyName>SigaObjects</AssemblyName>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cadastros\ContasAPagar\ContasAPagarDAO.cs" />
+    <Compile Include="Cadastros\ContasAPagar\ContasAPagarVO.cs" />
+    <Compile Include="CONFIG\AssemblySettings.cs" />
+    <Compile Include="CONFIG\ExternalConfiguration.cs" />
+    <Compile Include="DataMaster.cs" />
+    <Compile Include="Comunicacao\Email.cs" />
+    <Compile Include="Empresa.cs" />
+    <Compile Include="Permissoes\Nivel.cs" />
+    <Compile Include="Permissoes\RelGrupo\RelGrupoDao.cs" />
+    <Compile Include="Permissoes\RelGrupo\RelGrupoVo.cs" />
+    <Compile Include="Permissoes\RelUsu\RelUsuDao.cs" />
+    <Compile Include="Permissoes\RelUsu\RelUsuVo.cs" />
+    <Compile Include="Report\Fields\FieldsDao.cs" />
+    <Compile Include="Report\Fields\FieldsVo.cs" />
+    <Compile Include="Report\Filters\FiltersDao.cs" />
+    <Compile Include="Report\Filters\FiltersVo.cs" />
+    <Compile Include="Report\GroupBy\GroupByDao.cs" />
+    <Compile Include="Report\GroupBy\GroupByVo.cs" />
+    <Compile Include="Report\OrderBy\OrderByDao.cs" />
+    <Compile Include="Report\OrderBy\OrderByVo.cs" />
+    <Compile Include="Report\Params\ParamsDao.cs" />
+    <Compile Include="Report\Params\ParamsVo.cs" />
+    <Compile Include="Report\ReportGroup\ReportGroupDao.cs" />
+    <Compile Include="Report\ReportGroup\ReportGroupVo.cs" />
+    <Compile Include="Report\Report\ReportDao.cs" />
+    <Compile Include="Report\Report\ReportVo.cs" />
+    <Compile Include="Report\Table\TableDao.cs" />
+    <Compile Include="Report\Table\TableVo.cs" />
+    <Compile Include="SELECT.cs" />
+    <Compile Include="Session\Empresa\EmpresaDao.cs" />
+    <Compile Include="Session\Empresa\EmpresaVo.cs" />
+    <Compile Include="Session\SysUsers\SysUserDao.cs" />
+    <Compile Include="Session\SysUsers\SysUserVo.cs" />
+    <Compile Include="Session\UsersGroups\UserGroupDao.cs" />
+    <Compile Include="Session\UsersGroups\UserGroupVo.cs" />
+    <Compile Include="SIGAMAT.cs" />
+    <Compile Include="SXManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Carralero\Carralero.csproj">
+      <Project>{F105AC70-38FF-46AA-AB4D-67CE583DF459}</Project>
+      <Name>Carralero</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,90 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F105AC70-38FF-46AA-AB4D-67CE583DF459}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Carralero</RootNamespace>
+    <AssemblyName>Carralero</AssemblyName>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CarlosAg.ExcelXmlWriter, Version=1.0.0.6, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\dotNet\EXCEL\CarlosAg.ExcelXmlWriter.zip\CarlosAg.ExcelXmlWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="Gnu.Classpath.Core, Version=1.0.3265.6793, Culture=neutral, PublicKeyToken=bd3736a929f259c3">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\Projeto Sigaweb\iText\dll\Gnu.Classpath.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Gnu.Classpath.JAXP, Version=1.0.3265.6809, Culture=neutral, PublicKeyToken=bd3736a929f259c3">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\Projeto Sigaweb\iText\dll\Gnu.Classpath.JAXP.dll</HintPath>
+    </Reference>
+    <Reference Include="iTextdotNET, Version=1.4.3265.6821, Culture=neutral, PublicKeyToken=bd3736a929f259c3">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\Projeto Sigaweb\iText\dll\iTextdotNET.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="vjslib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\vjslib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataTables.cs" />
+    <Compile Include="Net\Email.cs" />
+    <Compile Include="ExceptionControler.cs" />
+    <Compile Include="ExportExcel.cs" />
+    <Compile Include="ExportPdf.cs" />
+    <Compile Include="ExportTxt.cs" />
+    <Compile Include="Funcoes.cs" />
+    <Compile Include="MSExcel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
