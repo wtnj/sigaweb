@@ -1,0 +1,318 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D89284D6-92BB-4811-AA6E-E92F304AEF96}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SigaControls</RootNamespace>
+    <AssemblyName>SigaControls</AssemblyName>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Gizmox.WebGUI.Common" />
+    <Reference Include="Gizmox.WebGUI.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cadastros\CadContasAPagar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cadastros\CadContasAPagar.Designer.cs">
+      <DependentUpon>CadContasAPagar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cadastros\ContasAPagarList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cadastros\ContasAPagarList.Designer.cs">
+      <DependentUpon>ContasAPagarList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cadastros\PreCADASTRO.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Cadastros\PreCADASTRO.Designer.cs">
+      <DependentUpon>PreCADASTRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comunicacao\Mail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Comunicacao\Mail.Designer.cs">
+      <DependentUpon>Mail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlsConfig.cs" />
+    <Compile Include="DefinirPermissoes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DefinirPermissoes.Designer.cs">
+      <DependentUpon>DefinirPermissoes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Empresa.cs" />
+    <Compile Include="ERROR.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ERROR.Designer.cs">
+      <DependentUpon>ERROR.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormatScreen.cs" />
+    <Compile Include="gridWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="gridWindow.Designer.cs">
+      <DependentUpon>gridWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logon.cs" />
+    <Compile Include="MainMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainMenu.Designer.cs">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="mainTable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="mainTable.Designer.cs">
+      <DependentUpon>mainTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MakeQuery.cs" />
+    <Compile Include="Permissoes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Permissoes.Designer.cs">
+      <DependentUpon>Permissoes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\Fields.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Report\Fields.Designer.cs">
+      <DependentUpon>Fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Report\Filters.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Report\Filters.Designer.cs">
+      <DependentUpon>Filters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Report\GroupBy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Report\GroupBy.Designer.cs">
+      <DependentUpon>GroupBy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Report\OrderBy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Report\OrderBy.Designer.cs">
+      <DependentUpon>OrderBy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Report\Params.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Report\Params.Designer.cs">
+      <DependentUpon>Params.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Report\pictureResourceHandler.cs" />
+    <Compile Include="Report\Report.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Report\Report.Designer.cs">
+      <DependentUpon>Report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Report\Table.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Report\Table.Designer.cs">
+      <DependentUpon>Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Icons\basic.cs" />
+    <Compile Include="Resources\Icons\status.cs" />
+    <Compile Include="Resources\Images\basic.cs" />
+    <Compile Include="Session\Grupo_usuarios.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Session\Grupo_usuarios.Designer.cs">
+      <DependentUpon>Grupo_usuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Session\Usuarios.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Session\Usuarios.Designer.cs">
+      <DependentUpon>Usuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Session\Usuario_principal.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Session\Usuario_principal.Designer.cs">
+      <DependentUpon>Usuario_principal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sigaSession.cs" />
+    <Compile Include="SxMakeRelatory.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SxMakeRelatory.Designer.cs">
+      <DependentUpon>SxMakeRelatory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sxManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="sxManager.Designer.cs">
+      <DependentUpon>sxManager.cs</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Cadastros\CadContasAPagar.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CadContasAPagar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cadastros\ContasAPagarList.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ContasAPagarList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cadastros\PreCADASTRO.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PreCADASTRO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comunicacao\Mail.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Mail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefinirPermissoes.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DefinirPermissoes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ERROR.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ERROR.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="gridWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>gridWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainMenu.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mainTable.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>mainTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Permissoes.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Permissoes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\Fields.resx">
+      <DependentUpon>Fields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\Filters.resx">
+      <DependentUpon>Filters.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\GroupBy.resx">
+      <DependentUpon>GroupBy.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\OrderBy.resx">
+      <DependentUpon>OrderBy.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\Params.resx">
+      <DependentUpon>Params.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\Report.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\Table.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Session\Grupo_usuarios.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Grupo_usuarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Session\Usuarios.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Usuarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Session\Usuario_principal.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Usuario_principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SxMakeRelatory.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SxMakeRelatory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sxManager.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>sxManager.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Carralero\Carralero.csproj">
+      <Project>{F105AC70-38FF-46AA-AB4D-67CE583DF459}</Project>
+      <Name>Carralero</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SigaObjects\SigaObjects.csproj">
+      <Project>{2CB237EB-69DE-41D0-875A-51183D923050}</Project>
+      <Name>SigaObjects</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
