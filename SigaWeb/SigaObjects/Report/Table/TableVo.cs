@@ -6,7 +6,7 @@ namespace SigaObjects.Reports.Table
 {
     public class TableVo
     {
-        private int id, idReport, mainId;
+        private int    id, idReport, mainId;
         private string tabela       = "";
         private string relatedtype  = "";
         private string relatedtable = "";

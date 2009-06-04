@@ -41,7 +41,8 @@ namespace SigaObjects
                      + ", X9_CDOM         "
                      + ", X9_EXPDOM       "
                      + ", X9_EXPCDOM      "
-                     + ", X9_CONDSQL      ";
+                     + ", X9_CONDSQL      "
+                     + ", X9_IDENT        ";
             }
         }
         #endregion
