@@ -49,6 +49,7 @@ namespace SigaControls
             this.cbxPage = new Gizmox.WebGUI.Forms.CheckBox();
             this.nudPaginas = new Gizmox.WebGUI.Forms.NumericUpDown();
             this.cbTotal = new Gizmox.WebGUI.Forms.CheckBox();
+            this.btnSelecionar = new Gizmox.WebGUI.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPaginas)).BeginInit();
             this.SuspendLayout();
@@ -89,7 +90,7 @@ namespace SigaControls
             // 
             // BtnExcel
             // 
-            this.BtnExcel.Location = new System.Drawing.Point(3, 5);
+            this.BtnExcel.Location = new System.Drawing.Point(98, 5);
             this.BtnExcel.Name = "BtnExcel";
             this.BtnExcel.Size = new System.Drawing.Size(90, 23);
             this.BtnExcel.TabIndex = 2;
@@ -98,7 +99,7 @@ namespace SigaControls
             // 
             // BtnPdf
             // 
-            this.BtnPdf.Location = new System.Drawing.Point(99, 5);
+            this.BtnPdf.Location = new System.Drawing.Point(194, 5);
             this.BtnPdf.Name = "BtnPdf";
             this.BtnPdf.Size = new System.Drawing.Size(91, 23);
             this.BtnPdf.TabIndex = 3;
@@ -107,7 +108,7 @@ namespace SigaControls
             // 
             // BtnTxt
             // 
-            this.BtnTxt.Location = new System.Drawing.Point(196, 5);
+            this.BtnTxt.Location = new System.Drawing.Point(291, 5);
             this.BtnTxt.Name = "BtnTxt";
             this.BtnTxt.Size = new System.Drawing.Size(86, 23);
             this.BtnTxt.TabIndex = 4;
@@ -259,7 +260,7 @@ namespace SigaControls
             this.cbxPage.Checked = false;
             this.cbxPage.CheckState = Gizmox.WebGUI.Forms.CheckState.Unchecked;
             this.cbxPage.FlatStyle = Gizmox.WebGUI.Forms.FlatStyle.Standard;
-            this.cbxPage.Location = new System.Drawing.Point(405, 9);
+            this.cbxPage.Location = new System.Drawing.Point(474, 8);
             this.cbxPage.Name = "cbxPage";
             this.cbxPage.Size = new System.Drawing.Size(66, 24);
             this.cbxPage.TabIndex = 6;
@@ -274,7 +275,7 @@ namespace SigaControls
             0,
             0,
             0});
-            this.nudPaginas.Location = new System.Drawing.Point(329, 9);
+            this.nudPaginas.Location = new System.Drawing.Point(398, 8);
             this.nudPaginas.Maximum = new decimal(new int[] {
             100,
             0,
@@ -302,7 +303,7 @@ namespace SigaControls
             this.cbTotal.Checked = false;
             this.cbTotal.CheckState = Gizmox.WebGUI.Forms.CheckState.Unchecked;
             this.cbTotal.FlatStyle = Gizmox.WebGUI.Forms.FlatStyle.Standard;
-            this.cbTotal.Location = new System.Drawing.Point(502, 10);
+            this.cbTotal.Location = new System.Drawing.Point(546, 8);
             this.cbTotal.Name = "cbTotal";
             this.cbTotal.Size = new System.Drawing.Size(66, 24);
             this.cbTotal.TabIndex = 6;
@@ -310,8 +311,19 @@ namespace SigaControls
             this.cbTotal.ThreeState = false;
             this.cbTotal.CheckedChanged += new System.EventHandler(this.cbTotal_CheckedChanged);
             // 
+            // btnSelecionar
+            // 
+            this.btnSelecionar.Location = new System.Drawing.Point(3, 5);
+            this.btnSelecionar.Name = "btnSelecionar";
+            this.btnSelecionar.Size = new System.Drawing.Size(75, 23);
+            this.btnSelecionar.TabIndex = 8;
+            this.btnSelecionar.Text = "SELECIONAR";
+            this.btnSelecionar.Visible = false;
+            this.btnSelecionar.Click += new System.EventHandler(this.btnSelecionar_Click);
+            // 
             // gridWindow
             // 
+            this.Controls.Add(this.btnSelecionar);
             this.Controls.Add(this.cbTotal);
             this.Controls.Add(this.nudPaginas);
             this.Controls.Add(this.cbxPage);
@@ -351,6 +363,7 @@ namespace SigaControls
         private Gizmox.WebGUI.Forms.CheckBox cbxPage;
         private Gizmox.WebGUI.Forms.NumericUpDown nudPaginas;
         private Gizmox.WebGUI.Forms.CheckBox cbTotal;
+        private Gizmox.WebGUI.Forms.Button btnSelecionar;
 
 
     }
