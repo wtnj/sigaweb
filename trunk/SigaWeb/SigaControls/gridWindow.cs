@@ -352,14 +352,18 @@ namespace SigaControls
 
         private void btnSelecionar_Click(object sender, EventArgs e)
         {
-            object valueCell = new object();
+            for (int idx = 0; idx < toControl.Count && idx < oColRet.Count; idx++)
+            {
+                object valueCell = new object();
+                object oCol      = oColRet[idx];
 
-            if (columnReturn.GetType() == typeof(string))
-                valueCell = dataGridView1.SelectedRows[0].Cells[columnReturn.ToString()].Value;
-            if (columnReturn.GetType() == typeof(int))
-                valueCell = dataGridView1.SelectedRows[0].Cells[int.Parse(columnReturn.ToString())].Value;
+                if (oCol.GetType() == typeof(string))
+                    valueCell = dataGridView1.SelectedRows[0].Cells[oCol.ToString()].Value;
+                if (oCol.GetType() == typeof(int)   )
+                    valueCell = dataGridView1.SelectedRows[0].Cells[int.Parse(oCol.ToString())].Value;
 
-            oCaller.Text = valueCell.ToString();
+                toControl[idx].Text = valueCell.ToString();
+            }
             this.Form.Close();
         }
     }

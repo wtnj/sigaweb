@@ -128,7 +128,7 @@ namespace SigaControls.Report
                                    + cdomTable
                                    + ".D_E_L_E_T_");
 
-                    List<string> clauses = new SXManager(sigaSession.EMPRESAS[0].CODIGO).getRelatedClauses(this.TABLE, this.RELATEDTABLE);
+                    List<string> clauses = new SXManager(sigaSession.EMPRESAS[0].CODIGO).getRelatedClauses(this.TABLE, this.RELATEDTABLE,"X9_IDENT ='"+this.RELATEDIDENT+"'");
                     if (clauses.Count > 1)
                     {
                         string[] clDom  = clauses[0].ToString().Split('+');
@@ -527,6 +527,23 @@ namespace SigaControls.Report
 
             this.TOTALIZAR.Visible = this.MAIN!=null;
             //this.ReloadRelatedTables();
+
+            this.RELOAD();
+        }
+        private void RELOAD()
+        {
+            foreach ( Table child in this.linksPainel.Controls)
+            {
+                child.ReLoadVO();
+            }
+        }
+        public void ReLoadVO()
+        {
+            new REPORT.Table.TableDao().load(this.THISTABLE,this.THISTABLE.IDREPORT,this.THISTABLE.MAINID);
+
+            string ident      = this.RELATEDIDENT;
+            this.cbRelatedTable.SelectedValue = this.RELATEDTABLE;
+            this.RELATEDIDENT = ident;
         }
         public void LOADJOINS(List<string> relatedtables)
         {
@@ -642,7 +659,8 @@ namespace SigaControls.Report
         }
         protected void strIdent_TextChanged(object sender, EventArgs e)
         {
-            this.RELATEDIDENT = (sender as Control).Text;
+            //this.RELATEDIDENT = (sender as Control).Text;
+            CHILDREN[CHILDREN.Count-1].RELATEDIDENT = (sender as Control).Text;
             MessageBox.Show(this.RELATEDIDENT);
         }
         #endregion
@@ -688,7 +706,12 @@ namespace SigaControls.Report
             {
                 ComboBox cb = (sender as ComboBox);
                 if (cb.SelectedIndex >= 0 && cb != null)
-                    this.RELATEDTABLE = cb.SelectedValue.ToString();
+                {
+                    DataRowView row = (DataRowView)cb.SelectedItem;
+                    
+                    this.RELATEDTABLE = (string)row["X2_CHAVE"];//cb.SelectedValue.ToString();
+                    this.RELATEDIDENT = (string)row["X9_IDENT"];
+                }
             }
         }
         private void cbRelatedType_SelectedIndexChanged(object sender, EventArgs e)

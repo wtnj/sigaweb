@@ -20,6 +20,7 @@ namespace SigaWeb
         public mainForm()
         {
             InitializeComponent();
+            this.WindowState = FormWindowState.Maximized;
         }
         private AnchorStyles allSides = (((AnchorStyles.Top | AnchorStyles.Bottom) | AnchorStyles.Left) | AnchorStyles.Right);
         private int iMargem = 5;
@@ -125,17 +126,17 @@ namespace SigaWeb
             MessageBox.Show("MSG: " + sMsg.ToString());
         }
 
-        protected void dragDrop(object sender, DragEventArgs e)
-        {
-            
-        }
-
         private void mainForm_DragDrop(object sender, DragEventArgs e)
         {
             MessageBox.Show(e.ToString());
             MessageBox.Show(sender.ToString());
             (sender as Control).Top = e.Y;
             (sender as Control).Left = e.X;
+        }
+
+        private void mainForm_ControlAdded(object sender, ControlEventArgs e)
+        {
+            this.WindowState = FormWindowState.Maximized;
         }
     }
 }

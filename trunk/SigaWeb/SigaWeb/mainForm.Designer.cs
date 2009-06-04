@@ -33,10 +33,13 @@ namespace SigaWeb
             // mainForm
             // 
             this.FormStyle = Gizmox.WebGUI.Forms.FormStyle.Application;
+            this.Location = new System.Drawing.Point(15, 15);
             this.Size = new System.Drawing.Size(808, 435);
+            this.StartPosition = Gizmox.WebGUI.Forms.FormStartPosition.CenterScreen;
             this.Text = "CARALERO Consultoria e Desenvolvimento LTDA";
             this.DragDrop += new Gizmox.WebGUI.Forms.DragEventHandler(this.mainForm_DragDrop);
             this.Load += new System.EventHandler(this.mainForm_Load);
+            this.ControlAdded += new Gizmox.WebGUI.Forms.ControlEventHandler(this.mainForm_ControlAdded);
             this.ResumeLayout(false);
 
         }
