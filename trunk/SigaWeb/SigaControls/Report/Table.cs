@@ -595,28 +595,32 @@ namespace SigaControls.Report
         {
             this.Parent.Controls.Remove(this);
         }
-        
-        private   void btnAddTable_Click(   object sender, EventArgs e)
+
+        private void btnAddTable_Click(object sender, EventArgs e)
         {
-            Label     strTable  = new Label();
-            DataTable dados     = new DataTable();
-            
-            string filtro   = txtFilterTables.Text.Trim();
+            Label     strTable = new Label();
+            Label     strIdent = new Label();
+            DataTable dados    = new DataTable();
+
+            string    filtro   = txtFilterTables.Text.Trim();
 
             filtro = (filtro == "filtro") ? "" : filtro;
 
             dados = new SXManager(sigaSession.EMPRESAS[0].CODIGO)
-                        //.getChildTables(this.RELATEDTABLES, "SX9.X9_DOM = '" + this.TABLE + "' AND X2_NOME LIKE '%"+filtro+"%'");
+                //.getChildTables(this.RELATEDTABLES, "SX9.X9_DOM = '" + this.TABLE + "' AND X2_NOME LIKE '%"+filtro+"%'");
                         .getParentTables(this.RELATEDTABLES, "X2_NOME LIKE '%" + filtro + "%'");
-                        //.getRelatedTables(this.RELATEDTABLES, "X2_NOME LIKE '%" + filtro + "%'");
-            
+            //.getRelatedTables(this.RELATEDTABLES, "X2_NOME LIKE '%" + filtro + "%'");
+
             Form frm = new Form();
-            frm.Text = (this.relatedTables.Count>0) ? "TABELAS RELACIONADAS" : "TODAS AS TABELAS";
-            frm.Controls.Add(new gridWindow(dados, strTable, "X2_CHAVE"));
+            frm.Text = (this.relatedTables.Count > 0) ? "TABELAS RELACIONADAS" : "TODAS AS TABELAS";
+            frm.Controls.Add(new gridWindow( dados
+                                           , new object[] { strTable, strIdent }
+                                           , new object[] { "X2_CHAVE", "X9_IDENT" }));//strTable, "X2_CHAVE"));
             frm.WindowState = FormWindowState.Maximized;
             frm.ShowDialog();
 
             strTable.TextChanged += new EventHandler(strTable_TextChanged);
+            strIdent.TextChanged += new EventHandler(strIdent_TextChanged);
         }
         protected void strTable_TextChanged(object sender, EventArgs e)
         {
@@ -624,6 +628,10 @@ namespace SigaControls.Report
             child.LOAD((sender as Control).Text);
             
             this.AddChildTable(child);
+        }
+        protected void strIdent_TextChanged(object sender, EventArgs e)
+        {
+            this.RELATEDIDENT = (sender as Control).Text;
         }
         #endregion
 

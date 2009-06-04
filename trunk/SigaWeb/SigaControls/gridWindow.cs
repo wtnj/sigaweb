@@ -20,7 +20,7 @@ namespace SigaControls
     {
         // MUDANÇAS
         private Control[] toControl = null;
-        private object[]  fromObj   = null;
+        private object[]  oColRet   = null;
 
         private object columnReturn = null;
         private DataTable table;
@@ -31,17 +31,18 @@ namespace SigaControls
         private List<object> tRow = new List<object>();
 
         #region CONSTRUTOR
-        private void initialize(string sQuery  ) 
+        private void initialize(string sQuery  )
         {
-            this.Dock = DockStyle.Fill;
-            InitializeComponent();
+            //this.Dock = DockStyle.Fill;
+            //InitializeComponent();
             DataTable dtGrid = new SigaObjects.DataMaster().SelectDataTable(sQuery);
-            dataGridView1.DataSource = dtGrid.DefaultView;
+            //dataGridView1.DataSource = dtGrid.DefaultView;
 
-            barra.Text = string.Format(">> {0} Registros", dtGrid.DefaultView.Count);
+            //barra.Text = string.Format(">> {0} Registros", dtGrid.DefaultView.Count);
 
-            table = dtGrid;
-            this.calcTotalRow();
+            //table = dtGrid;
+            //this.calcTotalRow();
+            initialize(dtGrid);
         }
         private void initialize(DataTable dados)
         {
@@ -50,11 +51,16 @@ namespace SigaControls
 
             dataGridView1.DataSource = dados.DefaultView;
             dataGridView1.UseInternalPaging=false;
-            barra.Text = string.Format(">> {0} Registros", dados.DefaultView.Count);
 
+            barra.Text = string.Format(">> {0} Registros", dados.DefaultView.Count);
             
             table = dados;
             this.calcTotalRow();
+
+            if (this.toControl.Length > 0 && this.oColRet.Length > 0)
+            {
+                btnSelecionar.Visible = true;
+            }
         }
 
         public gridWindow(DataTable dados , Control caller)
@@ -92,6 +98,20 @@ namespace SigaControls
         {
             this.oCaller = caller;
             columnReturn = idxCollumnReturn;
+            initialize(sQuery);
+        }
+
+
+        public gridWindow(DataTable dados , Control[] setControls, object[] oCollumnsReturn)
+        {
+            this.toControl = setControls;
+            this.oColRet   = oCollumnsReturn;
+            initialize(dados);
+        }
+        public gridWindow(string    sQuery, Control[] setControls, object[] oCollumnsReturn)
+        {
+            this.toControl = setControls;
+            this.oColRet   = oCollumnsReturn;
             initialize(sQuery);
         }
         #endregion
@@ -328,6 +348,11 @@ namespace SigaControls
         private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             //this.calcTotalRow();
+        }
+
+        private void btnSelecionar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
