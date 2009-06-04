@@ -598,6 +598,10 @@ namespace SigaControls.Report
 
         private void btnAddTable_Click(object sender, EventArgs e)
         {
+            // listas de controles e objetos para o grid.
+            List<Control> toControls      = new List<Control>();
+            List<object>  oCollumnsReturn = new List<object>();
+
             Label     strTable = new Label();
             Label     strIdent = new Label();
             DataTable dados    = new DataTable();
@@ -611,11 +615,18 @@ namespace SigaControls.Report
                         .getParentTables(this.RELATEDTABLES, "X2_NOME LIKE '%" + filtro + "%'");
             //.getRelatedTables(this.RELATEDTABLES, "X2_NOME LIKE '%" + filtro + "%'");
 
+            // inicializar com dados desejados as listas.
+            toControls.Add(strTable);
+            oCollumnsReturn.Add("X2_CHAVE");
+
+            toControls.Add(strIdent);
+            oCollumnsReturn.Add("X9_IDENT");
+
             Form frm = new Form();
             frm.Text = (this.relatedTables.Count > 0) ? "TABELAS RELACIONADAS" : "TODAS AS TABELAS";
             frm.Controls.Add(new gridWindow( dados
-                                           , new object[] { strTable, strIdent }
-                                           , new object[] { "X2_CHAVE", "X9_IDENT" }));//strTable, "X2_CHAVE"));
+                                           , toControls
+                                           , oCollumnsReturn ));
             frm.WindowState = FormWindowState.Maximized;
             frm.ShowDialog();
 
@@ -632,6 +643,7 @@ namespace SigaControls.Report
         protected void strIdent_TextChanged(object sender, EventArgs e)
         {
             this.RELATEDIDENT = (sender as Control).Text;
+            MessageBox.Show(this.RELATEDIDENT);
         }
         #endregion
 

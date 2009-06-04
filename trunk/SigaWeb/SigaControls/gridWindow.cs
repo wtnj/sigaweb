@@ -19,14 +19,14 @@ namespace SigaControls
     public partial class gridWindow : MainWindow
     {
         // MUDANÇAS
-        private Control[] toControl = null;
-        private object[]  oColRet   = null;
+        private List<Control> toControl    = null;
+        private List<object>  oColRet      = null;
 
-        private object columnReturn = null;
+        private object    columnReturn = null;
         private DataTable table;
 
-        private string root = "C:\\SigaWeb\\";
-        private string caminho;
+        private string    root         = "C:\\SigaWeb\\";
+        private string    caminho;
 
         private List<object> tRow = new List<object>();
 
@@ -57,7 +57,7 @@ namespace SigaControls
             table = dados;
             this.calcTotalRow();
 
-            if (this.toControl.Length > 0 && this.oColRet.Length > 0)
+            if (this.toControl != null && this.oColRet != null)
             {
                 btnSelecionar.Visible = true;
             }
@@ -102,13 +102,13 @@ namespace SigaControls
         }
 
 
-        public gridWindow(DataTable dados , Control[] setControls, object[] oCollumnsReturn)
+        public gridWindow(DataTable dados , List<Control> setControls, List<object> oCollumnsReturn)
         {
             this.toControl = setControls;
             this.oColRet   = oCollumnsReturn;
             initialize(dados);
         }
-        public gridWindow(string    sQuery, Control[] setControls, object[] oCollumnsReturn)
+        public gridWindow(string    sQuery, List<Control> setControls, List<object> oCollumnsReturn)
         {
             this.toControl = setControls;
             this.oColRet   = oCollumnsReturn;
@@ -352,7 +352,15 @@ namespace SigaControls
 
         private void btnSelecionar_Click(object sender, EventArgs e)
         {
+            object valueCell = new object();
 
+            if (columnReturn.GetType() == typeof(string))
+                valueCell = dataGridView1.SelectedRows[0].Cells[columnReturn.ToString()].Value;
+            if (columnReturn.GetType() == typeof(int))
+                valueCell = dataGridView1.SelectedRows[0].Cells[int.Parse(columnReturn.ToString())].Value;
+
+            oCaller.Text = valueCell.ToString();
+            this.Form.Close();
         }
     }
 }
