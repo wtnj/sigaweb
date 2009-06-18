@@ -116,7 +116,7 @@ namespace SigaObjects.Reports.OrderBy
         {
             this.QUERY = new StringBuilder();
 
-            this.QUERY.AppendLine("use SigaWeb");
+            this.QUERY.AppendLine(fromDatabase);
             this.QUERY.AppendLine("SELECT DISTINCT " + colunas);
             this.QUERY.AppendLine("  FROM orderBy");
             this.QUERY.AppendLine(" WHERE mainId = " + mainId + "");
@@ -167,7 +167,7 @@ namespace SigaObjects.Reports.OrderBy
         {
             this.QUERY = new StringBuilder();
 
-            this.addInQuery("use SigaWeb");
+            this.addInQuery(fromDatabase);
             this.addInQuery("INSERT INTO orderBy (mainId, indice, displaymember, valuemember)");
             this.QUERY.Append("VALUES (");
             this.QUERY.Append(""  + order.MAINID  + ",");

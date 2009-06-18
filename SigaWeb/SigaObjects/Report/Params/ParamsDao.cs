@@ -10,7 +10,7 @@ namespace SigaObjects.Reports.Params
         #region Members
         public static String ValueMember
         {
-            get { return "data"; }
+            get { return "formato"; }
         }
         public static String DisplayMember
         {
@@ -131,7 +131,7 @@ namespace SigaObjects.Reports.Params
         {
             this.QUERY = new StringBuilder();
 
-            this.QUERY.AppendLine("use SigaWeb");
+            this.QUERY.AppendLine(fromDatabase);
             this.QUERY.AppendLine("SELECT DISTINCT " + colunas);
             this.QUERY.AppendLine("  FROM params");
             this.QUERY.AppendLine(" WHERE mainId = " + mainId);
@@ -165,7 +165,7 @@ namespace SigaObjects.Reports.Params
         {
             this.QUERY = new StringBuilder();
 
-            this.addInQuery("use Sigaweb");
+            this.addInQuery(fromDatabase);
             this.addInQuery("INSERT INTO params (mainId, tabela, campo, formato, tamanho, objeto)");
             this.QUERY.Append("VALUES (");
             this.QUERY.Append(""  + param.MAINID  + "," );
@@ -185,7 +185,7 @@ namespace SigaObjects.Reports.Params
         {
             this.QUERY = new StringBuilder();
 
-            this.addInQuery("use SigaWeb");
+            this.addInQuery(fromDatabase);
             this.addInQuery("UPDATE params");
             this.addInQuery("   SET tamanho = "  + param.TAMANHO + "");
             this.addInQuery("     , tabela  = '" + param.TABELA  + "'" );

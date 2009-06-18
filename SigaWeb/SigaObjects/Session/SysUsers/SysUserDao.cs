@@ -112,7 +112,7 @@ namespace SigaObjects.Session.SysUsers
             {
                 this.QUERY = new StringBuilder();
 
-                this.QUERY.AppendLine("use SigaWeb");
+                this.QUERY.AppendLine(fromDatabase);
                 this.QUERY.AppendLine("SELECT ug.[name] [Grupo de Usuários], su.username [Usuário],");
                 this.QUERY.AppendLine("       su.[name] [Nome], su.fullname [Nome Completo], su.[password] [Senha]");
                 this.QUERY.AppendLine("  FROM SigaUsers su");

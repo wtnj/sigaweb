@@ -18,7 +18,7 @@ namespace SigaControls.Report
 {
     public partial class ReportList : UserControl
     {
-        public ReportList()
+        public  ReportList()            
         {
             InitializeComponent();
 
@@ -36,7 +36,7 @@ namespace SigaControls.Report
             this.tbbExcel.Image = (ResourceHandle)Resources.Icons.basic.PageExcel[ 0];
             this.tbbPDF.Image   = (ResourceHandle)Resources.Icons.basic.PagePDF[   0];
         }
-        private void initializeData()
+        private void initializeData()             
         {
             this.initializeData(null);
         }

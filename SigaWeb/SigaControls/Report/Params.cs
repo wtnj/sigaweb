@@ -84,13 +84,15 @@ namespace SigaControls.Report
             {
                 REPORT.Params.ParamsVo param = new REPORT.Params.ParamsVo();
 
-                param.MAINID = this.MAIN.ID;
-                param.TABELA = this.main.TABLE;
+                param.MAINID  = this.MAIN.ID;
+                param.TABELA  = this.main.TABLE;
 
                 DataRowView valor = (lbCampos.Items[i] as DataRowView);
 
-                param.FORMATO = valor[REPORT.Params.ParamsDao.ValueMember].ToString()  ;
+                param.FORMATO = valor[REPORT.Params.ParamsDao.ValueMember  ].ToString();
                 param.CAMPO   = valor[REPORT.Params.ParamsDao.DisplayMember].ToString();
+                param.OBJETO  = valor["objeto" ].ToString();
+                //param.TAMANHO = int.Parse(valor["tamanho"].ToString());
 
                 paramets.Add(param);
             }
@@ -103,14 +105,15 @@ namespace SigaControls.Report
         }
         #endregion
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void btnAdd_Click(  object sender   , EventArgs e         )
         {
             if (cmbCampos.SelectedIndex >= 0)
             {
                 DataRowView row  = (DataRowView)cmbCampos.SelectedItem;
 
-                string      tipo = row["X3_TIPO"   ].ToString();
+                string      tipo = row["X3_TIPO"   ].ToString().ToUpper();
                 string      len  = row["X3_TAMANHO"].ToString();
+                string      obj  = FormatScreen.getObjectFromSigaType(tipo).GetType().ToString();
 
                 dados.Rows.Add( 0               //id
                               , this.MAIN.ID    //id da ligação
@@ -118,7 +121,7 @@ namespace SigaControls.Report
                               , this.MAIN.TABLE //nome da tabela
                               , this.cmbCampos.SelectedValue.ToString() //campo
                               , tipo            //formato
-                              , ""
+                              , obj             //objeto
                               );
             }
         }

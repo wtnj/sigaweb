@@ -112,7 +112,7 @@ namespace SigaObjects.Reports.Filters
         {
             this.QUERY = new StringBuilder();
 
-            this.QUERY.AppendLine("use SigaWeb");
+            this.QUERY.AppendLine(fromDatabase);
             this.QUERY.AppendLine("SELECT DISTINCT " + colunas);
             this.QUERY.AppendLine("  FROM filters");
             this.QUERY.AppendLine(" WHERE mainId = " + mainId);
@@ -145,7 +145,7 @@ namespace SigaObjects.Reports.Filters
         {
             this.QUERY = new StringBuilder();
 
-            this.addInQuery("use SigaWeb");
+            this.addInQuery(fromDatabase);
             this.addInQuery("INSERT INTO filters (mainId, tabela, campo, filtro, tipofiltro)");
             this.QUERY.Append("VALUES (");
             this.QUERY.Append(""  + filter.MAINID       + ",");
@@ -164,7 +164,7 @@ namespace SigaObjects.Reports.Filters
         {
             this.QUERY = new StringBuilder();
 
-            this.addInQuery("use SigaWeb");
+            this.addInQuery(fromDatabase);
             this.addInQuery("UPDATE filters");
             this.addInQuery("   SET tabela      = '" + filter.TABELA + "'");
             this.addInQuery("      ,campo       = '" + filter.CAMPO + "'");
