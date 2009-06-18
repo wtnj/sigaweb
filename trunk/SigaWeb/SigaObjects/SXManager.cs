@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace SigaObjects
 {
-    public class SXManager : DataMaster
+    public class SXManager : SELECT
     {
         #region ATRIBUTOS
         private string strEmpresa = "";
@@ -206,7 +206,7 @@ namespace SigaObjects
         public DataTable getTables(string filter, string order)
         {
             StringBuilder strQuery = new StringBuilder();
-            strQuery.AppendLine("USE SigaWeb");
+            strQuery.AppendLine(fromDatabase);
             strQuery.AppendLine("-- ----- --");
             strQuery.AppendLine("SELECT *"   );
             strQuery.AppendLine("  FROM SX2"+this.EMPRESA+"0 SX2" );
@@ -244,7 +244,7 @@ namespace SigaObjects
         {
             StringBuilder strQuery = new StringBuilder();
 
-            strQuery.AppendLine("USE SigaWeb");
+            strQuery.AppendLine(fromDatabase);
             strQuery.AppendLine("-- ----- --");
             strQuery.AppendLine("SELECT *");
             strQuery.AppendLine("  FROM SX3"+this.EMPRESA+"0 SX3");
@@ -283,7 +283,7 @@ namespace SigaObjects
             string tabelas = getStringArr(tables);
             StringBuilder strQuery = new StringBuilder();
             
-            strQuery.AppendLine("USE SigaWeb");
+            strQuery.AppendLine(fromDatabase);
             strQuery.AppendLine("-- ----- --");
             strQuery.AppendLine("SELECT DISTINCT SX2.*");
             strQuery.AppendLine("  FROM SX9"+this.EMPRESA+"0 SX9");
@@ -323,7 +323,7 @@ namespace SigaObjects
         {
             StringBuilder strQuery = new StringBuilder();
 
-            strQuery.AppendLine("USE SigaWeb");
+            strQuery.AppendLine(fromDatabase);
             strQuery.AppendLine("-- ----- --");
             strQuery.AppendLine("SELECT " + RelatedFieldsToShow);
             strQuery.AppendLine("  FROM SX9"+this.EMPRESA+"0 SX9");
@@ -342,7 +342,7 @@ namespace SigaObjects
         {
             StringBuilder strQuery = new StringBuilder();
 
-            strQuery.AppendLine("USE SigaWeb");
+            strQuery.AppendLine(fromDatabase);
             strQuery.AppendLine("-- ----- --");
             strQuery.AppendLine("SELECT " + RelatedFieldsToShow);
             strQuery.AppendLine("  FROM SX9"+this.EMPRESA+"0 SX9");
@@ -381,7 +381,7 @@ namespace SigaObjects
         {
             StringBuilder strQuery = new StringBuilder();
 
-            strQuery.AppendLine("USE SigaWeb");
+            strQuery.AppendLine(fromDatabase);
             strQuery.AppendLine("-- ----- --");
             strQuery.AppendLine("SELECT " + RelatedFieldsToShow);//DISTINCT SX2.*");
             strQuery.AppendLine("  FROM SX9"+this.EMPRESA+"0 SX9");
@@ -400,7 +400,7 @@ namespace SigaObjects
         {
             StringBuilder strQuery = new StringBuilder();
 
-            strQuery.AppendLine("USE SigaWeb");
+            strQuery.AppendLine(fromDatabase);
             strQuery.AppendLine("-- ----- --");
             strQuery.AppendLine("SELECT " + RelatedFieldsToShow);
             strQuery.AppendLine("  FROM SX9"+this.EMPRESA+"0 SX9");
@@ -426,7 +426,7 @@ namespace SigaObjects
             List<string>  value    = new List<string>();
             StringBuilder strQuery = new StringBuilder();
 
-            strQuery.AppendLine("USE SigaWeb");
+            strQuery.AppendLine(fromDatabase);
             strQuery.AppendLine("-- ----- --");
             strQuery.AppendLine("SELECT X9_EXPDOM [DOM], X9_EXPCDOM [CDOM]");
             strQuery.AppendLine("  FROM SX9"+this.EMPRESA+"0 SX9");

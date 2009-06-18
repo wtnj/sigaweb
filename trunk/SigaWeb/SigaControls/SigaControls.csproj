@@ -169,6 +169,12 @@
     <Compile Include="Report\Table.Designer.cs">
       <DependentUpon>Table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Report\ViewReport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Report\ViewReport.Designer.cs">
+      <DependentUpon>ViewReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Icons\basic.cs" />
     <Compile Include="Resources\Icons\status.cs" />
     <Compile Include="Resources\Images\basic.cs" />
@@ -285,6 +291,10 @@
     <EmbeddedResource Include="Report\Table.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\ViewReport.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ViewReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Session\Grupo_usuarios.resx">
       <SubType>Designer</SubType>

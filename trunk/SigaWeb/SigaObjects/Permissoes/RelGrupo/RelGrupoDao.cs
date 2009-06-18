@@ -113,7 +113,7 @@ namespace SigaObjects.Permissoes.RelGrupo
         {
             this.QUERY = new StringBuilder(fromDatabase);
 
-            this.QUERY.AppendLine("USE SigaWeb");
+            this.QUERY.AppendLine(fromDatabase);
             this.QUERY.AppendLine("-- ----- --");
             this.QUERY.AppendLine("SET NOCOUNT ON");
             this.QUERY.AppendLine(" IF Object_Id('perm_temp','U') Is Not Null");

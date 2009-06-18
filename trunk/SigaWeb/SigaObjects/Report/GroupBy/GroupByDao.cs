@@ -112,7 +112,7 @@ namespace SigaObjects.Reports.GroupBy
         {
             QUERY = new StringBuilder();
 
-            QUERY.AppendLine("use SigaWeb");
+            QUERY.AppendLine(fromDatabase);
             QUERY.AppendLine("SELECT DISTINCT " + colunas);
             QUERY.AppendLine("  FROM groupBy");
             QUERY.AppendLine(" WHERE mainId = " + mainId + "");
@@ -161,7 +161,7 @@ namespace SigaObjects.Reports.GroupBy
         {
             this.QUERY = new StringBuilder();
 
-            this.addInQuery("use SigaWeb");
+            this.addInQuery(fromDatabase);
             this.addInQuery("INSERT INTO groupBy (mainId, indice, displaymember, valuemember)");
             this.QUERY.Append("VALUES (");
             this.QUERY.Append(""  + group.MAINID  + "," );
@@ -184,7 +184,7 @@ namespace SigaObjects.Reports.GroupBy
         {
             this.QUERY = new StringBuilder();
 
-            this.addInQuery("use SigaWeb");
+            this.addInQuery(fromDatabase);
             this.addInQuery("UPDATE groupBy");
             this.addInQuery("   SET indice          = "  + group.INDICE  + "" );
             this.addInQuery("      ,displaymember   = '" + group.DISPLAY + "'");

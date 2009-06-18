@@ -358,5 +358,29 @@ namespace SigaControls
         {
             return (Control)Activator.CreateInstance(tipo);
         }
+
+        public static Control getObjectFromSigaType(string strType)
+        {
+            Control control = null;
+
+            switch (strType.ToUpper().Trim())
+            {
+                case "N":
+                    control = new TextBox();
+                    (control as TextBox).Validator = new TextBoxValidation("", "", "0-9\\.");
+                    control.TextChanged += new EventHandler(cCur_CheckCurrency);
+                    break;
+                case "D":
+                    control = new DateTimePicker();
+                    (control as DateTimePicker).CustomFormat = "dd/MM/yyyy";
+                    (control as DateTimePicker).Format       = DateTimePickerFormat.Custom;
+                    break;
+                default:
+                    control = new TextBox();
+                    break;
+            }
+
+            return control;
+        }
     }
 }

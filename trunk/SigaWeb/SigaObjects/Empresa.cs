@@ -19,7 +19,7 @@ namespace SigaObjects
         {
             StringBuilder sQuery = new StringBuilder();
 
-            sQuery.AppendLine("use SigaWeb");
+            sQuery.AppendLine(fromDatabase);
             sQuery.AppendLine("SELECT M0_CODIGO, M0_CODFIL, M0_FILIAL, M0_NOME ");
             sQuery.AppendLine("  FROM SIGAMAT ");
             if(filtro != null)
