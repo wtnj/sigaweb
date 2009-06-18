@@ -23,7 +23,7 @@ namespace SigaControls.Report
 
         /// <summary>Retorna um [controle]</summary>
         public Table  MAIN {
-            get { return main; }
+            get { return main;  }
             set { main = value; }
         }
         /// <summary>Retorna a String de ordenação</summary>
@@ -77,7 +77,7 @@ namespace SigaControls.Report
             lbCampos.DisplayMember  = REPORT.OrderBy.OrderByDao.DisplayMember;
             lbCampos.ValueMember    = REPORT.OrderBy.OrderByDao.ValueMember;
 
-            dados.Columns.Add("id");
+            dados.Columns.Add("id"    );
             dados.Columns.Add("indice");
             dados.Columns.Add("mainId");
             dados.Columns.Add(REPORT.OrderBy.OrderByDao.DisplayMember);
@@ -448,10 +448,5 @@ namespace SigaControls.Report
         }
         #endregion
         #endregion
-
-        internal static object ControlCollection()
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
     }
 }

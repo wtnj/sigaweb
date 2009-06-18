@@ -55,13 +55,14 @@ namespace SigaControls
         private void ConsultarRelatorio_Click(object sender, EventArgs e)
         {
             this.Painel.Controls.Clear();
-            FormatScreen.AddControl(Painel, new Label("Controle ainda não implementado"), true, 1, true, false);
+            
+            FormatScreen.AddControl(Painel, new Report.ReportList(), true, 1, true, false);
         }
 
         private void PermissaoUsuRel_Click(object sender, EventArgs e)
         {
             this.Painel.Controls.Clear();
-            FormatScreen.AddControl(Painel, new Permissoes(),true,1,true,false);
+            FormatScreen.AddControl(Painel, new Permissoes(), true, 1, true, false);
             //FormatScreen.AddControl(Painel, new Label("Controle ainda não implementado"), true, 1, true, false);
         }
 

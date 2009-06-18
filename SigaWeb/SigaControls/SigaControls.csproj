@@ -157,6 +157,12 @@
     <Compile Include="Report\Report.Designer.cs">
       <DependentUpon>Report.cs</DependentUpon>
     </Compile>
+    <Compile Include="Report\ReportList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Report\ReportList.Designer.cs">
+      <DependentUpon>ReportList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Report\Table.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -272,6 +278,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>Report.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Report\ReportList.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ReportList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Report\Table.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Table.cs</DependentUpon>
@@ -306,6 +316,12 @@
       <Project>{2CB237EB-69DE-41D0-875A-51183D923050}</Project>
       <Name>SigaObjects</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Permissoes\ConGrupo\" />
+    <Folder Include="Permissoes\ConUsu\" />
+    <Folder Include="Permissoes\RelGrupo\" />
+    <Folder Include="Permissoes\RelUsu\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

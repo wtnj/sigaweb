@@ -20,7 +20,7 @@ namespace SigaControls.Cadastros
     public partial class ContasAPagarList : UserControl
     {
         private Random rnd  = new Random();
-
+        
         public ContasAPagarList()
         {
             InitializeComponent();
@@ -179,25 +179,25 @@ namespace SigaControls.Cadastros
             colCSLL.DataPropertyName = "CSLL";
             
             /// ADD COLUNAS
-            dgvDados.Columns.Add(imgCol);
-            dgvDados.Columns.Add(colEmpresa);
-            dgvDados.Columns.Add(colFilial);
-            dgvDados.Columns.Add(colPrefixo);
-            dgvDados.Columns.Add(colNumtitulo);
-            dgvDados.Columns.Add(colParcela);
-            dgvDados.Columns.Add(colNatureza);
+            dgvDados.Columns.Add(imgCol       );
+            dgvDados.Columns.Add(colEmpresa   );
+            dgvDados.Columns.Add(colFilial    );
+            dgvDados.Columns.Add(colPrefixo   );
+            dgvDados.Columns.Add(colNumtitulo );
+            dgvDados.Columns.Add(colParcela   );
+            dgvDados.Columns.Add(colNatureza  );
             dgvDados.Columns.Add(colFornecedor);
-            dgvDados.Columns.Add(colLoja);
-            dgvDados.Columns.Add(colEmissao);
+            dgvDados.Columns.Add(colLoja      );
+            dgvDados.Columns.Add(colEmissao   );
             dgvDados.Columns.Add(colVencimento);
-            dgvDados.Columns.Add(colValor);
-            dgvDados.Columns.Add(colISS);
-            dgvDados.Columns.Add(colIRFF);
-            dgvDados.Columns.Add(colHistorico);
-            dgvDados.Columns.Add(colINSS);
-            dgvDados.Columns.Add(colCOFINS);
-            dgvDados.Columns.Add(colPISPASEP);
-            dgvDados.Columns.Add(colCSLL);            
+            dgvDados.Columns.Add(colValor     );
+            dgvDados.Columns.Add(colISS       );
+            dgvDados.Columns.Add(colIRFF      );
+            dgvDados.Columns.Add(colHistorico );
+            dgvDados.Columns.Add(colINSS      );
+            dgvDados.Columns.Add(colCOFINS    );
+            dgvDados.Columns.Add(colPISPASEP  );
+            dgvDados.Columns.Add(colCSLL      );
         }
         private void initializeToolBar()
         {
@@ -212,8 +212,10 @@ namespace SigaControls.Cadastros
         private void menu_Click(object objSource, ToolBarItemEventArgs objArgs)
         {
             EmpresaVo empresa  = new EmpresaVo();
-            string    root     = "Report_"+DateTime.Now.ToString("dd_MM_yyyy")+".[?]";
-            string    filename = "";
+            string    root     = System.Web.HttpContext.Current.Server.MapPath("");
+            int       rootIdx  = root.IndexOf("Route\\");
+            root               = root.Substring(0, rootIdx) + "arquivos\\";
+            string    filename = "Report_"+DateTime.Now.ToString("dd_MM_yyyy")+".[?]";
 
             switch (objArgs.ToolBarButton.Name.ToLower())
             {
@@ -270,8 +272,8 @@ namespace SigaControls.Cadastros
                     break;
                 case "tbbexcel":
                     #region EXCEL
-                    filename = root.Replace("[?]","xls");
-                    Carralero.ExportExcel excel = new Carralero.ExportExcel("arquivos\\"+filename);
+                    filename = filename.Replace("[?]","xls");
+                    Carralero.ExportExcel excel = new Carralero.ExportExcel(root + filename);
                     excel.setDataTable(1, 1, (DataTable)dgvDados.DataSource, true);
                     excel.Close();
                     
@@ -281,7 +283,7 @@ namespace SigaControls.Cadastros
                     break;
                 case "tbbpdf":
                     #region PDF
-                    filename = root.Replace("[?]","pdf");
+                    filename = filename.Replace("[?]","pdf");
                     Carralero.ExportPdf pdf = new Carralero.ExportPdf("arquivos\\"+filename);
                     pdf.setDataTable((DataTable)dgvDados.DataSource, true);
                     

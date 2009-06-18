@@ -76,10 +76,9 @@ namespace SigaObjects.Permissoes.RelGrupo
             this.QUERY = new StringBuilder(fromDatabase);
 
             this.QUERY.AppendLine("UPDATE " + table);
-            this.QUERY.AppendLine("   SET ");
-            this.QUERY.AppendLine("     idReport    = " + relGrupo.IDREPORT     + ",");
-            this.QUERY.AppendLine("     idUserGroup = " + relGrupo.IDUSERGROUP  + ",");
-            this.QUERY.AppendLine("     nivel       = " + relGrupo.NIVEL);
+            this.QUERY.AppendLine("   SET idReport    = " + relGrupo.IDREPORT   );
+            this.QUERY.AppendLine("     , idUserGroup = " + relGrupo.IDUSERGROUP);
+            this.QUERY.AppendLine("     , nivel       = " + relGrupo.NIVEL      );
             this.QUERY.AppendLine(" WHERE id = " + relGrupo.ID);
 
             return getData().DefaultView.Count;
