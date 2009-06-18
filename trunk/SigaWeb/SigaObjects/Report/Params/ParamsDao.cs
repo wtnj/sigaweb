@@ -10,11 +10,11 @@ namespace SigaObjects.Reports.Params
         #region Members
         public static String ValueMember
         {
-            get { return ""; }
+            get { return "data"; }
         }
         public static String DisplayMember
         {
-            get { return ""; }
+            get { return "campo"; }
         }
         #endregion
 
@@ -40,32 +40,50 @@ namespace SigaObjects.Reports.Params
         #endregion
 
         #region Load
-        public void Load(ParamsVo param, int mainId)
-        {
-            List<ParamsVo> parameters = new List<ParamsVo>();
-            parameters.Add(param);
-
-            Load(parameters,mainId,"id = " + param.ID);
-        }
         public void Load(List<ParamsVo> parameters, int mainId)
         {
-            Load(parameters,mainId,null);
+            Load(parameters, mainId, null);
         }
         public void Load(List<ParamsVo> parameters, int mainId, string filtro)
         {
-            DataTable table = select(mainId,filtro,false);
-            for(int i = 0;i < table.DefaultView.Count;i++)
+            DataTable table = select(mainId, filtro, false);
+
+            for (int i = 0; i < table.DefaultView.Count; i++)
             {
                 ParamsVo param = new ParamsVo();
-                param.MAINID    = mainId;
 
-                param.ID        = (int)   table.DefaultView[i]["id"];
-                param.TABELA    = (string)table.DefaultView[i]["tabela"];
-                param.TAMANHO   = (int)   table.DefaultView[i]["tamanho"];
-                param.CAMPO     = (string)table.DefaultView[i]["campo"];
-                param.FORMATO   = (string)table.DefaultView[i]["formato"];
+                Load(param, mainId, null, table.Rows[i]);
 
                 parameters.Add(param);
+            }
+        }
+        public void Load(ParamsVo       param     , int mainId)
+        {
+            Load(param, mainId, null);
+        }
+        public void Load(ParamsVo       param     , int mainId, string filtro)
+        {
+            Load(param, mainId, filtro, null);
+        }
+        public void Load(ParamsVo       param     , int mainId, string filtro, DataRow row)
+        {
+            if (row == null)
+            {
+                DataTable dados = select(mainId, filtro, true);
+                if (dados.DefaultView.Count > 0)
+                    row = dados.Rows[0];
+            }
+            
+            if (row!=null)
+            {
+                param.MAINID  = mainId;
+
+                param.ID      = (int)   row["id"     ];
+                param.TABELA  = (string)row["tabela" ];
+                param.TAMANHO = (int)   row["tamanho"];
+                param.CAMPO   = (string)row["campo"  ];
+                param.FORMATO = (string)row["formato"];
+                param.OBJETO  = (string)row["objeto" ];
             }
         }
         #endregion
@@ -79,16 +97,16 @@ namespace SigaObjects.Reports.Params
         {
             return select(mainId,filtro,false);
         }
-        public DataTable select(int mainId, bool firstOnly)
+        public DataTable select(int mainId, bool   firstOnly)
         {
             return select(mainId, null, firstOnly);
         }
         public DataTable select(int mainId, string filtro, bool firstOnly)
         {
             new SELECT(firstOnly ? "TOP 1 * " : "*")
-            .From("params")
-            .Where("mainId = " + mainId)
-            .And(filtro);
+                .From( "params")
+                .Where("mainId = " + mainId)
+                .And(  filtro);
 
             return getData();
         }
@@ -97,11 +115,11 @@ namespace SigaObjects.Reports.Params
         {
             return getColunas(mainId,"tamanho");
         }
-        public DataTable getTabelas(int mainId)
+        public DataTable getTabelas( int mainId)
         {
             return getColunas(mainId,"tabela");
         }
-        public DataTable getCampos(int mainId)
+        public DataTable getCampos(  int mainId)
         {
             return getColunas(mainId,"campo");
         }
@@ -109,7 +127,7 @@ namespace SigaObjects.Reports.Params
         {
             return getColunas(mainId,"formato");
         }
-        public DataTable getColunas(int mainId, string colunas)
+        public DataTable getColunas( int mainId, string colunas)
         {
             this.QUERY = new StringBuilder();
 
@@ -148,13 +166,14 @@ namespace SigaObjects.Reports.Params
             this.QUERY = new StringBuilder();
 
             this.addInQuery("use Sigaweb");
-            this.addInQuery("INSERT INTO params (mainId, tabela, campo, formato, tamanho)");
+            this.addInQuery("INSERT INTO params (mainId, tabela, campo, formato, tamanho, objeto)");
             this.QUERY.Append("VALUES (");
-            this.QUERY.Append(""  + param.MAINID  + ",");
+            this.QUERY.Append(""  + param.MAINID  + "," );
             this.QUERY.Append("'" + param.TABELA  + "',");
             this.QUERY.Append("'" + param.CAMPO   + "',");
             this.QUERY.Append("'" + param.FORMATO + "',");
-            this.QUERY.Append("'" + param.TAMANHO + "'");
+            this.QUERY.Append("'" + param.TAMANHO + "',");
+            this.QUERY.Append("'" + param.OBJETO  + "'" );
             this.QUERY.AppendLine(")");
 
             return getData().DefaultView.Count;
@@ -169,9 +188,10 @@ namespace SigaObjects.Reports.Params
             this.addInQuery("use SigaWeb");
             this.addInQuery("UPDATE params");
             this.addInQuery("   SET tamanho = "  + param.TAMANHO + "");
-            this.addInQuery("      ,tabela  = '" + param.TABELA  + "'" );
-            this.addInQuery("      ,campo   = '" + param.CAMPO   + "'");
-            this.addInQuery("      ,formato = '" + param.FORMATO + "'");
+            this.addInQuery("     , tabela  = '" + param.TABELA  + "'" );
+            this.addInQuery("     , campo   = '" + param.CAMPO   + "'");
+            this.addInQuery("     , formato = '" + param.FORMATO + "'");
+            this.addInQuery("     , objeto  = '" + param.OBJETO  + "'");
             this.addInQuery(" WHERE id = " + param.ID);
 
             return getData().DefaultView.Count;

@@ -29,12 +29,19 @@ namespace SigaControls
         }
 
         #region ABRINDO RELATORIO
-        private void btnAbrir_Click(   object sender, EventArgs e)
+        public void btnAbrir_Click(   object sender, EventArgs e)
         {
             Label label = new Label();
             label.TextChanged += new EventHandler(label_TextChanged);
             
-            new gridWindow(new SigaObjects.Reports.Report.ReportDao().select(0), label, "nome").showWindow();
+            if (sender.GetType() == typeof(Label))
+            {
+                label.Text = (sender as Label).Text;
+            }
+            else
+            {
+                new gridWindow(new SigaObjects.Reports.Report.ReportDao().select(0), label, "nome").showWindow();
+            }
         }
         private void label_TextChanged(object sender, EventArgs e)
         {
@@ -45,7 +52,7 @@ namespace SigaControls
         }
         #endregion
 
-        private void btnAddNew_Click(object sender, EventArgs e)
+        public void btnAddNew_Click(object sender, EventArgs e)
         {
             string novo  = "novo relatorio";
             int    count = 1;

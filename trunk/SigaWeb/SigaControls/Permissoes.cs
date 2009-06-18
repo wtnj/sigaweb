@@ -215,14 +215,15 @@ namespace SigaControls
             tb.DefaultView[0][DisplayMember] = "[TODOS]";
             tb.DefaultView[0][ValueMember] = 0;
         }
-        private List<RelUsuVo>   getRelUsuModificados()  
+        private List<RelUsuVo> getRelUsuModificados()
         {
             List<RelUsuVo> lista = new List<RelUsuVo>();
 
-            foreach (DataRow row in (gridRelUsu.DataSource as DataTable).Select(null, null, DataViewRowState.ModifiedCurrent))
-                //Adiciona um novo RelUsu com os dados atuais do conjunto de linhas modificadas
-                lista.Add(
-                    new RelUsuVo((int)row["idUser"], (int)row["idReport"], (int)row["Nível"]));
+            if (gridRelUsu.DataSource != null)
+                foreach (DataRow row in (gridRelUsu.DataSource as DataTable).Select(null, null, DataViewRowState.ModifiedCurrent))
+                    //Adiciona um novo RelUsu com os dados atuais do conjunto de linhas modificadas
+                    lista.Add(
+                        new RelUsuVo((int)row["idUser"], (int)row["idReport"], (int)row["Nível"]));
 
             return lista;
         }
@@ -230,10 +231,11 @@ namespace SigaControls
         {
             List<RelGrupoVo> lista = new List<RelGrupoVo>();
 
-            foreach (DataRow row in (gridRelGrupo.DataSource as DataTable).Select(null, null, DataViewRowState.ModifiedCurrent))
-                //Adiciona um novo RelGrupo com os dados atuais do conjunto de linhas modificadas
-                lista.Add(
-                    new RelGrupoVo((int)row["idUserGroup"], (int)row["idReport"], (int)row["Nível"]));
+            if (gridRelGrupo.DataSource != null)
+                foreach (DataRow row in (gridRelGrupo.DataSource as DataTable).Select(null, null, DataViewRowState.ModifiedCurrent))
+                    //Adiciona um novo RelGrupo com os dados atuais do conjunto de linhas modificadas
+                    lista.Add(
+                        new RelGrupoVo((int)row["idUserGroup"], (int)row["idReport"], (int)row["Nível"]));
 
             return lista;
         }

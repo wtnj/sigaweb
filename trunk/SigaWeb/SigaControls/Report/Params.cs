@@ -11,12 +11,14 @@ using Gizmox.WebGUI.Common;
 using Gizmox.WebGUI.Forms;
 
 using REPORT = SigaObjects.Reports;
+using SigaObjects;
 #endregion
 
 namespace SigaControls.Report
 {
     public partial class Params : UserControl
     {
+        private DataTable dados;
         private Table main;// = new Table();
         public  Table MAIN
         {
@@ -24,25 +26,111 @@ namespace SigaControls.Report
             set { main = value; }
         }
 
-        public Params(Table main)
+        #region CONSTRUTORES e initialize
+        public  Params()
         {
-            InitializeComponent();
-            this.MAIN = main;
+            this.initialize(null);
+        }
+        public  Params(Table main)
+        {
+            this.initialize(main);
         }
 
-        #region SAVE LOAD E DELETE
-        public void LOAD()
+        private void initialize(Table main)
         {
-             // TODO <FAZER O LOAD DESTE CONTROLE>
+            InitializeComponent();
+
+            cmbCampos.DisplayMember = SXManager.FieldDisplayMember;
+            cmbCampos.ValueMember   = SXManager.FieldValueMember;
+
+            cmbTabela.DisplayMember = SXManager.TableDisplayMember;
+            cmbTabela.ValueMember   = SXManager.TableValueMember;
+
+            lbCampos.DisplayMember  = REPORT.Params.ParamsDao.DisplayMember;
+            lbCampos.ValueMember    = REPORT.Params.ParamsDao.ValueMember;
+
+            this.MAIN = main;
+            this.Dock = DockStyle.Fill;
         }
-        public void SAVE()
+        #endregion
+
+        #region SAVE LOAD E DELETE
+        public void LOAD()  
         {
-            // TODO <FAZER O SAVE DESTE CONTROLE>
+             if (this.MAIN != null)
+            {
+                /// CARREGAR TABELAS RELACIONADAS.
+                cmbTabela.DataSource = 
+                    new SXManager(sigaSession.EMPRESAS[0].CODIGO)
+                    .getTables("X2_CHAVE IN (" + SXManager.getStringArr(this.MAIN.RELATEDTABLES) + ")")
+                    .DefaultView;
+
+                 cmbCampos.DataSource = 
+                     new SXManager(sigaSession.EMPRESAS[0].CODIGO)
+                     .getFields(this.MAIN.TABLE).DefaultView;
+
+                /// CARREGAR CONFIGURACAO DE FILDS DO BANCO
+                dados = new REPORT.Params.ParamsDao().select(this.MAIN.ID);
+                lbCampos.DataSource = dados.DefaultView;
+            }
+        }
+        public void SAVE()  
+        {
+            this.DELETE();
+
+            List<REPORT.Params.ParamsVo> paramets = new List<REPORT.Params.ParamsVo>();
+
+            for (int i = 0; i < lbCampos.Items.Count; i++)
+            {
+                REPORT.Params.ParamsVo param = new REPORT.Params.ParamsVo();
+
+                param.MAINID = this.MAIN.ID;
+                param.TABELA = this.main.TABLE;
+
+                DataRowView valor = (lbCampos.Items[i] as DataRowView);
+
+                param.FORMATO = valor[REPORT.Params.ParamsDao.ValueMember].ToString()  ;
+                param.CAMPO   = valor[REPORT.Params.ParamsDao.DisplayMember].ToString();
+
+                paramets.Add(param);
+            }
+
+            new REPORT.Params.ParamsDao().save(paramets);
         }
         public void DELETE()
         {
             new REPORT.Params.ParamsDao().delete(this.MAIN.ID);
         }
         #endregion
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (cmbCampos.SelectedIndex >= 0)
+            {
+                DataRowView row  = (DataRowView)cmbCampos.SelectedItem;
+
+                string      tipo = row["X3_TIPO"   ].ToString();
+                string      len  = row["X3_TAMANHO"].ToString();
+
+                dados.Rows.Add( 0               //id
+                              , this.MAIN.ID    //id da ligação
+                              , len             //tamanho de digitação
+                              , this.MAIN.TABLE //nome da tabela
+                              , this.cmbCampos.SelectedValue.ToString() //campo
+                              , tipo            //formato
+                              , ""
+                              );
+            }
+        }
+
+        private void lbCampos_KeyUp(object objSender, KeyEventArgs objArgs)
+        {
+            if (objArgs.KeyCode == Keys.Delete)
+            {
+                ListBox     list = (ListBox    )objSender;
+                DataRowView row  = (DataRowView)list.SelectedItem;
+                row.Delete();
+            }
+        }
     }
 }

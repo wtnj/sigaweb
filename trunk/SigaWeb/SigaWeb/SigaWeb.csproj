@@ -39,14 +39,6 @@
     <Reference Include="Gizmox.WebGUI.Forms, Version=2.0.5701.0, Culture=neutral, PublicKeyToken=c508b41386c60f1d, processorArchitecture=MSIL" />
     <Reference Include="Gizmox.WebGUI.Forms.Charts, Version=2.0.5701.0, Culture=neutral, PublicKeyToken=f1bb83df6a8597fb, processorArchitecture=MSIL" />
     <Reference Include="Gizmox.WebGUI.Forms.Extended, Version=2.0.5701.0, Culture=neutral, PublicKeyToken=85eae29607c9f5f3, processorArchitecture=MSIL" />
-    <Reference Include="Gizmox.WebGUI.Forms.Themes_Net2.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\dotNet\VisualWebGui\themes\net2.0\Gizmox.WebGUI.Forms.Themes_Net2.0.dll</HintPath>
-    </Reference>
-    <Reference Include="Gizmox.WebGUI.Forms.Windows_XP_Theme, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\dotNet\VisualWebGui\themes\net2.0\Gizmox.WebGUI.Forms.Themes_Assembly_Net2.0 - Windows XP Theme\Gizmox.WebGUI.Forms.Windows_XP_Theme.dll</HintPath>
-    </Reference>
     <Reference Include="Gizmox.WebGUI.Server, Version=2.0.5701.0, Culture=neutral, PublicKeyToken=3de6eb684226c24d, processorArchitecture=MSIL" />
     <Reference Include="Gizmox.WebGUI.Themes.Vista, Version=2.0.5701.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />

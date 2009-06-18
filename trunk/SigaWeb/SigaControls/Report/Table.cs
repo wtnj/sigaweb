@@ -182,7 +182,7 @@ namespace SigaControls.Report
                 }
 
                 string fromTable = tableKey.Replace("$TABLE$", this.TABLE); //(string)new SXManager(empresa.CODIGO).getTabela(this.TABLE)["X2_ARQUIVO"];
-                string agrupa = "";
+                string agrupa    = "";
                 //string agrupaunion = "";
 
                 this.FIELDS.generateShowFieldsAndGroupBy();
@@ -222,6 +222,10 @@ namespace SigaControls.Report
                 genericQuery.AppendLine(" WHERE " + fromTable + "." + "D_E_L_E_T_ = ' '");
                 if (this.FILTERS.FILTERS.Length > 0)
                     genericQuery.AppendLine("   AND " + this.FILTERS.FILTERS);
+
+                // FILTROS CHILD
+                // TODO string cihldFilter = "";
+                /// TODO filtro child
 
                 //mainQuery.AppendLine(sQuery.ToString());
                 if (agrupa.Trim().Length > 0)
@@ -576,7 +580,7 @@ namespace SigaControls.Report
             this.ID = 0;
         }
         #endregion
-
+        
         #region METHODS
         public void AddChildrenTable(List<REPORT.Table.TableVo> childrenTable)
         {

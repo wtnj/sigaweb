@@ -189,6 +189,10 @@ namespace SigaControls
             }
         }
 
+        public static void showNotImplemented()
+        {
+            MessageBox.Show("Controle não implementado!");
+        }
         #region AddEVENTS
         public enum TIPOS
         {
@@ -328,9 +332,9 @@ namespace SigaControls
             public static string txt   = "text/plain";
             public static string other = "application/octet-stream";
         }
-        public void DownloadFile(string rootPath, string filename, string contexto)
+        public void   DownloadFile(string rootPath, string filename, string contexto)
         { DownloadFile(rootPath, filename, contexto, new HtmlBox());}
-        public void DownloadFile(string rootPath, string filename, string contexto, HtmlBox html)
+        public void   DownloadFile(string rootPath, string filename, string contexto, HtmlBox html)
         {
             
                 HttpResponse response = HttpContext.Current.Response;
@@ -342,6 +346,17 @@ namespace SigaControls
                 response.Write("<a href='arquivos\\"+filename+"'>download</a>.");
                 
                 response.End();
+        }
+
+        public Control getObject(string objeto)
+        {
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetAssembly(typeof(Form));//.GetAssembly(typeof(Gizmox.WebGUI.Forms.Control));
+            Type tipo = assembly.GetType(objeto);
+            return getObject(tipo);
+        }
+        public Control getObject(Type   tipo  )
+        {
+            return (Control)Activator.CreateInstance(tipo);
         }
     }
 }
