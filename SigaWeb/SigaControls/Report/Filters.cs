@@ -164,8 +164,8 @@ namespace SigaControls.Report
             DataRowView table  = (cbTables.SelectedItem as DataRowView);
             DataRowView fields = (cbFields.SelectedItem as DataRowView);
 
-            string dTable = (string)table[SXManager.TableDisplayMember];
-            string vTable = (string)table[SXManager.TableValueMember];
+            string dTable = (string)table[ SXManager.TableDisplayMember];
+            string vTable = (string)table[ SXManager.TableValueMember];
 
             string dField = (string)fields[SXManager.FieldDisplayMember];
             string vField = (string)fields[SXManager.FieldValueMember];
