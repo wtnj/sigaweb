@@ -19,7 +19,8 @@ namespace SigaControls.Report
     public partial class Filters : UserControl
     {
         private Table     main;//  = new Table();
-        private DataTable dados = new DataTable();
+        private DataTable dados     = new DataTable();
+        private Control   txtFilter = new TextBox();
 
         public Table MAIN    
         {
@@ -49,6 +50,10 @@ namespace SigaControls.Report
         private void initialize(Table main)
         {
             InitializeComponent();
+            
+            txtFilter.Top  = 39;
+            txtFilter.Left = 337;
+            panel1.Controls.Add(txtFilter);
 
             cbTables.DisplayMember = SXManager.TableDisplayMember;
             cbTables.ValueMember   = SXManager.TableValueMember;
@@ -156,7 +161,7 @@ namespace SigaControls.Report
 
         private void BtnOk_Click(object sender, EventArgs e)
         {
-            DataRowView table = (cbTables.SelectedItem as DataRowView);
+            DataRowView table  = (cbTables.SelectedItem as DataRowView);
             DataRowView fields = (cbFields.SelectedItem as DataRowView);
 
             string dTable = (string)table[SXManager.TableDisplayMember];
@@ -178,16 +183,30 @@ namespace SigaControls.Report
                 vTipoFiltro = cbClausula.SelectedItem.ToString();
             }
 
-            vFiltro = txtFilter.Text;
-            dados.Rows.Add(new Object[] { 0, codMainId, dTable, dField, vTipoFiltro, vFiltro, vTable, vField });
+            vFiltro = (txtFilter.GetType()==typeof(DateTimePicker))?(txtFilter as DateTimePicker).Value.ToString("yyyyMMdd"): txtFilter.Text;
+            dados.Rows.Add(0, codMainId, dTable, dField, vTipoFiltro, vFiltro, vTable, vField);
 
             DGFilters.DataSource = dados.DefaultView;
-            DGFilters.Columns["mainId"].Visible = false;
+            DGFilters.Columns["mainId"].Visible    = false;
             DGFilters.Columns["codTabela"].Visible = false;
             DGFilters.Columns["codCampos"].Visible = false;
-
         }
 
+        private void cbFields_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbFields.SelectedIndex >= 0)
+            {
+                DataRow row = (cbFields.DataSource as DataView).Table.Rows[cbFields.SelectedIndex];
+                int left = txtFilter.Left;
+                int top  = txtFilter.Top;
 
+                panel1.Controls.Remove(txtFilter);
+                txtFilter = FormatScreen.getObjectFromSigaType((string)row["X3_TIPO"]);
+                txtFilter.Update();
+                txtFilter.Left = left;
+                txtFilter.Top  = top;
+                panel1.Controls.Add(txtFilter);
+            }
+        }
     }
 }

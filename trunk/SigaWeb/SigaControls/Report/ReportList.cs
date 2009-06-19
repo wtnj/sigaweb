@@ -50,7 +50,7 @@ namespace SigaControls.Report
             Control inControl = this.Parent;
             SxMakeRelatory  rel;
             REPORT.ReportVo report;
-            string relname = "";
+            string relname    = "";
 
             switch (objArgs.ToolBarButton.Name.ToLower())
             {
@@ -68,9 +68,9 @@ namespace SigaControls.Report
                     #region VER
                     if (dgvReports.SelectedRows.Count > 0)
                     {
-                        this.Parent.Controls.Clear();
-                        
                         DataRow row = (DataRow)(dgvReports.DataSource as DataView).Table.Rows[dgvReports.SelectedRows[0].Index];
+
+                        ControlsConfig.formShow(new ViewReport((int)row["id"]), this.Form, ControlsConfig.showType.Dialog, null, true);
                     }
                     #endregion
 
@@ -116,8 +116,9 @@ namespace SigaControls.Report
                     break;
                 case "tbbpdf":
                     #region PDF
-                    #endregion
                     FormatScreen.showNotImplemented();
+                    #endregion
+                    
                     break;
                 default:
                     break;

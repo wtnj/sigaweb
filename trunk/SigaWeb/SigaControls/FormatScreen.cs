@@ -372,6 +372,7 @@ namespace SigaControls
                     break;
                 case "D":
                     control = new DateTimePicker();
+                    control.Size = new TextBox().Size;
                     (control as DateTimePicker).CustomFormat = "dd/MM/yyyy";
                     (control as DateTimePicker).Format       = DateTimePickerFormat.Custom;
                     break;

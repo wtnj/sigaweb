@@ -30,11 +30,21 @@ namespace SigaControls.Report
         #endregion
 
         #region ATRIBUTOS
-        public  REPORT.Table.TableVo   THISTABLE     = new REPORT.Table.TableVo();   /// ESTA TABELA
-        private List<string>           relatedTables = new List<string>();
+        public  REPORT.Table.TableVo   THISTABLE       = new REPORT.Table.TableVo();   /// ESTA TABELA
+        private List<string>           relatedTables   = new List<string>();
+        private string                 filtroParametro = "";
         #endregion
 
         #region PROPRIEDADES
+        public string FILTROPARAMETRO
+        {
+            get { return filtroParametro;}
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    this.filtroParametro = value;
+            }
+        }
         
         #region PROPRIEDADES DO THISTABLE
         public int REPORTID
@@ -222,6 +232,9 @@ namespace SigaControls.Report
                 genericQuery.AppendLine(" WHERE " + fromTable + "." + "D_E_L_E_T_ = ' '");
                 if (this.FILTERS.FILTERS.Length > 0)
                     genericQuery.AppendLine("   AND " + this.FILTERS.FILTERS);
+
+                if(!string.IsNullOrEmpty(filtroParametro))
+                    genericQuery.AppendLine("   AND "+filtroParametro);
 
                 // FILTROS CHILD
                 // TODO string cihldFilter = "";
