@@ -180,7 +180,7 @@ namespace SigaControls.Report
                                    , filtro
                                    , SXManager.FieldDisplayMember).DefaultView[0]["X3_TIPO"].ToString() == "D")
                     {
-                        showFields.Add( "CONVERT(VARCHAR(12),CONVERT(DATETIME,"+field+",103),103)"
+                        showFields.Add( "CASE WHEN "+field+" = '' THEN '' ELSE CONVERT(NVARCHAR(10),CAST("+field+" AS SMALLDATETIME),103) END"
                                       + " [ "
                                       + (string)drw.Cells[2].Value
                                       + " ] ");
