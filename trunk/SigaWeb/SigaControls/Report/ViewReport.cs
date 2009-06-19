@@ -29,7 +29,9 @@ namespace SigaControls.Report
             InitializeComponent();
             
             this.Dock = DockStyle.Fill;
-            this.popScreenFromRecursiveTables();
+            // TODO Resolver problema do 'WITH' pro sql2000, o qual não suporta o metodo.
+            // dicas no link: http://www.databasejournal.com/features/mssql/article.php/3415541/Cursors-with-SQL-2000-Part-1.htm
+            // this.popScreenFromRecursiveTables();
         }
         private void popScreenFromRecursiveTables()
         {
