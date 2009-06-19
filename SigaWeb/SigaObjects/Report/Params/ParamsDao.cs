@@ -138,6 +138,31 @@ namespace SigaObjects.Reports.Params
 
             return getData();
         }
+
+        public DataTable getRecursiveTables(Table.TableVo mainTable)
+        {
+            this.QUERY = new StringBuilder(fromDatabase);
+
+            this.QUERY.AppendLine("WITH TABELAS AS");
+            this.QUERY.AppendLine("(");
+            this.QUERY.AppendLine("    SELECT main.id          , main.mainId       , main.tabela");
+            this.QUERY.AppendLine("         , main.relatedtype , main.relatedtable , main.idReport");
+            this.QUERY.AppendLine("      FROM RTable main");
+            this.QUERY.AppendLine("     WHERE main.id = " + mainTable.ID);
+            this.QUERY.AppendLine("     UNION ALL");
+            this.QUERY.AppendLine("    SELECT child.id         , child.mainId      , child.tabela");
+            this.QUERY.AppendLine("         , child.relatedtype, child.relatedtable, child.idReport");
+            this.QUERY.AppendLine("      FROM TABELAS");
+            this.QUERY.AppendLine("     INNER JOIN RTable child");
+            this.QUERY.AppendLine("        ON TABELAS.id = child.mainId");
+            this.QUERY.AppendLine(")");
+            this.QUERY.AppendLine("SELECT distinct *");
+            this.QUERY.AppendLine("  FROM TABELAS");
+            this.QUERY.AppendLine(" INNER JOIN params");
+            this.QUERY.AppendLine("    ON params.mainId = TABELAS.id");
+
+            return getData();
+        }
         #endregion
 
         #region Save

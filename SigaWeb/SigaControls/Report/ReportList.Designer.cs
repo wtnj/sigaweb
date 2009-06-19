@@ -142,7 +142,11 @@ namespace SigaControls.Report
             // 
             // dgvReports
             // 
+            this.dgvReports.AllowUserToAddRows = false;
+            this.dgvReports.AllowUserToDeleteRows = false;
+            this.dgvReports.AllowUserToOrderColumns = true;
             this.dgvReports.Anchor = Gizmox.WebGUI.Forms.AnchorStyles.None;
+            this.dgvReports.AutoSizeColumnsMode = Gizmox.WebGUI.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvReports.BorderStyle = Gizmox.WebGUI.Forms.BorderStyle.FixedSingle;
             this.dgvReports.Dock = Gizmox.WebGUI.Forms.DockStyle.Fill;
             this.dgvReports.Location = new System.Drawing.Point(0, 28);

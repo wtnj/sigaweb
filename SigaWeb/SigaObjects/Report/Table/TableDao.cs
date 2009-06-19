@@ -161,6 +161,10 @@ namespace SigaObjects.Reports.Table
         #region Load
         public void load(TableVo table, int idReport, int mainId)
         {
+            load(table, idReport, mainId, null);
+        }
+        public void load(TableVo table, int idReport, int mainId, bool filterTable)
+        {
             load(table, idReport, mainId, "tabela = '" + table.TABELA + "'");
         }
         public void load(TableVo table, int idReport, int mainId, string filtro)

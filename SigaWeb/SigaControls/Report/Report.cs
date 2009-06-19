@@ -20,7 +20,7 @@ namespace SigaControls.Report
     {
         #region CONTROLS
         public  REPORT.Table.TableVo   FROMTABLE = new REPORT.Table.TableVo();
-        private Table                  TABLE;//     = new Table();
+        private Table                  table;//     = new Table();
         #endregion
 
         #region ATRIBUTOS
@@ -77,6 +77,11 @@ namespace SigaControls.Report
                 if (value != null)
                     this.THISREPORT.USERNAME = value;
             }
+        }
+        public Table  TABLE
+        {
+            get { return this.table; }
+            private set { table = value; }
         }
         #endregion
 

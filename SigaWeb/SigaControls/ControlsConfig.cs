@@ -21,6 +21,8 @@ namespace SigaControls
         public static void formShow(Control openForm, Form inForm, showType type)
         { formShow(openForm, inForm, type, null); }
         public static void formShow(Control openForm, Form inForm, showType type, Control caller)
+        { formShow(openForm, inForm, type, caller, false); }
+        public static void formShow(Control openForm, Form inForm, showType type, Control caller, bool maxize)
         {
             Form form = new Form();
             form.Size          = openForm.Size;
@@ -43,6 +45,9 @@ namespace SigaControls
 
             if (type == showType.None)
                 form.Show();
+
+            if(maxize)
+                form.WindowState = FormWindowState.Maximized;
 
             //form.Top  = form.Owner.Top  + caller.Top;
             //form.Left = form.Owner.Left + caller.Left;

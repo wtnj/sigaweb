@@ -32,7 +32,6 @@ namespace SigaControls.Report
             this.cbTables = new Gizmox.WebGUI.Forms.ComboBox();
             this.cbFields = new Gizmox.WebGUI.Forms.ComboBox();
             this.cbClausula = new Gizmox.WebGUI.Forms.ComboBox();
-            this.txtFilter = new Gizmox.WebGUI.Forms.TextBox();
             this.label1 = new Gizmox.WebGUI.Forms.Label();
             this.label2 = new Gizmox.WebGUI.Forms.Label();
             this.label3 = new Gizmox.WebGUI.Forms.Label();
@@ -79,6 +78,7 @@ namespace SigaControls.Report
             this.cbFields.Name = "cbFields";
             this.cbFields.Size = new System.Drawing.Size(121, 21);
             this.cbFields.TabIndex = 2;
+            this.cbFields.SelectedIndexChanged += new System.EventHandler(this.cbFields_SelectedIndexChanged);
             // 
             // cbClausula
             // 
@@ -98,13 +98,6 @@ namespace SigaControls.Report
             this.cbClausula.Name = "cbClausula";
             this.cbClausula.Size = new System.Drawing.Size(60, 21);
             this.cbClausula.TabIndex = 3;
-            // 
-            // txtFilter
-            // 
-            this.txtFilter.Location = new System.Drawing.Point(337, 39);
-            this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(100, 20);
-            this.txtFilter.TabIndex = 4;
             // 
             // label1
             // 
@@ -167,7 +160,6 @@ namespace SigaControls.Report
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.cbClausula);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.txtFilter);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
@@ -192,7 +184,6 @@ namespace SigaControls.Report
         private Gizmox.WebGUI.Forms.ComboBox cbTables;
         private Gizmox.WebGUI.Forms.ComboBox cbFields;
         private Gizmox.WebGUI.Forms.ComboBox cbClausula;
-        private Gizmox.WebGUI.Forms.TextBox txtFilter;
         private Gizmox.WebGUI.Forms.Label label1;
         private Gizmox.WebGUI.Forms.Label label2;
         private Gizmox.WebGUI.Forms.Label label3;
