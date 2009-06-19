@@ -99,22 +99,25 @@ namespace Carralero
 
                 if (withHeaders)
                 {
+                    col = startCol;
                     foreach (DataColumn dc in dataTable.Columns)
                         setCell(row, col++, dc.Caption);
 
                     row++;
-                    col = startCol;
                 }
 
                 foreach (DataRow dr in dataTable.Rows)
                 {
+                    col = startCol;
                     EXrow = EXsheet.Table.Rows.Add();
                     foreach (object o in dr.ItemArray)
                         setCell(row, col++, o);
 
                     row++;
-                    col = startCol;
                 }
+
+                foreach(WorksheetColumn coluna in EXsheet.Table.Columns)
+                    coluna.AutoFitWidth = true;
             }
             catch (Exception e)
             { throw Carralero.ExceptionControler.getFullException(e); }
@@ -134,27 +137,34 @@ namespace Carralero
         {
             try
             {
-                //Excel.Range cell = (Excel.Range)worksheet.Cells[row, col];
-                //WorksheetCell cell = 
                 while (EXsheet.Table.Rows.Count < row)
                     EXsheet.Table.Rows.Add();
 
-                //while (EXsheet.Table.Rows[row].Cells.Count < col)
-                //    EXsheet.Table.Rows[row].Cells.Add();
-
-                EXsheet.Table.Rows[row-1].Cells.Add(value.ToString()); //[col] = new WorksheetCell(value.ToString());
-
-                //cell.Index = col;
-                //cell = new WorksheetCell(value.ToString());
-                //cell.Font.Name = fontName;
-                //cell.Font.Size = fontSize;
-                //cell.Font.Bold = isBold;
-                //cell.Font.Italic = isItalic;
+                DataType tipo = getDataType(value);
+                if(tipo == DataType.Number)
+                    value = value.ToString().Replace(",",".");
+                
+                WorksheetCell _cell = new WorksheetCell(value.ToString(),DataType.String);
+                _cell.Data.Type = tipo;
+                EXsheet.Table.Rows[row-1].Cells.Add(_cell);
             }
             catch (Exception e)
             { throw Carralero.ExceptionControler.getFullException(e); }
         }
         #endregion
+        private DataType getDataType(object o)
+        {
+            DataType tipo = DataType.String;
+
+            if ( o.GetType()==typeof(Int32)
+              || o.GetType()==typeof(Double)
+              || o.GetType()==typeof(Decimal))
+            {
+                tipo = DataType.Number;
+            }
+
+            return tipo;
+        }
 
         public void mergeRange(string startCell, string endCell)
         {

@@ -40,6 +40,7 @@ namespace SigaWeb
             this.DragDrop += new Gizmox.WebGUI.Forms.DragEventHandler(this.mainForm_DragDrop);
             this.Load += new System.EventHandler(this.mainForm_Load);
             this.ControlAdded += new Gizmox.WebGUI.Forms.ControlEventHandler(this.mainForm_ControlAdded);
+            this.Resize += new System.EventHandler(this.mainForm_Resize);
             this.ResumeLayout(false);
 
         }

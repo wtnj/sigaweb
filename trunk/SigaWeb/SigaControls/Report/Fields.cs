@@ -151,7 +151,7 @@ namespace SigaControls.Report
             foreach (DataGridViewRow drw in dgvFields.Rows)
                 if ((drw.Cells[0] as DataGridViewCheckBoxCell).Value.ToString() == true.ToString())
                 {
-                    string show  = "*";
+                    string show     = "*";
                     string tableKey = "@$TABLE$@";
                     
                     show = drw.Cells[3].Value.ToString();

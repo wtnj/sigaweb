@@ -61,14 +61,19 @@ namespace SigaControls.Session
             {
                 if (gridUsuarios.SelectedRows.Count == 1)
                 {
-                    new SysUserDao().delete(
-                        gridUsuarios
+                    if (gridUsuarios
                         .SelectedRows[0]
-                        .Cells["Usuário"].Value == null
-                    ? ""
-                    : gridUsuarios
-                    .SelectedRows[0]
-                    .Cells["Usuário"].Value.ToString());
+                        .Cells["Usuário"].Value != "admin")
+                    {
+                        new SysUserDao().delete(
+                            gridUsuarios
+                            .SelectedRows[0]
+                            .Cells["Usuário"].Value == null
+                        ? ""
+                        : gridUsuarios
+                        .SelectedRows[0]
+                        .Cells["Usuário"].Value.ToString());
+                    }
                 }
                 gridUsuarios.DataSource = new SigaObjects.Session.SysUsers.SysUserDao().selectGrid().DefaultView;
             }

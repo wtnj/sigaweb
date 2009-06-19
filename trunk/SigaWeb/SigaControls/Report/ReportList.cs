@@ -70,7 +70,11 @@ namespace SigaControls.Report
                     {
                         DataRow row = (DataRow)(dgvReports.DataSource as DataView).Table.Rows[dgvReports.SelectedRows[0].Index];
 
-                        ControlsConfig.formShow(new ViewReport((int)row["id"]), this.Form, ControlsConfig.showType.Dialog, null, true);
+                        Report cReport = new Report();
+                        cReport.LOAD((string)row["nome"], false);
+
+                        new gridWindow(cReport.TABLE.QUERY.ToString(), null).showWindow();
+                        //ControlsConfig.formShow(new ViewReport((int)row["id"]), this.Form, ControlsConfig.showType.Dialog, null, true);
                     }
                     #endregion
 

@@ -136,7 +136,19 @@ namespace SigaWeb
 
         private void mainForm_ControlAdded(object sender, ControlEventArgs e)
         {
-            this.WindowState = FormWindowState.Maximized;
+            this.controlToCenter();
+        }
+        private void controlToCenter()
+        {
+            foreach (Control c in this.Controls)
+            {
+                c.Left = this.Width / 2 - c.Width / 2;
+            }
+        }
+
+        private void mainForm_Resize(object sender, EventArgs e)
+        {
+            this.controlToCenter();
         }
     }
 }
