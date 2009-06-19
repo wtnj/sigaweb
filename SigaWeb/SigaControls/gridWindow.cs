@@ -142,7 +142,7 @@ namespace SigaControls
         public void showWindow(Form modal)
         { showWindow(modal, true); }
         public void showWindow(Form modal, bool paging)
-        { showWindow(modal, paging, 20); }
+        { showWindow(modal, paging, 25); }
         public void showWindow(Form modal, bool paging, int pages)
         { showWindow(modal, paging, pages, 250, 500); }
         public void showWindow(Form modal, bool paging, int pages, int height, int width)

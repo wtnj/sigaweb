@@ -172,7 +172,21 @@ namespace SigaControls.Report
                     this.fieldsname.Add(field);
                     this.fieldsheaders.Add((string)drw.Cells[2].Value);
 
-                    showFields.Add( show.Replace("*", field)
+                    string filtro   = SXManager.FieldValueMember
+                                + " = '" + (string)drw.Cells[1].Value + "'";
+                    
+                    if (new SXManager(sigaSession.EMPRESAS[0].CODIGO)
+                                   .getFields( this.MAIN.TABLE
+                                   , filtro
+                                   , SXManager.FieldDisplayMember).DefaultView[0]["X3_TIPO"].ToString() == "D")
+                    {
+                        showFields.Add( "CONVERT(VARCHAR(12),CONVERT(DATETIME,"+field+",103),103)"
+                                      + " [ "
+                                      + (string)drw.Cells[2].Value
+                                      + " ] ");
+                    }
+                    else
+                        showFields.Add( show.Replace("*", field)
                                   + " [ "
                                   + (string)drw.Cells[4].Value
                                   + " "
@@ -211,12 +225,26 @@ namespace SigaControls.Report
                     this.fieldsname.Add(field);
                     this.fieldsheaders.Add((string)drw.Cells[2].Value);
 
-                    showFields.Add( show.Replace("*", field)
-                                  + " [ "
-                                  + (string)drw.Cells[4].Value
-                                  + " "
-                                  + (string)drw.Cells[2].Value
-                                  + " ]");
+                    string filtro   = SXManager.FieldValueMember
+                                + " = '" + (string)drw.Cells[1].Value + "'";
+                    
+                    if (new SXManager(sigaSession.EMPRESAS[0].CODIGO)
+                                   .getFields( this.MAIN.TABLE
+                                   , filtro
+                                   , SXManager.FieldDisplayMember).DefaultView[0]["X3_TIPO"].ToString() == "D")
+                    {
+                        showFields.Add( "CONVERT(VARCHAR(12),CONVERT(DATETIME,"+field+",103),103)"
+                                      + " [ "
+                                      + (string)drw.Cells[2].Value
+                                      + " ] ");
+                    }
+                    else
+                        showFields.Add(show.Replace("*", field)
+                                      + " [ "
+                                      + (string)drw.Cells[4].Value
+                                      + " "
+                                      + (string)drw.Cells[2].Value
+                                      + " ]");
                 }
         }
 
@@ -363,16 +391,22 @@ namespace SigaControls.Report
                 string strValue = (sender as Control).Text;
                 string filtro   = SXManager.FieldValueMember
                                 + " = '" + dr.Cells[1].Value + "'";
-
-                if ( new SXManager(sigaSession.EMPRESAS[0].CODIGO)
+                DataTable dados = new SXManager(sigaSession.EMPRESAS[0].CODIGO)
                          .getFields( this.MAIN.TABLE
                                    , filtro
-                                   , SXManager.FieldDisplayMember)
-                         .DefaultView[0]["X3_TIPO"].ToString() == "N" )
+                                   , SXManager.FieldDisplayMember);
+                if ( dados.DefaultView[0]["X3_TIPO"].ToString() == "N" )
                 {
                     dgvFields.Rows[dr.Index].Cells[3].Value = strValue;
                     dgvFields.Rows[dr.Index].Cells[4].Value = getDisplayCombo(strValue);
                 }
+                /*if (dados.DefaultView[0]["X3_TIPO"].ToString() == "D")
+                {
+                    dgvFields.Rows[dr.Index].Cells[3].Value = "CONVERT(VARCHAR(12),CONVERT(DATETIME,*,103),103)";
+                    dgvFields.Rows[dr.Index].Cells[4].Value = "DATA";
+                }
+                //*/
+
                 dgvFields.Rows[dr.Index].Cells[0].Value = true;
                 // comboGrouping.Rows[0].RowState=DataRowState.Modified;
             }
