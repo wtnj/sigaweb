@@ -91,7 +91,7 @@ namespace SigaControls.Report
                 return sRet.ToString();
             }
         }
-        public  string FIELDSUNION
+        public  string FIELDSUNION  
         {
             get
             {
@@ -142,6 +142,8 @@ namespace SigaControls.Report
         }
         public  void   generateShowFieldsAndGroupBy()
         {
+            this.generateShowFieldsAndGroupBy(sigaSession.EMPRESAS[0]);
+            /*
             this.showFields    = new List<string>();
             this.fieldsname    = new List<string>();
             this.fieldsheaders = new List<string>();
@@ -192,7 +194,7 @@ namespace SigaControls.Report
                                   + " "
                                   + (string)drw.Cells[2].Value
                                   + " ]");
-                }
+                }//*/
         }
         public  void   generateShowFieldsAndGroupBy(SigaObjects.Session.Empresa.EmpresaVo empresa)
         {
@@ -412,7 +414,7 @@ namespace SigaControls.Report
             }
         }
 
-        private void marcarCampo(int row, int col) 
+        private void marcarCampo(int row, int col)
         {
             if (dgvFields.Rows[row].Cells[0].Value.ToString() == "True")
             {
@@ -421,40 +423,36 @@ namespace SigaControls.Report
                 string query = this.main.QUERY.ToString();
                 int haveOrder = query.IndexOf("ORDER BY");
 
-             string tab_camp = new SXManager(sigaSession.EMPRESAS[0].CODIGO).getTabela(this.main.TABLE)["X2_ARQUIVO"].ToString()
-                                + "."
-                                + dgvFields.Rows[row].Cells[1].Value.ToString();
-                                
+                string tab_camp = new SXManager(sigaSession.EMPRESAS[0].CODIGO).getTabela(this.main.TABLE)["X2_ARQUIVO"].ToString()
+                                   + "."
+                                   + dgvFields.Rows[row].Cells[1].Value.ToString();
+
                 if (haveOrder > 0)
                 {
                     int haveField = query.IndexOf(tab_camp, haveOrder);
-                    
+
                     if (haveField > 0)
                     {
                         this.main.SAVE();
-                       
+
                         REPORT.OrderBy.OrderByDao orders = new SigaObjects.Reports.OrderBy.OrderByDao();
-                      
-                        tab_camp = " valuemember = '" + tab_camp +"'";        
-                        orders.delete(this.main.ID,tab_camp);
+
+                        tab_camp = " valuemember = '" + tab_camp + "'";
+                        orders.delete(this.main.ID, tab_camp);
 
                         this.main.LOAD(this.main.TABLE);
-                        
+
                         MessageBox.Show("A Ordenação com este campo foi excluída. ");
-                 
+
                     }
-                  
                 }
-
             }
-
-          }
-        
+        }
         private void dgvFields_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 0)
                 marcarCampo(e.RowIndex, e.ColumnIndex);
-         
+
             //marcarCampo(e.RowIndex, e.ColumnIndex);
             //dgvFields.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "erro...";
 
