@@ -24,7 +24,7 @@ namespace SigaControls.Report
         public  Fields      FIELDS;  //  = new Fields();      // CAMPOS DA TABELA
         public  List<Table> CHILDREN;//  = new List<Table>(); // LINKS (tabelas)
         //private GroupBy     GROUPBY    = new GroupBy();     // AGRUPAMENTO
-        private Filters     FILTERS; //  = new Filters();     // FILTROS
+        public  Filters     FILTERS; //  = new Filters();     // FILTROS
         private OrderBy     ORDERBY; //  = new OrderBy();     // ORDENACAO
         private Params      PARAMS;  //  = new Params();      // PARAMETROS
         #endregion
@@ -183,12 +183,18 @@ namespace SigaControls.Report
 
                 StringBuilder genericQuery = new StringBuilder();
 
+                //StringBuilder childFilters = new StringBuilder();
+
                 bool havegroup = this.FIELDS.HAVEGROUP;
                 foreach (Table tab in this.CHILDREN)
                 {
                     tab.FIELDS.generateShowFieldsAndGroupBy();
                     if (tab.FIELDS.HAVEGROUP)
                         havegroup = true;
+
+                    //childFilters.AppendLine((childFilters.Length > 0)
+                    //                       ? "   AND " + tab.FILTERS.FILTERS
+                    //                       : tab.FILTERS.FILTERS);
                 }
 
                 string fromTable = tableKey.Replace("$TABLE$", this.TABLE); //(string)new SXManager(empresa.CODIGO).getTabela(this.TABLE)["X2_ARQUIVO"];
@@ -232,6 +238,9 @@ namespace SigaControls.Report
                 genericQuery.AppendLine(" WHERE " + fromTable + "." + "D_E_L_E_T_ = ' '");
                 if (this.FILTERS.FILTERS.Length > 0)
                     genericQuery.AppendLine("   AND " + this.FILTERS.FILTERS);
+
+                //if(childFilters.Length>0)
+                //    genericQuery.AppendLine("   AND " + childFilters.ToString().Trim());
 
                 if(!string.IsNullOrEmpty(filtroParametro))
                     genericQuery.AppendLine("   AND "+filtroParametro);
@@ -375,8 +384,8 @@ namespace SigaControls.Report
                     if (haveFil)
                     {
                         tempQuery = tempQuery.Replace("@FILIAL@", "M0_FILIAL");
-                        tempQuery = tempQuery.Replace("@JOIN@"  , "  LEFT JOIN SigaWeb..SIGAMAT " +
-                                                                  "    ON M0_CODIGO = '" + empresa.CODIGO + "'      " +
+                        tempQuery = tempQuery.Replace("@JOIN@"  , "  LEFT JOIN SigaWeb..SIGAMAT \r\n" +
+                                                                  "    ON M0_CODIGO = '" + empresa.CODIGO + "'      \r\n" +
                                                                   "   AND M0_CODFIL = @" + this.TABLE + "@."
                                                                   + new SXManager(empresa.CODIGO).getFields(this.TABLE, "X3_CAMPO LIKE '%_FILIAL'", null).DefaultView[0]["X3_CAMPO"]);
                         tempQuery = tempQuery.Replace("@FILGROUP@", "M0_FILIAL, ");
@@ -398,8 +407,7 @@ namespace SigaControls.Report
                     #endregion
 
                     /// INICIA LOOP NAS TABELAS PRA SUBSTITUICAO.
-                    foreach(Table child in this.CHILDREN)
-                        replaceTableEmpresa(tempQuery,child.TABLE, empresa);
+                    replaceRecursiveTables(tempQuery, this, empresa);
 
                     sQuery.AppendLine(tempQuery.ToString().Trim());
                 }
@@ -410,7 +418,15 @@ namespace SigaControls.Report
                 return sQuery;
             }
         } // MONTA A QUERY A PARTIR DOS CONTROLES NA TELA.
-        private void replaceTableEmpresa(StringBuilder query, string table, SigaObjects.Session.Empresa.EmpresaVo empresa)
+        private void replaceRecursiveTables(StringBuilder query, Table mainTB, SigaObjects.Session.Empresa.EmpresaVo empresa)
+        {
+            foreach (Table childTB in mainTB.CHILDREN)
+            {
+                replaceTableEmpresa(   query, childTB.TABLE, empresa);
+                replaceRecursiveTables(query, childTB      , empresa);
+            }
+        }
+        private void replaceTableEmpresa(   StringBuilder query, string table, SigaObjects.Session.Empresa.EmpresaVo empresa)
         {
             query = query.Replace( "@"+table+"@"
                                  , new SXManager(empresa.CODIGO).getTabela(table)["X2_ARQUIVO"].ToString());
@@ -547,14 +563,14 @@ namespace SigaControls.Report
 
             this.RELOAD();
         }
-        private void RELOAD()
+        private void RELOAD()  
         {
             foreach ( Table child in this.linksPainel.Controls)
             {
                 child.ReLoadVO();
             }
         }
-        public void ReLoadVO()
+        public  void ReLoadVO()
         {
             new REPORT.Table.TableDao().load(this.THISTABLE,this.THISTABLE.IDREPORT,this.THISTABLE.MAINID);
 
@@ -562,7 +578,7 @@ namespace SigaControls.Report
             this.cbRelatedTable.SelectedValue = this.RELATEDTABLE;
             this.RELATEDIDENT = ident;
         }
-        public void LOADJOINS(List<string> relatedtables)
+        public  void LOADJOINS(List<string> relatedtables)
         {
             DataTable dtRelTable = new SXManager(sigaSession.EMPRESAS[0].CODIGO)
                                        //.getParentTables(relatedtables, "SX9.X9_CDOM = '" + this.TABLE + "'");
@@ -575,12 +591,12 @@ namespace SigaControls.Report
             if (cbRelatedTable.Items.Contains(oIdx))
                 cbRelatedTable.SelectedItem = oIdx;
         }
-        public void ReloadRelatedTables()
+        public  void ReloadRelatedTables()
         {
             foreach (Table child in this.CHILDREN)
                 child.LOADJOINS(this.RELATEDTABLES);
         }
-        public void DELETE()
+        public  void DELETE()  
         {
             this.FIELDS.DELETE();
             this.FILTERS.DELETE();
@@ -690,7 +706,7 @@ namespace SigaControls.Report
 
             FormatScreen.Ajust2EqualsWidthControls(controls.ToArray(), linksPainel.Width, false);
         }
-        private void linksPainel_ControlAdded(object sender, ControlEventArgs e)
+        private void linksPainel_ControlAdded(  object sender, ControlEventArgs e)
         {
             this.linksPainel_AjustControls();
             this.ReloadRelatedTables();
@@ -712,7 +728,7 @@ namespace SigaControls.Report
             this.RELATEDTABLE = (string)cbRelatedTable.SelectedValue;
         }
 
-        private void cbRelatedType_TextChanged(object sender, EventArgs e)
+        private void cbRelatedType_TextChanged( object sender, EventArgs e)
         {
             this.RELATEDTYPE = (string)cbRelatedType.SelectedValue;
         }
@@ -731,7 +747,7 @@ namespace SigaControls.Report
                 }
             }
         }
-        private void cbRelatedType_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbRelatedType_SelectedIndexChanged( object sender, EventArgs e)
         {
             if (sender != null)
             {

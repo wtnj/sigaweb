@@ -36,13 +36,25 @@ namespace SigaControls.Report
                 int i = 0;
                 foreach (DataGridViewRow drw in DGFilters.Rows)
                 {
-                    strFilter.Append( ((i++ == 0) ? "" : "\r\n   AND ")
-                                    + "@"+this.MAIN.TABLE+"@"//new SXManager(sigaSession.EMPRESAS[0].CODIGO).getTabela(drw.Cells["codTabela"].Value.ToString())["X2_ARQUIVO"].ToString()
-                                    + "." + drw.Cells["codCampos"].Value.ToString()
-                                    + " " + drw.Cells["tipoFiltro"].Value.ToString() + " "
-                                    + " ('" + drw.Cells["Filtro"].Value.ToString() + "') ");
+                    strFilter.AppendLine( ((i++ == 0) ? "" : "\r\n   AND ")
+                                        + "@"   + this.MAIN.TABLE + "@"
+                                        + "."   + drw.Cells["codCampos" ].Value.ToString()
+                                        + " "   + drw.Cells["tipoFiltro"].Value.ToString() + " "
+                                        + " ('" + drw.Cells["Filtro"    ].Value.ToString() + "') ");
                 }
-                          
+
+                StringBuilder childFilter = new StringBuilder();
+                foreach (Table child in this.MAIN.CHILDREN)
+                {
+                    childFilter.AppendLine((childFilter.ToString().Trim().Length > 0)
+                                          ? "   AND " + child.FILTERS.FILTERS
+                                          : child.FILTERS.FILTERS);
+                }
+                if (childFilter.Length > 0)
+                    strFilter.AppendLine((strFilter.ToString().Trim().Length > 0)
+                                        ? "   AND " + childFilter.ToString()
+                                        : childFilter.ToString());
+
                 return strFilter.ToString();
             }
         }
@@ -51,22 +63,22 @@ namespace SigaControls.Report
         {
             InitializeComponent();
             
-            txtFilter.Top  = 39;
+            txtFilter.Top  = 39 ;
             txtFilter.Left = 337;
             panel1.Controls.Add(txtFilter);
 
             cbTables.DisplayMember = SXManager.TableDisplayMember;
-            cbTables.ValueMember   = SXManager.TableValueMember;
+            cbTables.ValueMember   = SXManager.TableValueMember  ;
             cbFields.DisplayMember = SXManager.FieldDisplayMember;
-            cbFields.ValueMember   = SXManager.FieldValueMember;
+            cbFields.ValueMember   = SXManager.FieldValueMember  ;
 
-            dados.Columns.Add("mainId");
-            dados.Columns.Add("Tabela");
-            dados.Columns.Add("Campos");
+            dados.Columns.Add("mainId"    );
+            dados.Columns.Add("Tabela"    );
+            dados.Columns.Add("Campos"    );
             dados.Columns.Add("tipoFiltro");
-            dados.Columns.Add("Filtro");
-            dados.Columns.Add("codTabela");
-            dados.Columns.Add("codCampos");
+            dados.Columns.Add("Filtro"    );
+            dados.Columns.Add("codTabela" );
+            dados.Columns.Add("codCampos" );
 
             this.MAIN = main;
             this.Dock = DockStyle.Fill;
@@ -165,10 +177,10 @@ namespace SigaControls.Report
             DataRowView fields = (cbFields.SelectedItem as DataRowView);
 
             string dTable = (string)table[ SXManager.TableDisplayMember];
-            string vTable = (string)table[ SXManager.TableValueMember];
+            string vTable = (string)table[ SXManager.TableValueMember  ];
 
             string dField = (string)fields[SXManager.FieldDisplayMember];
-            string vField = (string)fields[SXManager.FieldValueMember];
+            string vField = (string)fields[SXManager.FieldValueMember  ];
             int    codMainId = this.MAIN.ID;
 
             string vTipoFiltro;
@@ -187,7 +199,7 @@ namespace SigaControls.Report
             dados.Rows.Add(0, codMainId, dTable, dField, vTipoFiltro, vFiltro, vTable, vField);
 
             DGFilters.DataSource = dados.DefaultView;
-            DGFilters.Columns["mainId"].Visible    = false;
+            DGFilters.Columns["mainId"   ].Visible = false;
             DGFilters.Columns["codTabela"].Visible = false;
             DGFilters.Columns["codCampos"].Visible = false;
         }

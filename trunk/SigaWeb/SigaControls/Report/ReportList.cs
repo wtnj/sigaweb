@@ -42,7 +42,9 @@ namespace SigaControls.Report
         }
         private void initializeData(string filtro)
         {
-            dgvReports.DataSource = new REPORT.ReportDao().select(0, filtro).DefaultView;
+            DataTable dados = new REPORT.ReportDao().select(0, filtro);
+            //TODO CONCERTAR ISSO >> 
+            //dgvReports.DataSource = dados.DefaultView;
         }
 
         private void menu_Click(object objSource, ToolBarItemEventArgs objArgs)
