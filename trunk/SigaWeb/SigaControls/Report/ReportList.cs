@@ -44,7 +44,7 @@ namespace SigaControls.Report
         {
             DataTable dados = new REPORT.ReportDao().select(0, filtro);
             //TODO CONCERTAR ISSO >> 
-            //dgvReports.DataSource = dados.DefaultView;
+            dgvReports.DataSource = dados.DefaultView;
         }
 
         private void menu_Click(object objSource, ToolBarItemEventArgs objArgs)
@@ -52,7 +52,7 @@ namespace SigaControls.Report
             Control inControl = this.Parent;
             SxMakeRelatory  rel;
             REPORT.ReportVo report;
-            string relname    = "";
+            string relname  = "";
 
             switch (objArgs.ToolBarButton.Name.ToLower())
             {

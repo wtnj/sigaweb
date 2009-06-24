@@ -46,11 +46,12 @@ namespace SigaControls.Report
                 StringBuilder childFilter = new StringBuilder();
                 foreach (Table child in this.MAIN.CHILDREN)
                 {
-                    childFilter.AppendLine((childFilter.ToString().Trim().Length > 0)
+                    if (child.FILTERS.FILTERS.Trim().Length > 0)
+                        childFilter.AppendLine((childFilter.ToString().Trim().Length > 0)
                                           ? "   AND " + child.FILTERS.FILTERS
                                           : child.FILTERS.FILTERS);
                 }
-                if (childFilter.Length > 0)
+                if (childFilter.ToString().Trim().Length > 0)
                     strFilter.AppendLine((strFilter.ToString().Trim().Length > 0)
                                         ? "   AND " + childFilter.ToString()
                                         : childFilter.ToString());

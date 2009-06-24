@@ -211,7 +211,7 @@ namespace SigaControls.Report
                     
                     show = drw.Cells[3].Value.ToString();
                     
-                    string field = new SXManager(empresa.CODIGO).getTabela(this.MAIN.TABLE)["X2_ARQUIVO"].ToString()
+                    string field = "@"+this.MAIN.TABLE+"@"//new SXManager(empresa.CODIGO).getTabela(this.MAIN.TABLE)["X2_ARQUIVO"].ToString()
                                  + "."
                                  + (string)drw.Cells[1].Value;
 
