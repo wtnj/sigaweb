@@ -176,50 +176,29 @@ namespace SigaControls.Report
         {
             get
             {
-                string QryOrdem = ""; // tmp ordem
+                string  QryOrdem = ""; // tmp ordem
 
                 #region CREATING GENERIC QUERY.
                 string tableKey = "@$TABLE$@";
 
                 StringBuilder genericQuery = new StringBuilder();
 
-                //StringBuilder childFilters = new StringBuilder();
-
                 bool havegroup = this.FIELDS.HAVEGROUP;
-                foreach (Table tab in this.CHILDREN)
-                {
-                    tab.FIELDS.generateShowFieldsAndGroupBy();
-                    if (tab.FIELDS.HAVEGROUP)
-                        havegroup = true;
 
-                    //childFilters.AppendLine((childFilters.Length > 0)
-                    //                       ? "   AND " + tab.FILTERS.FILTERS
-                    //                       : tab.FILTERS.FILTERS);
-                }
+                StringBuilder childFields = new StringBuilder();
+                StringBuilder childGroups = new StringBuilder();
+                
+                if(this.getFieldsFromTables(childFields, childGroups, this))
+                    havegroup = true;
 
                 string fromTable = tableKey.Replace("$TABLE$", this.TABLE); //(string)new SXManager(empresa.CODIGO).getTabela(this.TABLE)["X2_ARQUIVO"];
                 string agrupa    = "";
-                //string agrupaunion = "";
 
                 this.FIELDS.generateShowFieldsAndGroupBy();
                 string unionFields = this.FIELDS.FIELDSHEADERS;
                 string campos      = this.FIELDS.FIELDS;
                 agrupa = "";
 
-                //string unionChildFields = "";
-                string childFields = "";
-                string childGroups = "";
-                foreach (Table child in this.CHILDREN)
-                {
-                    //child.FIELDS.generateShowFieldsAndGroupBy();
-                    string fchild = child.SHOWFIELDS;
-                    string gchild = havegroup //(this.FIELDS.HAVEGROUP || child.FIELDS.HAVEGROUP)
-                                    ? child.FIELDS.GROUPBY
-                                    : "";
-
-                    childFields += (fchild.Length > 0) ? ", " + fchild : "";
-                    childGroups += (gchild.Length > 0) ? ", " + gchild : "";
-                }
                 campos += childFields;
                 if (havegroup) //childGroups.Length > 0 || this.FIELDS.HAVEGROUP)
                     agrupa += this.FIELDS.GROUPBY
@@ -231,31 +210,25 @@ namespace SigaControls.Report
                 genericQuery.AppendLine("  FROM " + fromTable);
                 genericQuery.AppendLine("@JOIN@");
 
-                foreach (Table child in this.CHILDREN)
-                    if (child.SHOWFIELDS.Length > 0)
-                        genericQuery.AppendLine(child.JOIN.Trim());
+                /// JOIN
+                this.addJoinTables(genericQuery, this);
 
                 genericQuery.AppendLine(" WHERE " + fromTable + "." + "D_E_L_E_T_ = ' '");
                 if (this.FILTERS.FILTERS.Length > 0)
                     genericQuery.AppendLine("   AND " + this.FILTERS.FILTERS);
 
-                //if(childFilters.Length>0)
-                //    genericQuery.AppendLine("   AND " + childFilters.ToString().Trim());
-
+                /// FILTRO DO PARAMETRO
                 if(!string.IsNullOrEmpty(filtroParametro))
                     genericQuery.AppendLine("   AND "+filtroParametro);
 
-                // FILTROS CHILD
-                // TODO string cihldFilter = "";
-                /// TODO filtro child
-
-                //mainQuery.AppendLine(sQuery.ToString());
+                /// GROUP BY
                 if (agrupa.Trim().Length > 0)
                 {
                     genericQuery.AppendLine(" GROUP BY @FILGROUP@" + agrupa);
                     //genericQuery.AppendLine("  WITH ROLLUP ");
                 }
 
+                /// ORDER BY
                 if (this.ORDERBY.ORDER.Length > 0)
                     QryOrdem = " ORDER BY " + this.ORDERBY.ORDER.Trim();//genericQuery.AppendLine(" ORDER BY " + this.ORDERBY.ORDER);
 
@@ -418,18 +391,53 @@ namespace SigaControls.Report
                 return sQuery;
             }
         } // MONTA A QUERY A PARTIR DOS CONTROLES NA TELA.
-        private void replaceRecursiveTables(StringBuilder query, Table mainTB, SigaObjects.Session.Empresa.EmpresaVo empresa)
+        private void replaceRecursiveTables(StringBuilder inQuery, Table mainTB, SigaObjects.Session.Empresa.EmpresaVo empresa)
         {
             foreach (Table childTB in mainTB.CHILDREN)
             {
-                replaceTableEmpresa(   query, childTB.TABLE, empresa);
-                replaceRecursiveTables(query, childTB      , empresa);
+                replaceTableEmpresa(   inQuery, childTB.TABLE, empresa);
+                replaceRecursiveTables(inQuery, childTB      , empresa);
             }
         }
-        private void replaceTableEmpresa(   StringBuilder query, string table, SigaObjects.Session.Empresa.EmpresaVo empresa)
+        private void replaceTableEmpresa(   StringBuilder inQuery, string table, SigaObjects.Session.Empresa.EmpresaVo empresa)
         {
-            query = query.Replace( "@"+table+"@"
-                                 , new SXManager(empresa.CODIGO).getTabela(table)["X2_ARQUIVO"].ToString());
+            inQuery = inQuery.Replace( "@"+table+"@"
+                                     , new SXManager(empresa.CODIGO).getTabela(table)["X2_ARQUIVO"].ToString());
+        }
+        private void addJoinTables(         StringBuilder inQuery, Table mainTable)
+        {
+            foreach (Table child in mainTable.CHILDREN)
+            {
+                //if (child.SHOWFIELDS.Length > 0)
+                inQuery.AppendLine(child.JOIN.Trim());
+                this.addJoinTables(inQuery, child);
+            }
+        }
+        private bool getFieldsFromTables(   StringBuilder childFields, StringBuilder childGroups, Table mainTable)
+        {
+            bool bHave = false;
+
+            foreach (Table child in mainTable.CHILDREN)
+            {
+                child.FIELDS.generateShowFieldsAndGroupBy();
+                if (child.FIELDS.HAVEGROUP)
+                    bHave = true;
+
+                string fchild = child.FIELDS.FIELDS;
+                string gchild = bHave //(this.FIELDS.HAVEGROUP || child.FIELDS.HAVEGROUP)
+                                ? child.FIELDS.GROUPBY
+                                : "";
+
+                childFields.AppendLine( (fchild.Length > 0) ? ", " + fchild : "" );
+                childGroups.AppendLine( (gchild.Length > 0) ? ", " + gchild : "" );
+
+                bool _bHave = this.getFieldsFromTables(childFields, childGroups, child);
+                
+                if(_bHave)
+                    bHave = _bHave;
+            }
+
+            return bHave;
         }
         #endregion
 
