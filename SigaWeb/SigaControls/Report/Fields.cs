@@ -20,6 +20,8 @@ namespace SigaControls.Report
         /// <summary>
         /// Required designer variable.
         /// </summary>
+        private List<string[]> _togrid     = new List<string[]>();
+        
         private List<string> showFields    = new List<string>();
         private List<string> fieldsheaders = new List<string>();
         private List<string> fieldsname    = new List<string>();
@@ -120,6 +122,23 @@ namespace SigaControls.Report
                 return sRet.ToString();
             }
         }
+        public List<string[]> TOGRID
+        {
+            get
+            {
+                List<string[]> listRet = new List<string[]>();
+
+                foreach(string[] values in _togrid)
+                    listRet.Add(values);
+
+                foreach(Table child in this.MAIN.CHILDREN)
+                    foreach(string[] values in child.FIELDS.TOGRID)
+                        listRet.Add(values);
+
+                return listRet;
+            }
+        }
+
         private string getDisplayCombo(string value) 
         {
             string sRet = "";
@@ -143,58 +162,6 @@ namespace SigaControls.Report
         public  void   generateShowFieldsAndGroupBy()
         {
             this.generateShowFieldsAndGroupBy(sigaSession.EMPRESAS[0]);
-            /*
-            this.showFields    = new List<string>();
-            this.fieldsname    = new List<string>();
-            this.fieldsheaders = new List<string>();
-            this.fieldsunion   = new List<string>(); // AGRUPAMENTO DO UNION
-            this.groupFields   = new List<string>();
-
-            foreach (DataGridViewRow drw in dgvFields.Rows)
-                if ((drw.Cells[0] as DataGridViewCheckBoxCell).Value.ToString() == true.ToString())
-                {
-                    string show     = "*";
-                    string tableKey = "@$TABLE$@";
-                    
-                    show = drw.Cells[3].Value.ToString();
-                    
-                    string field = tableKey.Replace("$TABLE$",this.MAIN.TABLE) //new SXManager(empresa.CODIGO).getTabela(this.MAIN.TABLE)["X2_ARQUIVO"].ToString()
-                                 + "."
-                                 + (string)drw.Cells[1].Value;
-
-                    if (show == "*" || show == null || show == "")
-                    {
-                        this.groupFields.Add(field);
-                        this.fieldsunion.Add((string)drw.Cells[2].Value);
-                        show = "*";
-                    }
-                    else
-                        this.haveGroup = true;
-
-                    this.fieldsname.Add(field);
-                    this.fieldsheaders.Add((string)drw.Cells[2].Value);
-
-                    string filtro   = SXManager.FieldValueMember
-                                + " = '" + (string)drw.Cells[1].Value + "'";
-                    
-                    if (new SXManager(sigaSession.EMPRESAS[0].CODIGO)
-                                   .getFields( this.MAIN.TABLE
-                                   , filtro
-                                   , SXManager.FieldDisplayMember).DefaultView[0]["X3_TIPO"].ToString() == "D")
-                    {
-                        showFields.Add( "CASE WHEN "+field+" = '' THEN '' ELSE CONVERT(NVARCHAR(10),CAST("+field+" AS SMALLDATETIME),103) END"
-                                      + " [ "
-                                      + (string)drw.Cells[2].Value
-                                      + " ] ");
-                    }
-                    else
-                        showFields.Add( show.Replace("*", field)
-                                  + " [ "
-                                  + (string)drw.Cells[4].Value
-                                  + " "
-                                  + (string)drw.Cells[2].Value
-                                  + " ]");
-                }//*/
         }
         public  void   generateShowFieldsAndGroupBy(SigaObjects.Session.Empresa.EmpresaVo empresa)
         {
@@ -204,6 +171,8 @@ namespace SigaControls.Report
             this.fieldsunion   = new List<string>(); // AGRUPAMENTO DO UNION
             this.groupFields   = new List<string>();
 
+            this._togrid       = new List<string[]>(); // CAMPOS NO GRID
+
             foreach (DataGridViewRow drw in dgvFields.Rows)
                 if ((drw.Cells[0] as DataGridViewCheckBoxCell).Value.ToString() == true.ToString())
                 {
@@ -211,7 +180,7 @@ namespace SigaControls.Report
                     
                     show = drw.Cells[3].Value.ToString();
                     
-                    string field = "@"+this.MAIN.TABLE+"@"//new SXManager(empresa.CODIGO).getTabela(this.MAIN.TABLE)["X2_ARQUIVO"].ToString()
+                    string field = "@"+this.MAIN.TABLE+"@"
                                  + "."
                                  + (string)drw.Cells[1].Value;
 
@@ -235,18 +204,22 @@ namespace SigaControls.Report
                                    , filtro
                                    , SXManager.FieldDisplayMember).DefaultView[0]["X3_TIPO"].ToString() == "D")
                     {
-                        showFields.Add( "CONVERT(VARCHAR(12),CONVERT(DATETIME,"+field+",103),103)"
+                        showFields.Add( "CONVERT(VARCHAR(12),CONVERT(DATETIME,"+field+",103),103) "+(string)drw.Cells[1].Value);/*
                                       + " [ "
                                       + (string)drw.Cells[2].Value
-                                      + " ] ");
+                                      + " ] ");//*/
                     }
                     else
-                        showFields.Add(show.Replace("*", field)
+                        showFields.Add(show.Replace("*", field)+" "+(string)drw.Cells[1].Value);/*
                                       + " [ "
                                       + (string)drw.Cells[4].Value
                                       + " "
                                       + (string)drw.Cells[2].Value
-                                      + " ]");
+                                      + " ]");//*/
+
+                    /// LISTA CAMPOS E SEUS NOMES PRA EXIBIÇÃO NOS CONTROLES DE TELA
+                    this._togrid.Add(new string[]{ (string)drw.Cells[1].Value
+                                                 , (string)drw.Cells[2].Value } );
                 }
         }
 

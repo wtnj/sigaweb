@@ -254,7 +254,9 @@ namespace SigaControls.Report
         {
             try
             {
-                new gridWindow(this.TABLE.QUERY.ToString(), null).showWindow(this.Form);
+                gridWindow grid = new gridWindow(this.TABLE.QUERY.ToString(), null);
+                grid.SetGridHeader(this.TABLE.FIELDS.TOGRID);
+                grid.showWindow(this.Form);
             }
             catch (Exception EX)
             {
