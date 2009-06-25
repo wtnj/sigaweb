@@ -158,9 +158,9 @@ namespace SigaControls
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(331, 52);
+            this.btnAdd.Location = new System.Drawing.Point(434, 78);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.Size = new System.Drawing.Size(75, 39);
             this.btnAdd.TabIndex = 9;
             this.btnAdd.Text = "Adicionar";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -177,9 +177,9 @@ namespace SigaControls
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
-            this.label3.Location = new System.Drawing.Point(225, 25);
+            this.label3.Location = new System.Drawing.Point(257, 25);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(100, 23);
+            this.label3.Size = new System.Drawing.Size(249, 23);
             this.label3.TabIndex = 7;
             this.label3.Text = "FILTRO";
             // 
@@ -188,7 +188,7 @@ namespace SigaControls
             this.label2.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
             this.label2.Location = new System.Drawing.Point(138, 25);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(81, 23);
+            this.label2.Size = new System.Drawing.Size(113, 23);
             this.label2.TabIndex = 6;
             this.label2.Text = "TIPO";
             // 
@@ -215,7 +215,7 @@ namespace SigaControls
             "NOT IN"});
             this.cbTipo.Location = new System.Drawing.Point(141, 51);
             this.cbTipo.Name = "cbTipo";
-            this.cbTipo.Size = new System.Drawing.Size(78, 21);
+            this.cbTipo.Size = new System.Drawing.Size(110, 21);
             this.cbTipo.TabIndex = 4;
             // 
             // cbCampos
@@ -235,22 +235,22 @@ namespace SigaControls
             this.lbFiltros.Location = new System.Drawing.Point(14, 125);
             this.lbFiltros.Name = "lbFiltros";
             this.lbFiltros.SelectionMode = Gizmox.WebGUI.Forms.SelectionMode.One;
-            this.lbFiltros.Size = new System.Drawing.Size(311, 251);
+            this.lbFiltros.Size = new System.Drawing.Size(748, 251);
             this.lbFiltros.TabIndex = 2;
             this.lbFiltros.KeyUp += new Gizmox.WebGUI.Forms.KeyEventHandler(this.lbFiltros_KeyUp);
             // 
             // txtFiltro
             // 
-            this.txtFiltro.Location = new System.Drawing.Point(225, 52);
+            this.txtFiltro.Location = new System.Drawing.Point(260, 52);
             this.txtFiltro.Name = "txtFiltro";
-            this.txtFiltro.Size = new System.Drawing.Size(100, 20);
+            this.txtFiltro.Size = new System.Drawing.Size(249, 20);
             this.txtFiltro.TabIndex = 1;
             // 
             // btnFiltrar
             // 
-            this.btnFiltrar.Location = new System.Drawing.Point(331, 125);
+            this.btnFiltrar.Location = new System.Drawing.Point(687, 52);
             this.btnFiltrar.Name = "btnFiltrar";
-            this.btnFiltrar.Size = new System.Drawing.Size(75, 23);
+            this.btnFiltrar.Size = new System.Drawing.Size(75, 65);
             this.btnFiltrar.TabIndex = 0;
             this.btnFiltrar.Text = "Filtrar";
             this.btnFiltrar.Click += new System.EventHandler(this.btnFiltrar_Click);

@@ -22,6 +22,14 @@ namespace SigaControls
         private List<Control> toControl    = null;
         private List<object>  oColRet      = null;
 
+        // REFERENCIA DE COLUNAS
+        private string displaymember = "display";
+        private string valuemember   = "value";
+
+        DataTable gridHeader = new DataTable();
+        DataTable filterType = new DataTable();
+        DataTable filter     = new DataTable();
+
         private object    columnReturn = null;
         private DataTable table;
 
@@ -31,7 +39,7 @@ namespace SigaControls
         private List<object> tRow = new List<object>();
 
         #region CONSTRUTOR
-        private void initialize(string sQuery  )
+        private void initialize(string    sQuery)
         {
             //this.Dock = DockStyle.Fill;
             //InitializeComponent();
@@ -44,13 +52,15 @@ namespace SigaControls
             //this.calcTotalRow();
             initialize(dtGrid);
         }
-        private void initialize(DataTable dados)
+        private void initialize(DataTable dados )
         {
             this.Dock = DockStyle.Fill;
             InitializeComponent();
 
+            this.initializeDataTables();
+
             dataGridView1.DataSource = dados.DefaultView;
-            dataGridView1.UseInternalPaging=false;
+            //dataGridView1.UseInternalPaging=false;
 
             barra.Text = string.Format(">> {0} Registros", dados.DefaultView.Count);
             
@@ -61,6 +71,44 @@ namespace SigaControls
             {
                 btnSelecionar.Visible = true;
             }
+        }
+        private void initializeDataTables()
+        {
+            /// INICIANDO TABELAS
+            gridHeader = new DataTable();
+            filterType = new DataTable();
+            filter     = new DataTable();
+
+            /// INICIANDO headers
+            gridHeader.Columns.Add(valuemember  );
+            gridHeader.Columns.Add(displaymember);
+            cbCampos.ValueMember   = valuemember;
+            cbCampos.DisplayMember = displaymember;
+
+            /// INICIANDO tipos de filtro
+            filterType.Columns.Add(valuemember  );
+            filterType.Columns.Add(displaymember);
+            filterType.Rows.Add("  =     '?'"    ,"igual"         );
+            filterType.Rows.Add(" <>     '?'"    ,"diferente"     );
+            filterType.Rows.Add(" >      '?'"    ,"maior"         );
+            filterType.Rows.Add(" >=     '?'"    ,"maior ou igual");
+            filterType.Rows.Add(" <      '?'"    ,"menor"         );
+            filterType.Rows.Add(" <=     '?'"    ,"menor ou igual");
+            filterType.Rows.Add(" LIKE   ('%?%')","contém"        );
+            filterType.Rows.Add(" IN     (?)"    ,"contido"       );
+            filterType.Rows.Add(" NOT IN (?)"    ,"não contido"   );
+            cbTipo.ValueMember   = valuemember;
+            cbTipo.DisplayMember = displaymember;
+            
+            /// INICIANDO filtros
+            filter.Columns.Add(valuemember  );
+            filter.Columns.Add(displaymember);
+            lbFiltros.ValueMember   = valuemember;
+            lbFiltros.DisplayMember = displaymember;
+
+            cbCampos.DataSource  = gridHeader.DefaultView;
+            cbTipo.DataSource    = filterType.DefaultView;
+            lbFiltros.DataSource = filter.DefaultView;
         }
 
         public gridWindow(DataTable dados , Control caller)
@@ -75,7 +123,7 @@ namespace SigaControls
             columnReturn = strCollumnReturn;
             this.initialize(dados);
         }
-        public gridWindow(DataTable dados , Control caller, int idxCollumnReturn)
+        public gridWindow(DataTable dados , Control caller, int    idxCollumnReturn)
         {
             this.oCaller = caller;
             columnReturn = idxCollumnReturn;
@@ -101,7 +149,6 @@ namespace SigaControls
             initialize(sQuery);
         }
 
-
         public gridWindow(DataTable dados , List<Control> setControls, List<object> oCollumnsReturn)
         {
             this.toControl = setControls;
@@ -113,6 +160,30 @@ namespace SigaControls
             this.toControl = setControls;
             this.oColRet   = oCollumnsReturn;
             initialize(sQuery);
+        }
+
+        public void SetGridHeader(List<string[]> TOGRID)
+        { this.SetGridHeader(TOGRID, false); }
+        public void SetGridHeader(List<string[]> TOGRID, bool showError)
+        {
+            foreach (string[] header in TOGRID)
+            {
+                try
+                {
+                    string value   = header.GetValue(0).ToString();
+                    string display = header.GetValue(1).ToString();
+                    dataGridView1.Columns[value].HeaderText = display;
+                    
+                    for(int idx=0; idx<gridHeader.Rows.Count; idx++)
+                        if( gridHeader.Rows[idx]["value"].ToString() == value)
+                            gridHeader.Rows[idx]["display"] = display;
+                }
+                catch(Exception err)
+                {
+                    if(showError)
+                        throw err;
+                }
+            }
         }
         #endregion
 
@@ -163,17 +234,17 @@ namespace SigaControls
                 frm.ShowDialog();
         }
 
-        private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e) 
         {
             e.Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
-            cbCampos.Items.Add(e.Column.Name);
+            gridHeader.Rows.Add( e.Column.Name
+                               , e.Column.Name );
+            //cbCampos.Items.Add(e.Column.Name);
         }
-
         private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
         }
-
         private void dataGridView1_Click(object sender, EventArgs e)
         {
             //return;
@@ -206,7 +277,6 @@ namespace SigaControls
             }
             caminho = null;
         }
-
         private void BtnPdf_Click(object sender, EventArgs e)
         {
             if (Directory.Exists(root) == false)
@@ -229,7 +299,6 @@ namespace SigaControls
             }
             caminho = null;
         }
-
         private void BtnTxt_Click(object sender, EventArgs e)
         {
             if (Directory.Exists(root) == false)
@@ -257,33 +326,41 @@ namespace SigaControls
         {
             StringBuilder sFiltro = new StringBuilder();
             bool isFirst = true;
-            foreach (string filtro in lbFiltros.Items)
-            { sFiltro.AppendLine((isFirst ? "" : " AND ") + filtro); isFirst = false; }
+            foreach (DataRow filtro in filter.Rows)//lbFiltros.Items)
+            {
+                sFiltro.AppendLine((isFirst ? "" : " AND ") + filtro[valuemember].ToString());
+                isFirst = false;
+            }
 
             (dataGridView1.DataSource as DataView).RowFilter = sFiltro.ToString();
         }
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (cbCampos.SelectedIndex >= 0 && cbTipo.SelectedIndex >= 0)
             {
-                string campo = cbCampos.Items[cbCampos.SelectedIndex].ToString();
-                string tipo  = cbTipo.Items[cbTipo.SelectedIndex].ToString();
-                string like = tipo == "LIKE" ? "%" : "";
+                /// VALUE DO FILTRO
+                string vCampo  = gridHeader.Rows[cbCampos.SelectedIndex][valuemember].ToString();
+                string vTipo   = filterType.Rows[cbTipo.SelectedIndex  ][valuemember].ToString();
+                string vFiltro = "";
+                vFiltro += vCampo;
+                vFiltro += vTipo.Replace("?", txtFiltro.Text);
 
-                string filtro = "";
-                filtro += campo + " ";
-                filtro += tipo  + " ";
-                filtro += "('" +like+ txtFiltro.Text +like+ "')";
+                /// DISPLAY DO FILTRO
+                string dCampo  = gridHeader.Rows[cbCampos.SelectedIndex][displaymember].ToString();
+                string dTipo   = filterType.Rows[cbTipo.SelectedIndex  ][displaymember].ToString();
+                string dFiltro = "";
+                dFiltro += dCampo;
+                dFiltro += " "  +dTipo;
+                dFiltro += " ( "+txtFiltro.Text+" )";
 
-                lbFiltros.Items.Add(filtro);
+                filter.Rows.Add(vFiltro, dFiltro);
             }
         }
-
         private void lbFiltros_KeyUp(object objSender, KeyEventArgs objArgs)
         {
-            if(lbFiltros.SelectedIndex>=0)
-                lbFiltros.Items.RemoveAt(lbFiltros.SelectedIndex);
+            if ( lbFiltros.SelectedIndex >= 0
+              && Keys.Delete == objArgs.KeyCode )
+                filter.Rows.RemoveAt(lbFiltros.SelectedIndex);
         }
 
         private void cbxPage_CheckedChanged(object sender, EventArgs e)

@@ -70,13 +70,17 @@ namespace SigaControls.Report
                     #region VER
                     if (dgvReports.SelectedRows.Count > 0)
                     {
+                        
                         DataRow row = (DataRow)(dgvReports.DataSource as DataView).Table.Rows[dgvReports.SelectedRows[0].Index];
-
+                        /*
                         Report cReport = new Report();
                         cReport.LOAD((string)row["nome"], false);
 
-                        new gridWindow(cReport.TABLE.QUERY.ToString(), null).showWindow();
-                        //ControlsConfig.formShow(new ViewReport((int)row["id"]), this.Form, ControlsConfig.showType.Dialog, null, true);
+                        gridWindow grid = new gridWindow(cReport.TABLE.QUERY.ToString(), null);
+                        grid.SetGridHeader(cReport.TABLE.FIELDS.TOGRID);
+                        grid.showWindow();//*/
+
+                        ControlsConfig.formShow(new ViewReport((int)row["id"]), this.Form, ControlsConfig.showType.Dialog, null, true);
                     }
                     #endregion
 

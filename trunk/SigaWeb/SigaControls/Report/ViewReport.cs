@@ -125,7 +125,9 @@ namespace SigaControls.Report
             cReport.LOAD(this.RELATORIO.NOME, false);
             cReport.TABLE.FILTROPARAMETRO = filtro.ToString();
 
-            new gridWindow(cReport.TABLE.QUERY.ToString(), null).showWindow();
+            gridWindow grid = new gridWindow(cReport.TABLE.QUERY.ToString(), null);
+            grid.SetGridHeader(cReport.TABLE.FIELDS.TOGRID);
+            grid.showWindow();
         }
     }
 }
