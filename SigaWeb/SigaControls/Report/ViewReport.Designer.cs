@@ -59,6 +59,7 @@ namespace SigaControls.Report
             this.Controls.Add(this.panelParams);
             this.Size = new System.Drawing.Size(258, 384);
             this.Text = "ViewReport";
+            this.VisibleChanged += new System.EventHandler(this.ViewReport_VisibleChanged);
             this.ResumeLayout(false);
 
         }

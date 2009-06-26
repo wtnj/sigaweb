@@ -17,6 +17,7 @@ namespace SigaControls.Report
 {
     public partial class ViewReport : UserControl
     {
+        private bool destroy = false;
         private REPORT.Report.ReportVo _report = new REPORT.Report.ReportVo();
         public  REPORT.Report.ReportVo RELATORIO
         {
@@ -40,7 +41,10 @@ namespace SigaControls.Report
             REPORT.Table.TableVo tabela = new REPORT.Table.TableVo();
             new REPORT.Table.TableDao().load(tabela, this.RELATORIO.ID, 0);
 
-            DataTable tabelas = new REPORT.Params.ParamsDao().getRecursiveTables(tabela);
+            DataTable tabelas = new REPORT.Params.ParamsDao().getRecursiveTables(tabela, "userParms_"+sigaSession.LoggedUser.ID, tabela.ID);
+
+            if (tabelas.DefaultView.Count == 0)
+            { btnExec_Click(null, null); destroy = true; }
             
             foreach (DataRow row in tabelas.Rows)
             {
@@ -84,28 +88,22 @@ namespace SigaControls.Report
         {
             initializer();
         }
-        public ViewReport(int reportId)
+        public ViewReport(int                    reportId  )
         {
             new REPORT.Report.ReportDao().load(this.RELATORIO, 0, "id = "+reportId);
             initializer();
             
         }
-        public ViewReport(string reportname)
+        public ViewReport(string                 reportname)
         {
             new REPORT.Report.ReportDao().load(this.RELATORIO, 0, "nome = '"+reportname+"'");
             initializer();
             
         }
-        public ViewReport(REPORT.Report.ReportVo report)
+        public ViewReport(REPORT.Report.ReportVo report    )
         {
             this.RELATORIO = report;
             initializer();
-        }
-
-        private void generateContols()
-        {
-            // TODO varrer lista de parametros, instanciar controles respectivos usando as tags pra criar o filtro.
-            // Ex.: TABLE[@EMPRESA@]0.FIELD <= (ou >= ou ...) '@?@' -- ESTE @?@ é a chave pra substituição na hora de varrer os controles e gerar o filtro.
         }
 
         private void btnExec_Click(object sender, EventArgs e)
@@ -135,6 +133,12 @@ namespace SigaControls.Report
             gridWindow grid = new gridWindow(cReport.TABLE.QUERY.ToString(), null);
             grid.SetGridHeader(cReport.TABLE.FIELDS.TOGRID);
             grid.showWindow();
+        }
+
+        private void ViewReport_VisibleChanged(object sender, EventArgs e)
+        {
+            if (this.destroy)
+                this.Form.Close();
         }
     }
 }
