@@ -31,7 +31,7 @@ namespace SigaControls.Report
             this.Dock = DockStyle.Fill;
             // TODO Resolver problema do 'WITH' pro sql2000, o qual não suporta o metodo.
             // dicas no link: http://www.databasejournal.com/features/mssql/article.php/3415541/Cursors-with-SQL-2000-Part-1.htm
-            // this.popScreenFromRecursiveTables();
+            this.popScreenFromRecursiveTables();
         }
         private void popScreenFromRecursiveTables()
         {
@@ -44,32 +44,39 @@ namespace SigaControls.Report
             
             foreach (DataRow row in tabelas.Rows)
             {
-                string tagFormat = "@$TAB$@.$CAMPO$ ?? '@?@'";
-                string  controle = (string)row["formato"];
-                
+                string tagFormat    = "@$TAB$@.$CAMPO$ ?? '@?@'";
+                string controle     = (string)row["formato"];
+                string strNomeCampo = new SigaObjects
+                                         .SXManager(sigaSession.EMPRESAS[0].CODIGO)
+                                         .getFields((string)row["tabela"], SigaObjects.SXManager.FieldValueMember
+                                                                        + " = '"
+                                                                        + (string)row["campo"]
+                                                                        + "'"
+                                                                        , null)
+                                         .Rows[0][SigaObjects.SXManager.FieldDisplayMember].ToString();
                 //
                 // CONTROLE DE
                 Control cDE      = FormatScreen.getObjectFromSigaType(controle);
-                string lblDE     = (string)row["campo"] + " de  : ";
+                string lblDE     = strNomeCampo + "\t\t Entre  \t\t";
                 cDE.Tag = tagFormat
                           .Replace("$TAB$"  ,(string)row["tabela"])
                           .Replace("$CAMPO$",(string)row["campo" ])
                           .Replace("??"     , ">="                );
 
-                FormatScreen.AddControl(panelParams, new Label(lblDE) ,true, 4, false, false);
-                FormatScreen.AddControl(panelParams, cDE              ,true, 4, false, false);
+                FormatScreen.AddControl(panelParams, new Label(lblDE) ,true, 3, false, false);
+                FormatScreen.AddControl(panelParams, cDE              ,true, 3, false, false);
                 
                 //
                 // CONTROLE ATE
                 Control cATE     = FormatScreen.getObjectFromSigaType(controle);
-                string lblATE    = (string)row["campo"] + " ate : ";
+                string lblATE    = string.Format("{0,50}","e");
                 cATE.Tag = tagFormat
                           .Replace("$TAB$"  ,(string)row["tabela"])
                           .Replace("$CAMPO$",(string)row["campo" ])
                           .Replace("??"     , "<="                );
 
-                FormatScreen.AddControl(panelParams, new Label(lblATE),true, 4, false, false);
-                FormatScreen.AddControl(panelParams, cATE             ,true, 4, false, false);
+                //FormatScreen.AddControl(panelParams, new Label(lblATE),true, 4, false, false);
+                FormatScreen.AddControl(panelParams, cATE             ,true, 3, false, false);
             }
         }
 
