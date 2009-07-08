@@ -139,10 +139,121 @@ namespace SigaObjects.Reports.Params
             return getData();
         }
 
-        public DataTable getRecursiveTables(Table.TableVo mainTable)
+        private bool existProcedure(string procedurename)
         {
             this.QUERY = new StringBuilder(fromDatabase);
 
+            this.QUERY.AppendLine("SELECT OBJECT_ID('" + procedurename + "','P')");
+            DataTable dados = this.getData();
+            string objectid = dados.Rows[0][0].ToString();
+            return String.IsNullOrEmpty(objectid);
+        }
+        private void CreateRecursiveProcedure()
+        {
+            if (this.existProcedure("SPR_ParametrosRecursivos"))
+            {
+                this.QUERY = new StringBuilder(fromDatabase);
+                
+                this.QUERY.AppendLine("CREATE PROCEDURE SPR_ParametrosRecursivos (@mainId INT = 0, @Nivel INT = 0, @NOMETABELA VARCHAR(80)) AS");
+                this.QUERY.AppendLine("IF OBJECT_ID(@NOMETABELA,'U') IS NULL");
+                this.QUERY.AppendLine("BEGIN");
+                this.QUERY.AppendLine("    exec('CREATE TABLE '+@NOMETABELA+'(id int NOT NULL, Nivel int)')");
+                this.QUERY.AppendLine("END");
+
+                this.QUERY.AppendLine("");
+
+                this.QUERY.AppendLine("SET NOCOUNT ON");
+
+                this.QUERY.AppendLine("");
+
+                this.QUERY.AppendLine("DECLARE @id INT, @oldId INT");
+
+                this.QUERY.AppendLine("--Abrindo o 'cursor'");
+                this.QUERY.AppendLine("IF @mainId = 0");
+                this.QUERY.AppendLine("    SELECT TOP 1 @id = T.id");
+                this.QUERY.AppendLine("      FROM RTable T");
+                this.QUERY.AppendLine("     WHERE T.mainId = 0");
+                this.QUERY.AppendLine("     ORDER BY T.id");
+                this.QUERY.AppendLine("ELSE");
+                this.QUERY.AppendLine("    SELECT TOP 1 @id = T.id");
+                this.QUERY.AppendLine("      FROM RTable T");
+                this.QUERY.AppendLine("     WHERE T.mainId = @mainId");
+                this.QUERY.AppendLine("     ORDER BY T.id");
+
+                this.QUERY.AppendLine("--Condição de parada: não encontrar mais pessoas");
+                this.QUERY.AppendLine("WHILE @id IS NOT NULL");
+                this.QUERY.AppendLine("BEGIN");
+                this.QUERY.AppendLine("    --Inserindo registro na tabela temporária");
+                this.QUERY.AppendLine("    exec('INSERT INTO '+@NOMETABELA+' VALUES('+@id+','+@Nivel+')')");
+
+                this.QUERY.AppendLine("    --Incrementando nível antes de chamar a procedure");
+                this.QUERY.AppendLine("    SET @Nivel = @Nivel + 1");
+
+                this.QUERY.AppendLine("    --Buscando todas as pessoas gerenciadas pela pessoa atual");
+                this.QUERY.AppendLine("    EXECUTE SPR_ParametrosRecursivos @id, @Nivel, @NOMETABELA");
+
+                this.QUERY.AppendLine("    --Voltando ao nível anterior");
+                this.QUERY.AppendLine("    SET @Nivel = @Nivel - 1");
+
+                this.QUERY.AppendLine("    --Definindo variável para a pessoa anterior");
+                this.QUERY.AppendLine("    SET @oldId = @id");
+                this.QUERY.AppendLine("    SET @id    = NULL");
+
+                this.QUERY.AppendLine("    --Próxima pessoa");
+                this.QUERY.AppendLine("    IF @mainId = 0");
+                this.QUERY.AppendLine("        SELECT TOP 1 @id = T.id");
+                this.QUERY.AppendLine("          FROM RTable T");
+                this.QUERY.AppendLine("         WHERE T.mainId = 0");
+                this.QUERY.AppendLine("           AND T.id > @oldId");
+                this.QUERY.AppendLine("         ORDER BY T.id");
+                this.QUERY.AppendLine("    ELSE");
+                this.QUERY.AppendLine("        SELECT TOP 1 @id = T.id");
+                this.QUERY.AppendLine("          FROM RTable T");
+                this.QUERY.AppendLine("         WHERE T.mainId = @mainId");
+                this.QUERY.AppendLine("           AND T.id > @oldId");
+                this.QUERY.AppendLine("         ORDER BY T.id");
+                this.QUERY.AppendLine("END");
+
+                this.getData();
+                this.QUERY = null;
+            }
+        }
+
+        public DataTable getRecursiveTables(Table.TableVo mainTable, string tablename)
+        { return this.getRecursiveTables(mainTable, tablename, 0); }
+        public DataTable getRecursiveTables(Table.TableVo mainTable, string tablename, int mainId)
+        { return this.getRecursiveTables(mainTable, tablename, mainId, null); }
+        public DataTable getRecursiveTables(Table.TableVo mainTable, string tablename, int mainId, string filtro)
+        {
+            // verifica e cria, se necessario a procedure SPR_ParametrosRecursivos, para essa necessidade.
+            //TODO criar modo de add procedure na SigaWeb sem usar o GO e o USE BANCODEDADOS
+            //this.CreateRecursiveProcedure();
+
+            // executa query usando a procedure acima.
+            this.QUERY = new StringBuilder(fromDatabase);
+
+            this.QUERY.AppendLine("IF OBJECT_ID('@TABELA','U') IS NOT NULL");
+            this.QUERY.AppendLine("BEGIN");
+            this.QUERY.AppendLine("    DROP TABLE @TABELA");
+            this.QUERY.AppendLine("END");
+            //this.QUERY.AppendLine("GO");
+            this.QUERY.AppendLine("EXECUTE SPR_ParametrosRecursivos "+mainId+", 0, @TABELA");
+            //this.QUERY.AppendLine("GO");
+            this.QUERY.AppendLine("SELECT DISTINCT RTable.*, params.*");
+            this.QUERY.AppendLine("  FROM RTable");
+            this.QUERY.AppendLine(" RIGHT JOIN @TABELA TEMP");
+            this.QUERY.AppendLine("    ON TEMP.id   = RTable.id");
+            this.QUERY.AppendLine("    OR RTable.id = "+mainId);
+            this.QUERY.AppendLine(" INNER JOIN params");
+            this.QUERY.AppendLine("    ON params.mainId = RTable.id");
+
+            if(!string.IsNullOrEmpty(filtro))
+                this.QUERY.AppendLine(" WHERE "+filtro);
+
+            this.QUERY.AppendLine("");
+            this.QUERY.AppendLine("DROP TABLE @TABELA");
+            
+            /* //QUERY RECURSIVA COM METODO QUE SÓ FUNCIONA NO SQL 2005 ou SUPERIOR(muito mais rapido)
             this.QUERY.AppendLine("WITH TABELAS AS");
             this.QUERY.AppendLine("(");
             this.QUERY.AppendLine("    SELECT main.id          , main.mainId       , main.tabela");
@@ -160,7 +271,9 @@ namespace SigaObjects.Reports.Params
             this.QUERY.AppendLine("  FROM TABELAS");
             this.QUERY.AppendLine(" INNER JOIN params");
             this.QUERY.AppendLine("    ON params.mainId = TABELAS.id");
+            //*/
 
+            this.QUERY = new StringBuilder(this.QUERY.ToString().Replace("@TABELA", tablename));
             return getData();
         }
         #endregion

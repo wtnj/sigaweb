@@ -23,13 +23,14 @@ namespace SigaControls.Report
         public  REPORT.Table.TableVo   main       = null; //new REPORT.Table.TableVo();   /// OWNER DA TABELA
         public  Fields      FIELDS;  //  = new Fields();      // CAMPOS DA TABELA
         public  List<Table> CHILDREN;//  = new List<Table>(); // LINKS (tabelas)
-        //private GroupBy     GROUPBY    = new GroupBy();     // AGRUPAMENTO
+        //private GroupBy     GROUPBY; //  = new GroupBy();     // AGRUPAMENTO
         public  Filters     FILTERS; //  = new Filters();     // FILTROS
         private OrderBy     ORDERBY; //  = new OrderBy();     // ORDENACAO
         private Params      PARAMS;  //  = new Params();      // PARAMETROS
         #endregion
 
         #region ATRIBUTOS
+        private bool                   IsRootTable     = false;
         public  REPORT.Table.TableVo   THISTABLE       = new REPORT.Table.TableVo();   /// ESTA TABELA
         private List<string>           relatedTables   = new List<string>();
         private string                 filtroParametro = "";
@@ -49,7 +50,18 @@ namespace SigaControls.Report
         #region PROPRIEDADES DO THISTABLE
         public int REPORTID
         {
-            get { return (this.MAINREPORT != null) ? this.MAINREPORT.ID : 0; }
+            get
+            {   return (this.MAINREPORT != null) ? this.MAINREPORT.ID : 0;
+                //return this.THISTABLE.IDREPORT;
+            }
+            set
+            {
+                //this.THISTABLE.IDREPORT = value;
+                //REPORT.Report.ReportVo myReport = new REPORT.Report.ReportVo(value);
+                //new REPORT.Report.ReportDao().load(myReport);
+                //this.MAINREPORT = myReport;
+                this.MAINREPORT.ID = value;
+            }
         } // ID DO RELATORIO LIGADO
         public int MAINID  
         {
@@ -63,7 +75,10 @@ namespace SigaControls.Report
         public REPORT.Table.TableVo   MAIN      
         {
             get { return main; }
-            set { main = value; }
+            set
+            {
+                main = value;
+            }
         }
         public REPORT.Report.ReportVo MAINREPORT
         {
@@ -71,11 +86,6 @@ namespace SigaControls.Report
             set
             {
                 this.mainReport  = value;
-                if (value != null)
-                {
-                    tpLINKIN.Visible = false;
-                    this.Dock        = DockStyle.Fill;
-                }
             }
         } // RELATORIO LIGADO
         public string        TABLE        
@@ -160,19 +170,60 @@ namespace SigaControls.Report
         } // MONTA RELACIONAMENTO COM CLAUSULAS
         #endregion
 
-        public List<string>  RELATEDTABLES
+        public List<Table> RECURSIVETABLES
         {
-            get { return this.relatedTables; }
+            get
+            {
+                List<Table> tables = new List<Table>();
+
+                // ADD ESTA TABELA, pois esta propriedade retorna todas desse nivel pra baixo.
+                tables.Add(this);
+
+                foreach (Control c in linksPainel.Controls)
+                {
+                    if (c.GetType().Equals(typeof(Table)))
+                    {
+                        tables.Add((Table)c);
+
+                        foreach (Table child in (c as Table).RECURSIVETABLES)
+                            tables.Add(child);
+                    }
+                }
+
+                return tables;
+            }
+        }
+        public  List<string>  RELATEDTABLES
+        {
+            get
+            {
+                List<string> tabelas = new List<string>();
+
+                if (this.MAIN != null)
+                    if (!string.IsNullOrEmpty(this.MAIN.TABELA))
+                        tabelas.Add(this.MAIN.TABELA);
+
+                if (this.Parent != null)
+                    if (this.Parent.GetType().Equals(typeof(Table)))
+                        foreach (Table others in (this.Parent as Table).CHILDREN)
+                            tabelas.Add(others.TABLE);
+
+                if (tabelas.Count < 1)
+                    tabelas.Add(this.TABLE);
+
+                //return this.relatedTables; }
+                return tabelas;
+            }
             set { relatedTables = value; }
         } // TABELAS RELACIONADAS
-        public string        SHOWFIELDS   
+        public  string        SHOWFIELDS   
         {
             get
             {
                 return (this.CHILDREN.Count == 0) ? this.FIELDS.FIELDS : "";
             }
         } // MOSTRA CAMPOS CASO NAO SEJA RELACIONADO
-        public StringBuilder QUERY        
+        public  StringBuilder QUERY        
         {
             get
             {
@@ -218,7 +269,7 @@ namespace SigaControls.Report
                     genericQuery.AppendLine("   AND " + this.FILTERS.FILTERS);
 
                 /// FILTRO DO PARAMETRO
-                if(!string.IsNullOrEmpty(filtroParametro))
+                if (!string.IsNullOrEmpty(filtroParametro))
                     genericQuery.AppendLine("   AND "+filtroParametro);
 
                 /// GROUP BY
@@ -447,6 +498,9 @@ namespace SigaControls.Report
             InitializeComponent();
 
             this.MAINREPORT = report;
+            if(this.MAINREPORT!=null)
+                this.REPORTID   = this.MAINREPORT.ID;
+
             this.MAIN       = main;
             this.TABLE      = table;
 
@@ -498,11 +552,11 @@ namespace SigaControls.Report
         }
         public Table(REPORT.Table.TableVo   main)                
         {
-            this.initializer(null, main, null);
+            this.initializer(new REPORT.Report.ReportVo(), main, null);
         }
         public Table(REPORT.Table.TableVo   main  , string table)
         {
-            this.initializer(null, main, table);
+            this.initializer(new REPORT.Report.ReportVo(), main, table);
         }
         public Table(REPORT.Report.ReportVo report, REPORT.Table.TableVo main)              
         {
@@ -515,17 +569,22 @@ namespace SigaControls.Report
         #endregion
 
         #region SAVE E LOAD
-        public void SAVE()
+        public  void SAVE()
         {
-            this.DELETE();
-
+            //this.DELETE();
+            this.THISTABLE.ID = 0;
             this.THISTABLE.IDREPORT     = this.REPORTID;
             this.THISTABLE.MAINID       = this.MAINID;
-            
+
             if (tpLINKIN.Visible)
             {
                 this.THISTABLE.RELATEDTABLE = (string)cbRelatedTable.SelectedValue;
                 this.THISTABLE.RELATEDTYPE  = (string)cbRelatedType.SelectedValue;
+            }
+            else
+            {
+                this.THISTABLE.RELATEDTABLE = "";
+                this.THISTABLE.RELATEDTYPE  = "";
             }
 
             new REPORT.Table.TableDao().save(this.THISTABLE);
@@ -538,14 +597,14 @@ namespace SigaControls.Report
             foreach(Table child in this.CHILDREN)
                 child.SAVE();
         }
-        public void LOAD(string tableName)
+        public  void LOAD(string tableName)
         {
             this.TABLE              = tableName;
             this.RELATEDTABLES      = new List<string>();
             this.RELATEDTABLES.Add(this.TABLE);
             
-            new REPORT.Table.TableDao().load(this.THISTABLE,this.REPORTID, this.MAINID);
-            this.THISTABLE.ID = this.THISTABLE.ID;
+            new REPORT.Table.TableDao().load(this.THISTABLE, this.REPORTID, this.MAINID);
+            //this.THISTABLE.ID = this.THISTABLE.ID;
             
             this.FIELDS.LOAD();
             this.FILTERS.LOAD();
@@ -561,12 +620,12 @@ namespace SigaControls.Report
 
                 #region TABELAS FILHO
                 List<REPORT.Table.TableVo> childrenTable = new List<REPORT.Table.TableVo>();
-                new REPORT.Table.TableDao().load( childrenTable, 0, this.ID);
+                new REPORT.Table.TableDao().load( childrenTable, this.REPORTID, this.ID);
                 this.AddChildrenTable(childrenTable);
                 #endregion
             }
 
-            this.TOTALIZAR.Visible = this.MAIN!=null;
+            this.TOTALIZAR.Visible = this.MAIN != null;
             //this.ReloadRelatedTables();
 
             this.RELOAD();
@@ -616,6 +675,16 @@ namespace SigaControls.Report
             new REPORT.Table.TableDao().delete(this.REPORTID, this.MAINID);
             this.ID = 0;
         }
+        public void ChangeRootTable(bool isRootTable)
+        {
+            this.IsRootTable = isRootTable;
+
+            if (this.IsRootTable)
+            {
+                tpLINKIN.Visible = false;
+                this.Dock = DockStyle.Fill;
+            }
+        }
         #endregion
         
         #region METHODS
@@ -623,7 +692,8 @@ namespace SigaControls.Report
         {
             foreach (REPORT.Table.TableVo childTable in childrenTable)
             {
-                Table child = new Table(this.THISTABLE);
+                Table child = new Table(this.MAINREPORT, this.THISTABLE);
+                child.MAIN  = childTable;
                 child.LOAD(childTable.TABELA);
                 this.AddChildTable(child);
             }
@@ -694,6 +764,7 @@ namespace SigaControls.Report
         protected void strTable_TextChanged(object sender, EventArgs e)
         {
             Table child = new Table(this.THISTABLE);
+            child.REPORTID = this.REPORTID;
             child.LOAD((sender as Control).Text);
             
             this.AddChildTable(child);
