@@ -167,9 +167,9 @@ namespace SigaObjects.Reports.Fields
             for (int i = 0; i < table.DefaultView.Count; i++)
             {
                 FieldsVo field = new FieldsVo();
-                field.MAINID    = mainId;
-                field.ID = (int)table.DefaultView[i]["id"];
-                field.CODIGO = (string)table.DefaultView[i]["codigo"];
+                field.MAINID   = mainId;
+                field.ID       = (int)table.DefaultView[i]["id"];
+                field.CODIGO   = (string)table.DefaultView[i]["codigo"];
                 field.GROUPING = (string)table.DefaultView[i]["grouping"];
 
                 fields.Add(field);

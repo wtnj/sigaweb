@@ -270,7 +270,7 @@ namespace SigaControls.Report
                 if (this.MAIN.TABLE != null)
                 {
                     /// Verifica os campos selecionados na consulta anterior.
-                    List<SigaObjects.Reports.Fields.FieldsVo> fields = new List<SigaObjects.Reports.Fields.FieldsVo>();
+                    List<REPORT.Fields.FieldsVo> fields = new List<REPORT.Fields.FieldsVo>();
                     new REPORT.Fields.FieldsDao().load(fields, this.MAIN.ID);
 
                     // POPULA CAMPOS DA TABELA SELECIONADA

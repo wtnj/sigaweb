@@ -18,6 +18,8 @@ namespace SigaControls.Report
 {
     public partial class ReportList : UserControl
     {
+        private DataTable dados = new DataTable();
+
         public  ReportList()            
         {
             InitializeComponent();
@@ -42,9 +44,22 @@ namespace SigaControls.Report
         }
         private void initializeData(string filtro)
         {
-            DataTable dados = new REPORT.ReportDao().select(0, filtro);
-            //TODO CONCERTAR ISSO >> 
+            dados.Columns.Add("idReportGroup");
+            dados.Columns.Add("descricao"    );
+            dados.Columns.Add("id"           );
+            dados.Columns.Add("nome"         );
+
             dgvReports.DataSource = dados.DefaultView;
+            
+            dgvReports.Columns["idReportGroup"].HeaderText = "id Grupo";
+            dgvReports.Columns["descricao"    ].HeaderText = "Grupo";
+            dgvReports.Columns["id"           ].HeaderText = "id Relatório";
+            dgvReports.Columns["nome"         ].HeaderText = "Nome do Relatório";
+
+            DataTable _dados = new REPORT.ReportDao().SelectForDisplay(filtro, false);
+            //TODO CONCERTAR ISSO >>
+            foreach(DataRow row in _dados.Rows)
+                dados.Rows.Add(row.ItemArray);
         }
 
         private void menu_Click(object objSource, ToolBarItemEventArgs objArgs)
@@ -70,17 +85,18 @@ namespace SigaControls.Report
                     #region VER
                     if (dgvReports.SelectedRows.Count > 0)
                     {
-                        
                         DataRow row = (DataRow)(dgvReports.DataSource as DataView).Table.Rows[dgvReports.SelectedRows[0].Index];
+                        
                         /*
                         Report cReport = new Report();
                         cReport.LOAD((string)row["nome"], false);
 
                         gridWindow grid = new gridWindow(cReport.TABLE.QUERY.ToString(), null);
                         grid.SetGridHeader(cReport.TABLE.FIELDS.TOGRID);
-                        grid.showWindow();//*/
+                        grid.showWindow();
+                        //*/
 
-                        ControlsConfig.formShow(new ViewReport((int)row["id"]), this.Form, ControlsConfig.showType.Dialog, null, true);
+                        ControlsConfig.formShow(new ViewReport(int.Parse(row["id"].ToString())), this.Form, ControlsConfig.showType.Dialog, null, true);
                     }
                     #endregion
 
@@ -110,9 +126,13 @@ namespace SigaControls.Report
                         
                         report = new REPORT.ReportVo();
 
-                        report.ID            = (int)row["id"];
-                        report.IDREPORTGROUP = (int)row["idreportgroup"];
+                        report.ID            = int.Parse(row["id"           ].ToString());
+                        report.IDREPORTGROUP = int.Parse(row["idreportgroup"].ToString());
 
+                        SigaObjects.Reports.Table.TableVo maintable = new SigaObjects.Reports.Table.TableVo();
+                        new SigaObjects.Reports.Table.TableDao().load(maintable, report.ID, 0);
+
+                        new SigaObjects.Reports.Report.ReportDao().DeleteRecursiveTables(maintable.ID);
                         new SigaObjects.Reports.Report.ReportDao().delete(report);
                     }
                     #endregion

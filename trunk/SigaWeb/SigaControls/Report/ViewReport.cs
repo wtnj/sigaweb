@@ -18,11 +18,17 @@ namespace SigaControls.Report
     public partial class ViewReport : UserControl
     {
         private bool destroy = false;
+        private string rotulo = "Parametros do relatório : {0}";
+
         private REPORT.Report.ReportVo _report = new REPORT.Report.ReportVo();
         public  REPORT.Report.ReportVo RELATORIO
         {
             get { return _report;  }
-            set { _report = value; }
+            set
+            {
+                _report = value;
+                //lblREPORT.Text = string.Format(rotulo, value.NOME);
+            }
         }
 
         private void initializer()
@@ -90,15 +96,19 @@ namespace SigaControls.Report
         }
         public ViewReport(int                    reportId  )
         {
-            new REPORT.Report.ReportDao().load(this.RELATORIO, 0, "id = "+reportId);
-            initializer();
+            REPORT.Report.ReportVo relatorio = new REPORT.Report.ReportVo();
+            new REPORT.Report.ReportDao().load(relatorio, 0, "id = "+reportId);
+            this.RELATORIO = relatorio;
             
+            initializer();
         }
         public ViewReport(string                 reportname)
         {
-            new REPORT.Report.ReportDao().load(this.RELATORIO, 0, "nome = '"+reportname+"'");
+            REPORT.Report.ReportVo relatorio = new REPORT.Report.ReportVo();
+            new REPORT.Report.ReportDao().load(relatorio, 0, "nome = '"+reportname+"'");
+            this.RELATORIO = relatorio;
+
             initializer();
-            
         }
         public ViewReport(REPORT.Report.ReportVo report    )
         {
@@ -137,6 +147,8 @@ namespace SigaControls.Report
 
         private void ViewReport_VisibleChanged(object sender, EventArgs e)
         {
+            lblREPORT.Text = string.Format(rotulo, this.RELATORIO.NOME);
+
             if (this.destroy)
                 this.Form.Close();
         }

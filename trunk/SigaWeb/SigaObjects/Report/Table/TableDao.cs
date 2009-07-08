@@ -149,10 +149,10 @@ namespace SigaObjects.Reports.Table
         public DataTable select(int idReport, int mainId, string filtro, bool firstOnly)
         {
             new SELECT(firstOnly ? "TOP 1 *" : "*")
-            .From("[RTable]")
-            .Where("idReport = " + idReport)
-            .And("mainId = " + mainId)
-            .And(filtro);
+                .From("[RTable]")
+                .Where("idReport = " + idReport)
+                .And("mainId = " + mainId)
+                .And(filtro);
 
             return getData();
         }

@@ -80,23 +80,21 @@ namespace SigaObjects.Reports.Report
         #endregion
 
         #region Delete
-        public int delete(List<ReportVo> reports)
+        public int delete(List<ReportVo> reports      )
         {
             int cont = 0;
             foreach (ReportVo report in reports)
                 cont += delete(report);
             return cont;
         }
-        public int delete(ReportVo report)
+        public int delete(ReportVo       report       )
+        { return delete(report.IDREPORTGROUP, "id = " + report.ID); }
+        public int delete(int            idreportgroup)
+        { return delete(idreportgroup, null); }
+        public int delete(int            idreportgroup, string filtro)
         {
-            return delete(report.IDREPORTGROUP, "id = " + report.ID);
-        }
-        public int delete(int idreportgroup)
-        {
-            return delete(idreportgroup, null);
-        }
-        public int delete(int idreportgroup, string filtro)
-        {
+            //this.DeleteRecursiveTables(
+
             this.QUERY = new StringBuilder(fromDatabase);
 
             this.QUERY.AppendLine("DELETE FROM report");
@@ -106,6 +104,78 @@ namespace SigaObjects.Reports.Report
 
             return getData().DefaultView.Count;
         }
+
+        #region DELETE RECURSIVE {Tables, Fields, Filters, ...}
+        public int DeleteRecursiveTables(List<Report.ReportVo> reports)
+        {
+            int i = 0;
+            foreach(Report.ReportVo report in reports)
+                i = this.DeleteRecursiveTables(report);
+
+            return i;
+        }
+        public int DeleteRecursiveTables(Report.ReportVo       report )
+        {
+            int i = 0;
+            Table.TableVo mainTable = new Table.TableVo();
+            new Table.TableDao().load(mainTable, report.ID, 0);
+
+            if(mainTable.ID>0)
+                i = this.DeleteRecursiveTables(mainTable.ID);
+
+            return i;
+        }
+        public int DeleteRecursiveTables(List<int>             mainIds)
+        {
+            int i = 0;
+            foreach(int mainId in mainIds)
+                i = this.DeleteRecursiveTables(mainId);
+
+            return i;
+        }
+        public int DeleteRecursiveTables(int                   mainId )
+        {
+            this.QUERY = new StringBuilder(fromDatabase);
+
+            this.addInQuery("-- INICIA A RECURSIVA");
+            this.addInQuery("IF OBJECT_ID('TABELAS','U') IS NOT NULL");
+            this.addInQuery("BEGIN");
+            this.addInQuery("    DROP TABLE TABELAS");
+            this.addInQuery("END");
+
+            this.addInQuery("");
+            
+            this.addInQuery("EXECUTE SPR_ParametrosRecursivos "+mainId+", 0, TABELAS");
+
+            this.addInQuery("");
+            
+            this.addInQuery("-- INICIA PROCESSO DE DELETE A PARTIR DO @TABELAS");
+            this.addInQuery("DELETE FROM RTable");
+            this.addInQuery(" WHERE id in (SELECT id FROM TABELAS)");
+
+            this.addInQuery("DELETE FROM fields");
+            this.addInQuery(" WHERE id in (SELECT id FROM TABELAS)");
+            
+            this.addInQuery("DELETE FROM filters");
+            this.addInQuery(" WHERE id in (SELECT id FROM TABELAS)");
+            
+            this.addInQuery("DELETE FROM groupBy");
+            this.addInQuery(" WHERE id in (SELECT id FROM TABELAS)");
+            
+            this.addInQuery("DELETE FROM orderBy");
+            this.addInQuery(" WHERE id in (SELECT id FROM TABELAS)");
+            
+            this.addInQuery("DELETE FROM params");
+            this.addInQuery(" WHERE id in (SELECT id FROM TABELAS)");
+            
+            this.addInQuery("");
+            
+            this.addInQuery("-- DROP NA TABELA");
+            this.addInQuery("DROP TABLE TABELAS");
+
+            return this.getData().Rows.Count;
+        }
+        #endregion
         #endregion
 
         #region Listas
@@ -157,15 +227,31 @@ namespace SigaObjects.Reports.Report
         {
             string strFilter = "";
             strFilter += (idreportgroup > 0) ? "idReportGroup = " + idreportgroup : "idReportGroup != 0";
-            strFilter += (filtro != null) ? "\r\n   AND " + filtro : filtro;
+            strFilter += (filtro != null) ? "\r\n   AND " + filtro : "";
 
             return select(strFilter, firstOnly);
         }
         public DataTable select(string filtro, bool firstOnly)
         {
             new SELECT(firstOnly ? "TOP 1 *" : "*")
-            .From("report")
-            .Where(filtro);
+                .From("report")
+                .Where(filtro);
+
+            return getData();
+        }
+
+        public DataTable SelectForDisplay(string filtro, bool firstOnly)
+        {
+            string fields = "R.idReportGroup, G.descricao, R.id, R.nome";
+            return this.SelectForDisplay(filtro, firstOnly, fields);
+        }
+        public DataTable SelectForDisplay(string filtro, bool firstOnly, string fields)
+        {
+            new SELECT(firstOnly ? "TOP 1 " + fields : fields)
+                .From("report", "R")
+                .InnerJoin("reportgroup", "G")
+                .On("G.id = R.idReportGroup")
+                .Where(filtro);
 
             return getData();
         }

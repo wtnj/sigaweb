@@ -118,7 +118,10 @@ namespace SigaControls.Report
                 new REPORT.Report.ReportDao().save(this.THISREPORT);
 
                 if (this.TABLE != null)
-                    this.TABLE.SAVE();
+                    foreach(Table table in this.TABLE.RECURSIVETABLES)
+                        table.REPORTID = this.ID;
+
+                this.TABLE.SAVE();
 
                 MessageBox.Show("Relatorio Salvo com sucesso!", "SALVANDO...");
             }
@@ -218,11 +221,14 @@ namespace SigaControls.Report
             Table child = new Table(this.THISREPORT);
             child.LOAD((sender as Control).Text);
             
+            child.ChangeRootTable(true);
+
             this.AddTable(child);
         }
         private void AddTable(Table table)
         {
-            this.TABLE = table;
+            this.TABLE             = table;
+
             reportPanel.Controls.Clear();
             reportPanel.Controls.Add(this.TABLE);
         }
@@ -235,6 +241,9 @@ namespace SigaControls.Report
 
         private void txtSalvar_Click(object sender, EventArgs e)
         {
+            // LIMPANDO TABELAS E DADOS RELACIONADOS
+            new REPORT.Report.ReportDao().DeleteRecursiveTables(this.TABLE.ID);
+
             this.SAVE();
         }
 
