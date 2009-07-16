@@ -76,6 +76,7 @@ namespace SigaControls.Report
         }
         public void SAVE()  
         {
+            /*
             this.DELETE();
 
             List<REPORT.Params.ParamsVo> paramets = new List<REPORT.Params.ParamsVo>();
@@ -93,11 +94,11 @@ namespace SigaControls.Report
                 param.CAMPO   = valor[REPORT.Params.ParamsDao.DisplayMember].ToString();
                 param.OBJETO  = valor["objeto" ].ToString();
                 //param.TAMANHO = int.Parse(valor["tamanho"].ToString());
-
+                
                 paramets.Add(param);
             }
-
-            new REPORT.Params.ParamsDao().save(paramets);
+            //*/
+            new REPORT.Params.ParamsDao().save(this.MAIN.THISTABLE.PARAMS);
         }
         public void DELETE()
         {

@@ -61,9 +61,12 @@ namespace SigaObjects.Reports.OrderBy
                 true
             );
 
-            order.ID        = (int)     table.DefaultView[0]["id"];
-            order.DISPLAY   = (string)  table.DefaultView[0]["displaymember"];
-            order.VALUE     = (string)  table.DefaultView[0]["valuemember"];
+            if (table.DefaultView.Count > 0)
+            {
+                order.ID      = (int)   table.DefaultView[0]["id"           ];
+                order.DISPLAY = (string)table.DefaultView[0]["displaymember"];
+                order.VALUE   = (string)table.DefaultView[0]["valuemember"  ];
+            }
         }
         #endregion
 

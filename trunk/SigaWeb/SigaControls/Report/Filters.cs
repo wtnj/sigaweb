@@ -140,6 +140,7 @@ namespace SigaControls.Report
         }
         public void SAVE()  
         {
+            /*
             List<REPORT.Filters.FiltersVo> filters = new List<REPORT.Filters.FiltersVo>();
 
             //for (int i = 0; i < dados.Rows.Count; i++)
@@ -154,8 +155,8 @@ namespace SigaControls.Report
 
                 filters.Add(filter);
             }
-
-            new REPORT.Filters.FiltersDao().save(filters);
+            //*/
+            new REPORT.Filters.FiltersDao().save(this.MAIN.THISTABLE.FILTERS);
         }
         public void DELETE()
         {

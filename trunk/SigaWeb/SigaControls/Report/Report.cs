@@ -24,8 +24,9 @@ namespace SigaControls.Report
         #endregion
 
         #region ATRIBUTOS
-        public REPORT.ReportGroup.ReportGroupVo REPORTGROUP = new REPORT.ReportGroup.ReportGroupVo();
-        public REPORT.Report.ReportVo           THISREPORT  = new REPORT.Report.ReportVo();
+        public  REPORT.ReportGroup.ReportGroupVo REPORTGROUP = new REPORT.ReportGroup.ReportGroupVo();
+        public  REPORT.Report.ReportVo           THISREPORT  = new REPORT.Report.ReportVo();
+        //private REPORT.Table.TableVo            tablevo     = new REPORT.Table.TableVo();
         #endregion
 
         #region PROPRIEDADES
@@ -78,10 +79,15 @@ namespace SigaControls.Report
                     this.THISREPORT.USERNAME = value;
             }
         }
-        public Table  TABLE
+        public Table  TABLE        
         {
             get { return this.table; }
             private set { table = value; }
+        }
+        public REPORT.Table.TableVo TABLEVO
+        {
+            get { return this.THISREPORT.TABLE;  }
+            set { this.THISREPORT.TABLE = value; }
         }
         #endregion
 
@@ -144,22 +150,23 @@ namespace SigaControls.Report
                 {
                     this.txtReportName.Text = reportName;
 
-                    SigaObjects.Reports.Report.ReportVo report = new SigaObjects.Reports.Report.ReportVo();
-                    report.NOME = this.REPORTNAME;
-                    new SigaObjects.Reports.Report.ReportDao().load(report, reportName, null);
-                    this.ID     = report.ID;
-                    this.cbReportGroup.SelectedValue = report.IDREPORTGROUP;
+                    //SigaObjects.Reports.Report.ReportVo report = new SigaObjects.Reports.Report.ReportVo();
+                    //report.NOME = this.REPORTNAME;
+                    new SigaObjects.Reports.Report.ReportDao().load(this.THISREPORT, reportName, null);
+                    //this.ID     = report.ID;
+                    this.cbReportGroup.SelectedValue = this.THISREPORT.IDREPORTGROUP;
 
                     if (this.ID > 0)
                     {
                         this.cbReportGroup.SelectedValue = this.REPORTGROUP.ID;
 
-                        List<REPORT.Table.TableVo> tabelas = new List<REPORT.Table.TableVo>();
-                        new SigaObjects.Reports.Table.TableDao().load(tabelas, this.ID, 0);
-                        if (tabelas.Count > 0)
+                        //List<REPORT.Table.TableVo> tabelas = new List<REPORT.Table.TableVo>();
+                        new SigaObjects.Reports.Table.TableDao().load(this.TABLEVO, this.ID, 0);
+                        //if (tabelas.Count > 0)
+                        if (this.TABLEVO.ID != 0)
                         {
-                            Table mainTable = new Table(this.THISREPORT, new REPORT.Table.TableVo());
-                            mainTable.LOAD(tabelas[0].TABELA);
+                            Table mainTable = new Table(this.THISREPORT, this.TABLEVO);
+                            mainTable.LOAD(TABLEVO);
                             if (mainTable.ID > 0)
                                 this.AddTable(mainTable);
                         }
@@ -218,10 +225,9 @@ namespace SigaControls.Report
 
         void strTable_TextChanged(object sender, EventArgs e)
         {
-            Table child = new Table(this.THISREPORT);
-            child.LOAD((sender as Control).Text);
-            
-            child.ChangeRootTable(true);
+            this.TABLEVO = new REPORT.Table.TableVo((sender as Control).Text,"","","");
+            Table child  = new Table(this.THISREPORT);
+            child.LOAD(this.TABLEVO);
 
             this.AddTable(child);
         }
@@ -271,6 +277,11 @@ namespace SigaControls.Report
             {
                 new ERROR(Carralero.ExceptionControler.getFullException(EX)).SHOW();
             }
+        }
+
+        private void reportPanel_ControlAdded(object sender, ControlEventArgs e)
+        {
+            (e.Control as Table).ChangeRootTable(true);
         }
     }
 }

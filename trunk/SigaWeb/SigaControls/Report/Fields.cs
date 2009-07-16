@@ -223,10 +223,6 @@ namespace SigaControls.Report
                 }
         }
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         private void initialize(Table main)
         {
             InitializeComponent();
@@ -265,20 +261,26 @@ namespace SigaControls.Report
         }
         public void LOAD()
         {
+            /// Verifica os campos selecionados na consulta anterior.
+            List<REPORT.Fields.FieldsVo> fields = new List<REPORT.Fields.FieldsVo>();
+            new REPORT.Fields.FieldsDao().load(fields, this.MAIN.ID);
+            
+            this.LOAD(fields);
+        }
+        public void LOAD(List<REPORT.Fields.FieldsVo> checkFields)
+        {
             try
             {
                 if (this.MAIN.TABLE != null)
                 {
-                    /// Verifica os campos selecionados na consulta anterior.
-                    List<REPORT.Fields.FieldsVo> fields = new List<REPORT.Fields.FieldsVo>();
-                    new REPORT.Fields.FieldsDao().load(fields, this.MAIN.ID);
+                    
 
                     // POPULA CAMPOS DA TABELA SELECIONADA
                     DataTable dtFields = new SXManager(sigaSession.EMPRESAS[0].CODIGO).getFields(this.MAIN.TABLE);
                     foreach (DataRow drv in dtFields.Rows)
                     {
                         dgvFields.Rows.Add();
-                        REPORT.Fields.FieldsVo field = this.existInFields(fields, drv[SXManager.FieldValueMember].ToString());
+                        REPORT.Fields.FieldsVo field = this.existInFields(checkFields, drv[SXManager.FieldValueMember].ToString());
                         int  indice = dgvFields.Rows.Count - 1;
                         bool isMark = field != null;
 
@@ -297,8 +299,8 @@ namespace SigaControls.Report
         }
         public void SAVE()
         {
-            this.DELETE();
-
+            //this.DELETE();
+            //*
             List<REPORT.Fields.FieldsVo> fields = new List<REPORT.Fields.FieldsVo>();
 
             foreach (DataGridViewRow drv in dgvFields.Rows)
@@ -314,8 +316,8 @@ namespace SigaControls.Report
                     fields.Add(field);
                 }
             }
-            
-            new REPORT.Fields.FieldsDao().save(fields);
+            //*/
+            new REPORT.Fields.FieldsDao().save(fields);//this.MAIN.THISTABLE.FIELDS);
         }
         public void DELETE()
         {
@@ -413,7 +415,7 @@ namespace SigaControls.Report
                         tab_camp = " valuemember = '" + tab_camp + "'";
                         orders.delete(this.main.ID, tab_camp);
 
-                        this.main.LOAD(this.main.TABLE);
+                        this.main.LOAD(this.main.THISTABLE);
 
                         MessageBox.Show("A Ordenação com este campo foi excluída. ");
 

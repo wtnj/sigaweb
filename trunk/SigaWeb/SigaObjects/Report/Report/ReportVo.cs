@@ -6,39 +6,48 @@ namespace SigaObjects.Reports.Report
 {
     public class ReportVo
     {
-        private int id, idReportGroup;
-        private string nome, empresa, filial, username;
+        private int id = 0;
+        private int idReportGroup = 0;
+        private string nome = "", empresa = "", filial = "", username = "";
+
+        private Table.TableVo table = new Table.TableVo();
 
         #region Getters & Setters
-        public int ID
+        public int    ID           
         {
             get { return id;}
             set { this.id = value; }
         }
-        public int IDREPORTGROUP
+        public int    IDREPORTGROUP
         {
             get { return idReportGroup;}
             set { this.idReportGroup = value; }
         }
-        public string NOME
+        public string NOME         
         {
             get { return nome;}
             set { this.nome = value; }
         }
-        public string EMPRESA
+        public string EMPRESA      
         {
             get { return empresa;}
             set { this.empresa = value; }
         }
-        public string FILIAL
+        public string FILIAL       
         {
             get { return filial;}
             set { this.filial = value; }
         }
-        public string USERNAME
+        public string USERNAME     
         {
             get { return username;}
             set { this.username = value; }
+        }
+
+        public Table.TableVo TABLE 
+        {
+            get { return table;  }
+            set { table = value; }
         }
         #endregion
 

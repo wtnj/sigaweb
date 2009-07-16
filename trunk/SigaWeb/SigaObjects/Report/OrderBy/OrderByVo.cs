@@ -8,8 +8,8 @@ namespace SigaObjects.Reports.OrderBy
     {
         private int id = 0, mainId = 0;
 
-        private int indice;
-        private string value, display;        
+        private int indice = 0;
+        private string value = "", display = "";
 
         #region Construtor
         public OrderByVo()
