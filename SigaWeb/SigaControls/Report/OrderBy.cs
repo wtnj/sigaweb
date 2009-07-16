@@ -92,6 +92,7 @@ namespace SigaControls.Report
         /// <summary> Montando a lista para salvar no banco de dados</summary>
         public void SAVE()
         {
+            /*
             List<REPORT.OrderBy.OrderByVo> orders = new List<REPORT.OrderBy.OrderByVo>();
 
             for (int i = 0; i < lbCampos.Items.Count; i++)
@@ -108,8 +109,8 @@ namespace SigaControls.Report
 
                 orders.Add(order);
             }
-
-            new REPORT.OrderBy.OrderByDao().save(orders);
+            //*/
+            new REPORT.OrderBy.OrderByDao().save(this.MAIN.THISTABLE.ORDERBY);
         }
         public void LOAD()
         {

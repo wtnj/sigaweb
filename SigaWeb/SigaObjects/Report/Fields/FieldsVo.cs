@@ -8,7 +8,7 @@ namespace SigaObjects.Reports.Fields
     {
         private int id = 0, mainId = 0;
 
-        private string codigo, grouping;
+        private string codigo = "", grouping = "";
 
         #region Getters and Setters
         public int MAINID

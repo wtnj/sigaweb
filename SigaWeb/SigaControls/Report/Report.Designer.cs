@@ -64,6 +64,7 @@ namespace SigaControls.Report
             this.reportPanel.Name = "reportPanel";
             this.reportPanel.Size = new System.Drawing.Size(599, 236);
             this.reportPanel.TabIndex = 2;
+            this.reportPanel.ControlAdded += new Gizmox.WebGUI.Forms.ControlEventHandler(this.reportPanel_ControlAdded);
             // 
             // txtSalvar
             // 

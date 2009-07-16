@@ -8,7 +8,7 @@ namespace SigaObjects.Reports.Filters
     {
         private int id = 0, mainId = 0;
 
-        private string tabela, campo, filtro, tipofiltro;
+        private string tabela = "", campo = "", filtro = "", tipofiltro = "";
 
         #region Construtor
         public FiltersVo() { }

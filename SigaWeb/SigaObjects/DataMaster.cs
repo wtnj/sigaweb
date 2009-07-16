@@ -96,7 +96,7 @@ namespace SigaObjects
 
         public DataTable SelectDataTable(StringBuilder sQuery)
         { return SelectDataTable(sQuery.ToString()); }
-        public DataTable SelectDataTable(string sQuery)
+        public DataTable SelectDataTable(string        sQuery)
         {
             DataTable dtNew = new DataTable();
             try
@@ -110,7 +110,7 @@ namespace SigaObjects
             return dtNew;
         }
 
-        protected DataTable getDataTable(string sQuery)
+        protected DataTable getDataTable(string        sQuery)
         { return SelectDataTable(sQuery); }
         protected DataTable getDataTable(StringBuilder sQuery)
         { return SelectDataTable(sQuery); }
