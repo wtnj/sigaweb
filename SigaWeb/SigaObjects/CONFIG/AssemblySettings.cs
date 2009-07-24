@@ -12,9 +12,11 @@ namespace SigaObjects.CONFIG
     {
         private IDictionary settings;
 
-        public AssemblySettings()
+        public AssemblySettings(bool anula)
             : this(Assembly.GetCallingAssembly())
         {
+            if(anula)
+                settings = null;
         }
 
 		public AssemblySettings( Assembly asm )

@@ -37,6 +37,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigaWebInstaller", "SigaWeb
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{9ABA83F0-E6A2-4687-99C0-A00FD9AF4938}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\_componentes e tools\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter.dll = ..\..\..\_componentes e tools\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

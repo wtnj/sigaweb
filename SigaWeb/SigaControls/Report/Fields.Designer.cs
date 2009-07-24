@@ -75,7 +75,9 @@ namespace SigaControls.Report
             this.dgvFields.Size = new System.Drawing.Size(544, 253);
             this.dgvFields.TabIndex = 2;
             this.dgvFields.UseInternalPaging = false;
+            this.dgvFields.CellParsing += new Gizmox.WebGUI.Forms.DataGridViewCellParsingEventHandler(this.dgvFields_CellParsing);
             this.dgvFields.CellClick += new Gizmox.WebGUI.Forms.DataGridViewCellEventHandler(this.dgvFields_CellClick);
+            this.dgvFields.CellEndEdit += new Gizmox.WebGUI.Forms.DataGridViewCellEventHandler(this.dgvFields_CellEndEdit);
             // 
             // dataGridViewCheckBoxColumn1
             // 

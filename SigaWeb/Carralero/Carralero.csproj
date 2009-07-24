@@ -34,19 +34,11 @@
   <ItemGroup>
     <Reference Include="CarlosAg.ExcelXmlWriter, Version=1.0.0.6, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\dotNet\EXCEL\CarlosAg.ExcelXmlWriter.zip\CarlosAg.ExcelXmlWriter.dll</HintPath>
+      <HintPath>..\..\..\..\_componentes e tools\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter.dll</HintPath>
     </Reference>
-    <Reference Include="Gnu.Classpath.Core, Version=1.0.3265.6793, Culture=neutral, PublicKeyToken=bd3736a929f259c3">
+    <Reference Include="iText, Version=1.4.6.2, Culture=neutral, PublicKeyToken=bd3736a929f259c3, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\Projeto Sigaweb\iText\dll\Gnu.Classpath.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Gnu.Classpath.JAXP, Version=1.0.3265.6809, Culture=neutral, PublicKeyToken=bd3736a929f259c3">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\Projeto Sigaweb\iText\dll\Gnu.Classpath.JAXP.dll</HintPath>
-    </Reference>
-    <Reference Include="iTextdotNET, Version=1.4.3265.6821, Culture=neutral, PublicKeyToken=bd3736a929f259c3">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Documents and Settings\HP Compaq\Desktop\Projeto Sigaweb\iText\dll\iTextdotNET.dll</HintPath>
+      <HintPath>..\..\..\..\_componentes e tools\iText.NET\iText.NET2005-dll-1.4.6-2\iText.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>True</Private>

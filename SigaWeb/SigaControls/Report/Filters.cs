@@ -37,7 +37,8 @@ namespace SigaControls.Report
                 foreach (DataGridViewRow drw in DGFilters.Rows)
                 {
                     strFilter.AppendLine( ((i++ == 0) ? "" : "\r\n   AND ")
-                                        + "@"   + this.MAIN.TABLE + "@"
+                                        //+ "@"   + this.MAIN.TABLE + "@"
+                                        + this.MAIN.TABLE + this.MAIN.SUFIXO
                                         + "."   + drw.Cells["codCampos" ].Value.ToString()
                                         + " "   + drw.Cells["tipoFiltro"].Value.ToString() + " "
                                         + " ('" + drw.Cells["Filtro"    ].Value.ToString() + "') ");
@@ -84,9 +85,9 @@ namespace SigaControls.Report
             this.MAIN = main;
             this.Dock = DockStyle.Fill;
         }
-        public Filters()          
+        public Filters() : this(null)
         {
-            initialize(null);
+            //initialize(null);
         }
         public Filters(Table main)
         {

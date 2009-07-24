@@ -22,7 +22,7 @@ namespace SigaControls.Report
         public  REPORT.Report.ReportVo mainReport = null; //new REPORT.Report.ReportVo(); /// RELATORIO DIRETAMENTE LIGADO
         public  REPORT.Table.TableVo   main       = null; //new REPORT.Table.TableVo();   /// OWNER DA TABELA
         public  Fields      FIELDS;  //  = new Fields();      // CAMPOS DA TABELA
-        public  List<Table> CHILDREN;//  = new List<Table>(); // LINKS (tabelas)
+        //public  List<Table> CHILDREN;//  = new List<Table>(); // LINKS (tabelas)
         //private GroupBy     GROUPBY; //  = new GroupBy();     // AGRUPAMENTO
         public  Filters     FILTERS; //  = new Filters();     // FILTROS
         private OrderBy     ORDERBY; //  = new OrderBy();     // ORDENACAO
@@ -34,6 +34,11 @@ namespace SigaControls.Report
         public  REPORT.Table.TableVo   THISTABLE       = new REPORT.Table.TableVo();   /// ESTA TABELA
         private List<string>           relatedTables   = new List<string>();
         private string                 filtroParametro = "";
+
+        private REPORT.Table.TableVo  _relatedtable = new REPORT.Table.TableVo();
+
+        private DataTable dataRelatedTable = new DataTable();
+        private DataTable dataRelatedChild = new DataTable();
         #endregion
 
         #region PROPRIEDADES
@@ -48,7 +53,12 @@ namespace SigaControls.Report
         }
         
         #region PROPRIEDADES DO THISTABLE
-        public int REPORTID
+        public string SUFIXO  
+        {
+            get{ return this.THISTABLE.SUFIXO;  }
+            set{ this.THISTABLE.SUFIXO = value; }
+        } // SUFIXO DA TABELA
+        public int    REPORTID
         {
             get
             {   return (this.MAINREPORT != null) ? this.MAINREPORT.ID : 0;
@@ -63,11 +73,11 @@ namespace SigaControls.Report
                 this.MAINREPORT.ID = value;
             }
         } // ID DO RELATORIO LIGADO
-        public int MAINID  
+        public int    MAINID  
         {
             get { return (this.MAIN != null) ? this.MAIN.ID : 0; }
         } // ID DA TABELA LIGADA
-        public int ID      
+        public int    ID      
         {
             get { return this.THISTABLE.ID; }
             set { this.THISTABLE.ID = value; }
@@ -106,9 +116,16 @@ namespace SigaControls.Report
             set
             {
                 if (value != null)
+                {
                     this.THISTABLE.RELATEDTABLE = value;
+                }
             }
         } // NOME DA TABELA RELACIONADA
+        public int           RELATEDINDEX 
+        {
+            get { return this.THISTABLE.RELATEDINDEX;  }
+            set { this.THISTABLE.RELATEDINDEX = value; }
+        }
         public string        RELATEDIDENT 
         {
             get { return this.THISTABLE.RELATEDIDENT; }
@@ -139,11 +156,11 @@ namespace SigaControls.Report
                 {
                     string tableKey = "@$TABLE$@";
                     string domTable  = tableKey.Replace("$TABLE$", this.TABLE);//(string)new SXManager(sigaSession.EMPRESAS[0].CODIGO).getTabela(this.RELATEDTABLE)["X2_ARQUIVO"];
-                    string cdomTable = tableKey.Replace("$TABLE$", this.RELATEDTABLE);       //(string)new SXManager(sigaSession.EMPRESAS[0].CODIGO).getTabela(this.TABLE       )["X2_ARQUIVO"];
+                    string cdomTable = this.RELATEDTABLE+this._relatedtable.SUFIXO; //tableKey.Replace("$TABLE$", this.RELATEDTABLE);       //(string)new SXManager(sigaSession.EMPRESAS[0].CODIGO).getTabela(this.TABLE       )["X2_ARQUIVO"];
                     sRet.Append( this.RELATEDTYPE );
-                    sRet.AppendLine(domTable);
+                    sRet.AppendLine(domTable + " AS " + this.TABLE + this.SUFIXO);
                     sRet.AppendLine("    ON "
-                                   + domTable
+                                   + this.TABLE + this.SUFIXO//domTable
                                    + ".D_E_L_E_T_ = "
                                    + cdomTable
                                    + ".D_E_L_E_T_");
@@ -155,7 +172,7 @@ namespace SigaControls.Report
                         string[] clCdom = clauses[1].ToString().Split('+');
                         for (int idx = 0; (idx < clDom.Length && idx < clCdom.Length); idx++)
                             sRet.AppendLine("   AND "
-                                           + (((string)clDom.GetValue(idx)).Trim().StartsWith("'") ? "" : domTable + ".")
+                                           + (((string)clDom.GetValue(idx)).Trim().StartsWith("'") ? "" : this.TABLE+this.SUFIXO + ".")//domTable + ".")
                                            + (string)clDom.GetValue(idx)
                                            + " = "
                                            + (((string)clCdom.GetValue(idx)).Trim().StartsWith("'") ? "" : cdomTable + ".")
@@ -170,6 +187,24 @@ namespace SigaControls.Report
         } // MONTA RELACIONAMENTO COM CLAUSULAS
         #endregion
 
+        #region RECURSIVE PROPERTYES
+        public  List<Table>   CHILDREN       
+        {
+            get
+            {
+                List<Table> tables = new List<Table>();
+
+                foreach (Control c in linksPainel.Controls)
+                {
+                    if (c.GetType().Equals(typeof(Table)))
+                    {
+                        tables.Add((Table)c);
+                    }
+                }
+
+                return tables;
+            }
+        }
         public  List<Table>   RECURSIVETABLES
         {
             get
@@ -177,7 +212,7 @@ namespace SigaControls.Report
                 List<Table> tables = new List<Table>();
 
                 // ADD ESTA TABELA, pois esta propriedade retorna todas desse nivel pra baixo.
-                tables.Add(this);
+                //tables.Add(this);
 
                 foreach (Control c in linksPainel.Controls)
                 {
@@ -193,7 +228,82 @@ namespace SigaControls.Report
                 return tables;
             }
         }
-        public  List<string>  RELATEDTABLES  
+
+        public List<REPORT.Table.TableVo    > RecTABLESvo 
+        {
+            get
+            {
+                List<REPORT.Table.TableVo> _tables = new List<REPORT.Table.TableVo>();
+
+                foreach (Control c in linksPainel.Controls)
+                {
+                    if (c.GetType().Equals(typeof(Table)))
+                    {
+                        _tables.Add((c as Table).THISTABLE);
+
+                        foreach (REPORT.Table.TableVo child in (c as Table).RecTABLESvo)
+                            _tables.Add(child);
+                    }
+                }
+
+                return _tables;
+            }
+        }
+        public List<REPORT.Fields.FieldsVo  > RecFIELDSvo 
+        {
+            get
+            {
+                List<REPORT.Fields.FieldsVo> _fields = new List<REPORT.Fields.FieldsVo>();
+
+                foreach (REPORT.Table.TableVo table in this.RecTABLESvo)
+                    foreach (REPORT.Fields.FieldsVo field in table.FIELDS)
+                        _fields.Add(field);
+
+                return _fields;
+            }
+        }
+        public List<REPORT.Filters.FiltersVo> RecFILTERSvo
+        {
+            get
+            {
+                List<REPORT.Filters.FiltersVo> _filters = new List<REPORT.Filters.FiltersVo>();
+
+                foreach (REPORT.Table.TableVo table in this.RecTABLESvo)
+                    foreach (REPORT.Filters.FiltersVo filter in table.FILTERS)
+                        _filters.Add(filter);
+
+                return _filters;
+            }
+        }
+        public List<REPORT.OrderBy.OrderByVo> RecORDERBYvo
+        {
+            get
+            {
+                List<REPORT.OrderBy.OrderByVo> _orders = new List<REPORT.OrderBy.OrderByVo>();
+
+                foreach (REPORT.Table.TableVo table in this.RecTABLESvo)
+                    foreach (REPORT.OrderBy.OrderByVo order in table.ORDERBY)
+                        _orders.Add(order);
+
+                return _orders;
+            }
+        }
+        public List<REPORT.Params.ParamsVo  > RecPARAMSvo 
+        {
+            get
+            {
+                List<REPORT.Params.ParamsVo> _params = new List<REPORT.Params.ParamsVo>();
+
+                foreach (REPORT.Table.TableVo table in this.RecTABLESvo)
+                    foreach (REPORT.Params.ParamsVo parm in table.PARAMS)
+                        _params.Add(parm);
+
+                return _params;
+            }
+        }
+        #endregion
+
+        public  List<Table>  RELATEDTABLES  
         {
             /*
             get
@@ -217,16 +327,16 @@ namespace SigaControls.Report
             }//*/
             get
             {
-                List<string> tables = new List<string>();
+                List<Table> tables = new List<Table>();
 
                 // ADD ESTA TABELA, pois esta propriedade retorna todas desse nivel pra baixo.
-                tables.Add(this.TABLE);
+                tables.Add(this);
 
                 foreach (Control c in linksPainel.Controls)
                 {
                     if (c.GetType().Equals(typeof(Table)))
                     {
-                        tables.Add((c as Table).TABLE);
+                        tables.Add((c as Table));
                     }
                 }
 
@@ -246,9 +356,12 @@ namespace SigaControls.Report
             get
             {
                 string  QryOrdem = ""; // tmp ordem
+                
+                this.THISTABLE.ReSUFIXO();
 
                 #region CREATING GENERIC QUERY.
                 string tableKey = "@$TABLE$@";
+                string sufixKey = this.TABLE+this.SUFIXO;
 
                 StringBuilder genericQuery = new StringBuilder();
 
@@ -260,7 +373,8 @@ namespace SigaControls.Report
                 if(this.getFieldsFromTables(childFields, childGroups, this))
                     havegroup = true;
 
-                string fromTable = tableKey.Replace("$TABLE$", this.TABLE); //(string)new SXManager(empresa.CODIGO).getTabela(this.TABLE)["X2_ARQUIVO"];
+                string fromTable = tableKey.Replace("$TABLE$" , this.TABLE); //(string)new SXManager(empresa.CODIGO).getTabela(this.TABLE)["X2_ARQUIVO"];
+
                 string agrupa    = "";
 
                 this.FIELDS.generateShowFieldsAndGroupBy();
@@ -276,13 +390,13 @@ namespace SigaControls.Report
                             + childGroups;
 
                 genericQuery.AppendLine("SELECT DISTINCT '@EMPRESA@' EMPRESA, @FILIAL@ FILIAL, " + campos);
-                genericQuery.AppendLine("  FROM " + fromTable);
+                genericQuery.AppendLine("  FROM " + fromTable + " AS " + sufixKey);
                 genericQuery.AppendLine("@JOIN@");
 
                 /// JOIN
                 this.addJoinTables(genericQuery, this);
 
-                genericQuery.AppendLine(" WHERE " + fromTable + "." + "D_E_L_E_T_ = ' '");
+                genericQuery.AppendLine(" WHERE " + sufixKey + "." + "D_E_L_E_T_ = ' '");
                 if (this.FILTERS.FILTERS.Length > 0)
                     genericQuery.AppendLine("   AND " + this.FILTERS.FILTERS);
 
@@ -428,7 +542,7 @@ namespace SigaControls.Report
                         tempQuery = tempQuery.Replace("@FILIAL@", "M0_FILIAL");
                         tempQuery = tempQuery.Replace("@JOIN@"  , "  LEFT JOIN SigaWeb..SIGAMAT \r\n" +
                                                                   "    ON M0_CODIGO = '" + empresa.CODIGO + "'      \r\n" +
-                                                                  "   AND M0_CODFIL = @" + this.TABLE + "@."
+                                                                  "   AND M0_CODFIL = " + this.TABLE + this.SUFIXO + "."
                                                                   + new SXManager(empresa.CODIGO).getFields(this.TABLE, "X3_CAMPO LIKE '%_FILIAL'", null).DefaultView[0]["X3_CAMPO"]);
                         tempQuery = tempQuery.Replace("@FILGROUP@", "M0_FILIAL, ");
                     }
@@ -460,6 +574,7 @@ namespace SigaControls.Report
                 return sQuery;
             }
         } // MONTA A QUERY A PARTIR DOS CONTROLES NA TELA.
+        
         private void replaceRecursiveTables(StringBuilder inQuery, Table mainTB, SigaObjects.Session.Empresa.EmpresaVo empresa)
         {
             foreach (Table childTB in mainTB.CHILDREN)
@@ -531,7 +646,7 @@ namespace SigaControls.Report
             this.tpParms.Controls.Clear();
 
             /// INICIALIZANDO OBJETOS
-            this.CHILDREN = new List<Table>();
+            //this.CHILDREN = new List<Table>();
             this.FIELDS   = new Fields( this);
             this.FILTERS  = new Filters(this);
             this.ORDERBY  = new OrderBy(this);
@@ -556,8 +671,18 @@ namespace SigaControls.Report
             dtRelType.Rows.Add("SOMENTE NESTA         ", " RIGHT JOIN ");
             cbRelatedType.DataSource = dtRelType.DefaultView;
 
+            /*
             cbRelatedTable.DisplayMember = SXManager.TableDisplayMember;
             cbRelatedTable.ValueMember   = SXManager.TableValueMember;
+            //*/
+
+            // -------------------------------
+            dataRelatedTable = new DataTable();
+            dataRelatedTable.Columns.Add("display");
+            dataRelatedTable.Columns.Add("value");
+            cbRelatedTable.DisplayMember = "display";
+            cbRelatedTable.ValueMember   = "value";
+            cbRelatedTable.DataSource = dataRelatedTable.DefaultView;
         }
         
         public Table(REPORT.Report.ReportVo report)              
@@ -625,6 +750,9 @@ namespace SigaControls.Report
         /// <param name="tablevo"></param>
         public void LOAD(REPORT.Table.TableVo tablevo)
         {
+            //if(this.MAIN!=null)
+            //    this.MAIN.CHILDREN.Add(tablevo);
+
             this.THISTABLE = tablevo;
             this.TABLE     = tablevo.TABELA;
 
@@ -641,7 +769,7 @@ namespace SigaControls.Report
             //this.GROUPBY.LOAD();
             this.FILTERS.LOAD();
             this.ORDERBY.LOAD();
-            this.PARAMS.LOAD();
+            this.PARAMS.LOAD( );
             //*/
             if (this.ID != 0)
             {
@@ -650,8 +778,10 @@ namespace SigaControls.Report
                 //this.RELATEDTABLES.Add(this.TABLE);
 
                 #region TABELAS FILHO
+                //*
                 //List<REPORT.Table.TableVo> childrenTable = new List<REPORT.Table.TableVo>();
                 new REPORT.Table.TableDao().load(this.THISTABLE.CHILDREN, this.REPORTID, this.ID);
+                //*/
                 this.AddChildrenTable(this.THISTABLE.CHILDREN);
                 #endregion
             }
@@ -727,6 +857,15 @@ namespace SigaControls.Report
         }
         //*/
         #endregion
+        public List<string> getTables()
+        {
+            List<string> strTables = new List<string>();
+
+            foreach(Table tabs in this.RELATEDTABLES)
+                strTables.Add(tabs.TABLE);
+
+            return strTables;
+        }
         private void RELOAD()  
         {
             foreach ( Table child in this.linksPainel.Controls)
@@ -739,7 +878,7 @@ namespace SigaControls.Report
             new REPORT.Table.TableDao().load(this.THISTABLE,this.THISTABLE.IDREPORT,this.THISTABLE.MAINID);
 
             string ident      = this.RELATEDIDENT;
-            this.cbRelatedTable.SelectedValue = this.RELATEDTABLE;
+            this.cbRelatedTable.SelectedValue = this.RELATEDINDEX+"|"+this.RELATEDIDENT; //this.RELATEDTABLE;
             this.RELATEDIDENT = ident;
         }
         public  void LOADJOINS(List<string> relatedtables)
@@ -758,7 +897,7 @@ namespace SigaControls.Report
         public  void ReloadRelatedTables()
         {
             foreach (Table child in this.CHILDREN)
-                child.LOADJOINS(this.RELATEDTABLES);
+                child.LOADJOINS(getTables());
         }
         public  void DELETE()  
         {
@@ -806,13 +945,30 @@ namespace SigaControls.Report
         public void AddChildTable(Table child)
         {
             this.CHILDREN.Add(child);
-            this.RELATEDTABLES.Add(child.TABLE);
-            FormatScreen.AddControl(linksPainel, child, true, 4, false, false);
+            //this.RELATEDTABLES.Add(child.TABLE);
+            FormatScreen.AddControl(linksPainel, child, true, 3, false, false);
+            foreach(Table tab in this.CHILDREN)
+                tab.popRelatedtables(dataRelatedChild);
+        }
+
+        public void popRelatedtables(DataTable dados)
+        {
+            dataRelatedTable.Rows.Clear();
+
+            foreach(Table table in this.RELATEDTABLES)
+                foreach(DataRow row in dados.Rows)
+                    if(table.TABLE == row["X2_NOME"].ToString())
+                    {
+                        int idx = this.RELATEDTABLES.IndexOf(table);
+                        dataRelatedTable.Rows.Add( idx+" - "+(string)row["X2_NOME"]+" - "+table.RELATEDIDENT
+                                                 , idx+"|"+table.RELATEDIDENT);
+                        // TODO: incluir validação e informação na relação de tabelas.
+                    }
         }
         #endregion
 
         #region EVENTOS
-        private void tpJoin_ControlAdded(object sender, ControlEventArgs e)
+        private void tpJoin_ControlAdded(  object sender, ControlEventArgs e)
         {
         }
         private void tpJoin_ControlRemoved(object sender, ControlEventArgs e)
@@ -845,14 +1001,14 @@ namespace SigaControls.Report
 
             dados = new SXManager(sigaSession.EMPRESAS[0].CODIGO)
                 //.getChildTables(this.RELATEDTABLES, "SX9.X9_DOM = '" + this.TABLE + "' AND X2_NOME LIKE '%"+filtro+"%'");
-                        .getParentTables(this.RELATEDTABLES, "X2_NOME LIKE '%" + filtro + "%'");
+                        .getParentTables(getTables(), "X2_NOME LIKE '%" + filtro + "%'");
             //.getRelatedTables(this.RELATEDTABLES, "X2_NOME LIKE '%" + filtro + "%'");
 
             // inicializar com dados desejados as listas.
-            toControls.Add(strTable);
+            toControls.Add(     strTable  );
             oCollumnsReturn.Add("X2_CHAVE");
 
-            toControls.Add(strIdent);
+            toControls.Add(     strIdent  );
             oCollumnsReturn.Add("X9_IDENT");
 
             Form frm = new Form();
@@ -876,7 +1032,7 @@ namespace SigaControls.Report
             cTable.IDREPORT = this.REPORTID;
             cTable.TABELA   = (sender as Control).Text;
 
-            //child.LOAD(cTable);
+            // child.LOAD(cTable);
             
             this.AddChildTable(cTable);
         }
@@ -892,30 +1048,39 @@ namespace SigaControls.Report
         {
             List<Control> controls = new List<Control>();
             foreach (Control c in linksPainel.Controls)
+            {
                 controls.Add(c);
+                (c as Table).THISTABLE.INDEX = linksPainel.Controls.IndexOf(c);
+            }
 
             FormatScreen.Ajust2EqualsWidthControls(controls.ToArray(), linksPainel.Width, false);
         }
         private void linksPainel_ControlAdded(  object sender, ControlEventArgs e)
         {
+            if ((e.Control as Table).THISTABLE.INDEX < 0)
+                this.THISTABLE.CHILDREN.Add((e.Control as Table).THISTABLE);
+
             this.linksPainel_AjustControls();
             this.ReloadRelatedTables();
         }
 
         private void linksPainel_ControlRemoved(object sender, ControlEventArgs e)
         {
+            this.THISTABLE.CHILDREN.Remove((e.Control as Table).THISTABLE);
+
             this.linksPainel_AjustControls();
             this.ReloadRelatedTables();
         }
 
-        private void linksPainel_Resize(object sender, EventArgs e)
+        private void linksPainel_Resize(        object sender, EventArgs e)
         {
             this.linksPainel_AjustControls();
         }
 
         private void cbRelatedTable_TextChanged(object sender, EventArgs e)
         {
-            this.RELATEDTABLE = (string)cbRelatedTable.SelectedValue;
+            if (cbRelatedTable.SelectedIndex>=0 && cbRelatedTable.SelectedValue != null)
+                this.RELATEDTABLE = cbRelatedTable.SelectedValue.ToString();
         }
 
         private void cbRelatedType_TextChanged( object sender, EventArgs e)
@@ -930,10 +1095,19 @@ namespace SigaControls.Report
                 ComboBox cb = (sender as ComboBox);
                 if (cb.SelectedIndex >= 0 && cb != null)
                 {
+                    /*
                     DataRowView row = (DataRowView)cb.SelectedItem;
                     
-                    this.RELATEDTABLE = (string)row["X2_CHAVE"];//cb.SelectedValue.ToString();
+                    this.RELATEDTABLE = (string)row["X2_CHAVE"]; //cb.SelectedValue.ToString();
                     this.RELATEDIDENT = (string)row["X9_IDENT"];
+                    //*/
+
+                    int idx = (int)cb.SelectedValue.ToString().Split('|').GetValue(0);
+
+                    REPORT.Table.TableVo table = this.MAIN.CHILDREN[idx];
+
+                    this.RELATEDTABLE = table.TABELA;
+                    this.RELATEDIDENT = (string)cb.SelectedValue.ToString().Split('|').GetValue(1);
                 }
             }
         }
@@ -943,7 +1117,9 @@ namespace SigaControls.Report
             {
                 ComboBox cb = (sender as ComboBox);
                 if (cb.SelectedIndex >= 0)
+                {
                     this.RELATEDTYPE = cb.SelectedValue.ToString();
+                }
             }
         }
     }
