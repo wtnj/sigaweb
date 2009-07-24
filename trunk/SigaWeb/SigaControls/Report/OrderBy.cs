@@ -47,9 +47,9 @@ namespace SigaControls.Report
 
         #region Construtor
         /// <summary>Chama o método initialize, Inicializa os controles e seus respectivos Members (Display & Value)</summary>
-        public OrderBy()
+        public OrderBy():this(null)
         {
-            initialize(null);
+            //initialize(null);
         }
         /// <summary>Chama o método initialize, Inicializa os controles e seus respectivos Members (Display & Value)</summary>
         /// <param name="main">Um [controle] mainTable</param>
@@ -119,7 +119,7 @@ namespace SigaControls.Report
                 /// CARREGAR TABELAS RELACIONADAS.
                 cmbTabela.DataSource = 
                     new SXManager(sigaSession.EMPRESAS[0].CODIGO)
-                    .getTables("X2_CHAVE IN (" + SXManager.getStringArr(this.MAIN.RELATEDTABLES) + ")")
+                    .getTables("X2_CHAVE IN (" + SXManager.getStringArr(this.MAIN.getTables()) + ")")
                     .DefaultView;
 
                 /// CARREGAR CONFIGURACAO DE FILDS DO BANCO

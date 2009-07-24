@@ -21,9 +21,17 @@ namespace SigaObjects.Reports.Table
         #region Save
         public int save(List<TableVo> tables)
         {
-            int cont = 0;
-            foreach (TableVo table in tables)
+            int cont =  0;
+            
+            //foreach (TableVo table in tables)
+            //{
+            for (int idx = 0; idx < tables.Count; idx++)
+            {
+                Table.TableVo table = tables[idx];
+
+                table.INDEX = idx;
                 cont += save(table);
+            }
             return cont;
         }
         public int save(TableVo table)
@@ -32,6 +40,32 @@ namespace SigaObjects.Reports.Table
             {
                 int i = insert(table);
                 this.load(table, table.IDREPORT, table.MAINID);
+
+                #region RESET MAINIDs
+                foreach (Fields.FieldsVo   field  in table.FIELDS  )
+                    field.MAINID  = table.ID;
+                foreach (Filters.FiltersVo filter in table.FILTERS )
+                    filter.MAINID = table.ID;
+                foreach (OrderBy.OrderByVo order  in table.ORDERBY )
+                    order.MAINID  = table.ID;
+                foreach (Params.ParamsVo   parms  in table.PARAMS  )
+                    parms.MAINID  = table.ID;
+                foreach (Table.TableVo child in table.CHILDREN)
+                {
+                    child.MAINID   = table.ID;
+                    child.IDREPORT = table.IDREPORT;
+                    //child.INDEX    = table.CHILDREN.IndexOf(child);
+                }
+                #endregion
+
+                #region SAVE PROPRIEDADES
+                new Fields.FieldsDao(  ).save(table.FIELDS  );
+                new Filters.FiltersDao().save(table.FILTERS );
+                new OrderBy.OrderByDao().save(table.ORDERBY );
+                new Params.ParamsDao(  ).save(table.PARAMS  );
+                new Table.TableDao(    ).save(table.CHILDREN);
+                #endregion
+
                 return i;
             }
             else
@@ -45,15 +79,16 @@ namespace SigaObjects.Reports.Table
             this.QUERY = new StringBuilder(fromDatabase);
 
             this.QUERY.Append("INSERT INTO [RTable]");
-            this.QUERY.AppendLine("(idReport, mainId, relatedtable, relatedident, relatedtype, tabela)");
+            this.QUERY.AppendLine("(idReport, mainId, relatedtable, relatedident, relatedtype, tabela, indice)");
 
             this.QUERY.Append("VALUES( ");
-            this.QUERY.Append("        "  + table.IDREPORT         );
-            this.QUERY.Append("      , "  + table.MAINID           );
+            this.QUERY.Append("        " + table.IDREPORT          );
+            this.QUERY.Append("      , " + table.MAINID            );
             this.QUERY.Append("      ,'" + table.RELATEDTABLE + "'");
             this.QUERY.Append("      ,'" + table.RELATEDIDENT + "'");
             this.QUERY.Append("      ,'" + table.RELATEDTYPE  + "'");
             this.QUERY.Append("      ,'" + table.TABELA       + "'");
+            this.QUERY.Append("      ,'" + table.INDEX        + "'");
             this.QUERY.AppendLine("      )");
 
             return getData().DefaultView.Count;
@@ -72,6 +107,7 @@ namespace SigaObjects.Reports.Table
             this.QUERY.AppendLine("     , relatedident = '" + table.RELATEDIDENT + "'");
             this.QUERY.AppendLine("     , relatedtype  = '" + table.RELATEDTYPE  + "'");
             this.QUERY.AppendLine("     , tabela       = '" + table.TABELA       + "'");
+            this.QUERY.AppendLine("     , indice       = '" + table.INDEX        + "'");
             this.QUERY.AppendLine(" WHERE id    = " + table.ID);
 
             return getData().DefaultView.Count;
@@ -161,11 +197,11 @@ namespace SigaObjects.Reports.Table
         #region Load
         public void load(TableVo table, int idReport, int mainId)
         {
-            load(table, idReport, mainId, null);
+            load(table, idReport, mainId, "indice = "+table.INDEX);
         }
         public void load(TableVo table, int idReport, int mainId, bool filterTable)
         {
-            load(table, idReport, mainId, "tabela = '" + table.TABELA + "'");
+            load(table, idReport, mainId, "tabela = '" + table.TABELA + "' AND indice = "+table.INDEX);
         }
         public void load(TableVo table, int idReport, int mainId, string filtro)
         {
@@ -180,6 +216,7 @@ namespace SigaObjects.Reports.Table
                 table.RELATEDIDENT = (string)dtTable.DefaultView[0]["relatedident"];
                 table.RELATEDTYPE  = (string)dtTable.DefaultView[0]["relatedtype"];
                 table.TABELA       = (string)dtTable.DefaultView[0]["tabela"];
+                table.INDEX        = (int)   dtTable.DefaultView[0]["indice"];
             }
         }
         public void load(List<TableVo> tables, int idReport, int mainId)
@@ -188,18 +225,20 @@ namespace SigaObjects.Reports.Table
         }
         public void load(List<TableVo> tables, int idReport, int mainId, string filtro)
         {
-            DataTable table = select(idReport, mainId, filtro, false);
-            for (int i = 0; i < table.DefaultView.Count; i++)
-            {
-                TableVo tableVo  = new TableVo();
-                tableVo.IDREPORT = idReport;
-                tableVo.MAINID   = mainId;
+            string sFiltro;
+            sFiltro  = filtro;
+            sFiltro += string.IsNullOrEmpty(sFiltro) ? "" : " AND ";
+            sFiltro += "indice = ";
 
-                tableVo.ID           = (int)   table.DefaultView[i]["id"];
-                tableVo.RELATEDTABLE = (string)table.DefaultView[i]["relatedtable"];
-                tableVo.RELATEDIDENT = (string)table.DefaultView[i]["relatedident"];
-                tableVo.RELATEDTYPE  = (string)table.DefaultView[i]["relatedtype"];
-                tableVo.TABELA       = (string)table.DefaultView[i]["tabela"];
+            int idx = 0;
+            while (true)
+            {
+                TableVo tableVo = new TableVo();
+
+                load(tableVo, idReport, mainId, sFiltro + idx++);
+
+                if (tableVo.ID == 0)
+                    break;
 
                 tables.Add(tableVo);
             }

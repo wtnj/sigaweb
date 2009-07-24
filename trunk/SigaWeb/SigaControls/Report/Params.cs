@@ -27,9 +27,9 @@ namespace SigaControls.Report
         }
 
         #region CONSTRUTORES e initialize
-        public  Params()
+        public  Params() : this(null)
         {
-            this.initialize(null);
+            //this.initialize(null);
         }
         public  Params(Table main)
         {
@@ -62,7 +62,7 @@ namespace SigaControls.Report
                 /// CARREGAR TABELAS RELACIONADAS.
                 cmbTabela.DataSource = 
                     new SXManager(sigaSession.EMPRESAS[0].CODIGO)
-                    .getTables("X2_CHAVE IN (" + SXManager.getStringArr(this.MAIN.RELATEDTABLES) + ")")
+                    .getTables("X2_CHAVE IN (" + SXManager.getStringArr(this.MAIN.getTables()) + ")")
                     .DefaultView;
 
                  cmbCampos.DataSource = 
@@ -116,6 +116,15 @@ namespace SigaControls.Report
                 string      len  = row["X3_TAMANHO"].ToString();
                 string      obj  = FormatScreen.getObjectFromSigaType(tipo).GetType().ToString();
 
+                REPORT.Params.ParamsVo parm = new REPORT.Params.ParamsVo();
+                parm.MAINID  = this.MAIN.ID;
+                parm.TAMANHO = int.Parse(len);
+                parm.TABELA  = this.MAIN.TABLE;
+                parm.CAMPO   = this.cmbCampos.SelectedValue.ToString();
+                parm.FORMATO = tipo;
+                parm.OBJETO  = obj;
+                this.MAIN.THISTABLE.PARAMS.Add(parm);
+
                 dados.Rows.Add( 0               //id
                               , this.MAIN.ID    //id da ligação
                               , len             //tamanho de digitação
@@ -133,8 +142,27 @@ namespace SigaControls.Report
             {
                 ListBox     list = (ListBox    )objSender;
                 DataRowView row  = (DataRowView)list.SelectedItem;
+
+                //int idx = find((string)row[""]);
+                //if (idx >= 0)
+                //    this.MAIN.THISTABLE.PARAMS.RemoveAt(idx);
+                this.MAIN.THISTABLE.PARAMS.RemoveAt((objSender as ListBox).SelectedIndex);
+                
                 row.Delete();
             }
+        }
+
+        private int find(string campo)
+        {
+            int idx = 0;
+            foreach (REPORT.Params.ParamsVo parms in this.MAIN.THISTABLE.PARAMS)
+            {
+                if (parms.CAMPO == campo)
+                    return idx;
+                idx++;
+            }
+
+            return -1;
         }
     }
 }

@@ -110,9 +110,12 @@ namespace SigaControls.Report
         {
             try
             {
+                if (txtReportName.Text.Trim().Length == 0)
+                    throw new Exception("Insira um nome no relatório, não é possivel gravar um relatório sem nome.");
+                
                 REPORT.ReportGroup.ReportGroupDao rgDAO = new REPORT.ReportGroup.ReportGroupDao();
                 rgDAO.load(this.REPORTGROUP);
-                if(this.REPORTGROUP.ID==0)
+                if (this.REPORTGROUP.ID == 0)
                     rgDAO.save(this.REPORTGROUP);
                 
                 this.THISREPORT.IDREPORTGROUP = this.REPORTGROUP.ID;
@@ -123,11 +126,36 @@ namespace SigaControls.Report
                 
                 new REPORT.Report.ReportDao().save(this.THISREPORT);
 
-                if (this.TABLE != null)
-                    foreach(Table table in this.TABLE.RECURSIVETABLES)
-                        table.REPORTID = this.ID;
+                //if (this.TABLE != null)
+                //    foreach(Table table in this.TABLE.RECURSIVETABLES)
+                //        table.REPORTID = this.ID;
 
-                this.TABLE.SAVE();
+                //this.TABLE.SAVE();
+                //this.TABLE.RECURSIVETABLES;
+                new REPORT.Table.TableDao().delete(this.ID, 0);
+
+                #region RESET IDs
+                foreach (Table _table in this.TABLE.RECURSIVETABLES)
+                {
+                    _table.THISTABLE.ID = 0; // ZERANDO TABELAS FILHO (recursivamente)
+
+                    foreach (REPORT.Fields.FieldsVo _field in _table.THISTABLE.FIELDS)
+                        _field.ID = 0;  // ZERANDO SEUS CAMPOS
+                    
+                    foreach (REPORT.Filters.FiltersVo _filter in _table.THISTABLE.FILTERS)
+                        _filter.ID = 0; // ZERANDO SEUS FILTROS
+                    
+                    foreach (REPORT.OrderBy.OrderByVo _order in _table.THISTABLE.ORDERBY)
+                        _order.ID = 0;  // ZERANDO SUAS ORDENS
+                    
+                    foreach (REPORT.Params.ParamsVo _parm in _table.THISTABLE.PARAMS)
+                        _parm.ID = 0;   // ZERANDO SEUS PARAMETROS
+                }
+                #endregion
+
+                this.TABLE.THISTABLE.ID       = 0;
+                this.TABLE.THISTABLE.IDREPORT = this.ID;
+                new REPORT.Table.TableDao().save(this.TABLE.THISTABLE);
 
                 MessageBox.Show("Relatorio Salvo com sucesso!", "SALVANDO...");
             }
@@ -155,6 +183,9 @@ namespace SigaControls.Report
                     new SigaObjects.Reports.Report.ReportDao().load(this.THISREPORT, reportName, null);
                     //this.ID     = report.ID;
                     this.cbReportGroup.SelectedValue = this.THISREPORT.IDREPORTGROUP;
+
+                    if (this.TABLEVO != null)
+                        this.TABLEVO.INDEX = 0;
 
                     if (this.ID > 0)
                     {
@@ -282,6 +313,7 @@ namespace SigaControls.Report
         private void reportPanel_ControlAdded(object sender, ControlEventArgs e)
         {
             (e.Control as Table).ChangeRootTable(true);
+            (e.Control as Table).THISTABLE.INDEX = 0;
         }
     }
 }

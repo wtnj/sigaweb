@@ -180,7 +180,8 @@ namespace SigaControls.Report
                     
                     show = drw.Cells[3].Value.ToString();
                     
-                    string field = "@"+this.MAIN.TABLE+"@"
+                    string field = //"@"+this.MAIN.TABLE+"@"
+                                   this.MAIN.TABLE + this.MAIN.SUFIXO
                                  + "."
                                  + (string)drw.Cells[1].Value;
 
@@ -269,12 +270,12 @@ namespace SigaControls.Report
         }
         public void LOAD(List<REPORT.Fields.FieldsVo> checkFields)
         {
+            this.MAIN.THISTABLE.FIELDS = checkFields;
+
             try
             {
                 if (this.MAIN.TABLE != null)
                 {
-                    
-
                     // POPULA CAMPOS DA TABELA SELECIONADA
                     DataTable dtFields = new SXManager(sigaSession.EMPRESAS[0].CODIGO).getFields(this.MAIN.TABLE);
                     foreach (DataRow drv in dtFields.Rows)
@@ -389,18 +390,35 @@ namespace SigaControls.Report
             }
         }
 
+        private int find(string strField)
+        {
+            foreach (REPORT.Fields.FieldsVo field in this.MAIN.THISTABLE.FIELDS)
+                if (field.CODIGO == strField)
+                    return this.MAIN.THISTABLE.FIELDS.IndexOf(field);
+
+            return -1;
+        }
         private void marcarCampo(int row, int col)
         {
-            if (dgvFields.Rows[row].Cells[0].Value.ToString() == "True")
+            if (dgvFields.Rows[row].Cells[0].Value.ToString() != "True")
             {
+                DataGridViewRow dgvRow = dgvFields.Rows[row];
+
+                REPORT.Fields.FieldsVo field = new REPORT.Fields.FieldsVo();
+                field.CODIGO   = (string)dgvRow.Cells[1].Value;
+                field.GROUPING = (string)dgvRow.Cells[3].Value;
+                field.MAINID   = this.MAIN.ID;
+
+                this.MAIN.THISTABLE.AddField(field);
+                
                 /// Verifica se existe grupo
                 /// se existir verifica o select do campo.
-                string query = this.main.QUERY.ToString();
-                int haveOrder = query.IndexOf("ORDER BY");
+                string query     = this.main.QUERY.ToString();
+                int    haveOrder = query.IndexOf("ORDER BY");
 
                 string tab_camp = new SXManager(sigaSession.EMPRESAS[0].CODIGO).getTabela(this.main.TABLE)["X2_ARQUIVO"].ToString()
                                    + "."
-                                   + dgvFields.Rows[row].Cells[1].Value.ToString();
+                                   + dgvRow.Cells[1].Value.ToString();
 
                 if (haveOrder > 0)
                 {
@@ -417,16 +435,23 @@ namespace SigaControls.Report
 
                         this.main.LOAD(this.main.THISTABLE);
 
-                        MessageBox.Show("A Ordenação com este campo foi excluída. ");
-
+                        MessageBox.Show("A Ordenação com este campo foi excluída.");
                     }
                 }
+            }
+            else
+            {
+                //this.MAIN.THISTABLE.RemoveField(
+                int idx = this.MAIN.THISTABLE.FindField((string)dgvFields.Rows[row].Cells[1].Value);
+                
+                if(idx>=0)
+                    this.MAIN.THISTABLE.FIELDS.RemoveAt(idx);
             }
         }
         private void dgvFields_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 0)
-                marcarCampo(e.RowIndex, e.ColumnIndex);
+            //if (e.ColumnIndex == 0)
+            //    marcarCampo(e.RowIndex, e.ColumnIndex);
 
             //marcarCampo(e.RowIndex, e.ColumnIndex);
             //dgvFields.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "erro...";
@@ -474,8 +499,17 @@ namespace SigaControls.Report
         private void dgvFields_GotFocus(object sender, EventArgs e)
         {
             return;
-        }      
+        }
 
-     
+        private void dgvFields_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+                marcarCampo(e.RowIndex, e.ColumnIndex);
+        }
+
+        private void dgvFields_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            return;
+        }
     }
 }
