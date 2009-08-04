@@ -17,6 +17,8 @@ namespace SigaObjects.Reports.Table
         private string relatedident = "";
         private string sufixo       = "";
 
+        private Table.TableVo related = null;
+
         #region [Private Lists]
         private List<TableVo>           children   = new List<TableVo>();
         private List<Fields.FieldsVo  > fields     = new List<Fields.FieldsVo  >();
@@ -76,6 +78,12 @@ namespace SigaObjects.Reports.Table
         {
             get{ return sufixo;  }
             set{ sufixo = value; }
+        }
+
+        public Table.TableVo RELATED
+        {
+            get { return related;  }
+            set { related = value; }
         }
 
         #region Public Lists

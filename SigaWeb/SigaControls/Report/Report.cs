@@ -196,7 +196,7 @@ namespace SigaControls.Report
                         //if (tabelas.Count > 0)
                         if (this.TABLEVO.ID != 0)
                         {
-                            Table mainTable = new Table(this.THISREPORT, this.TABLEVO);
+                            Table mainTable = new Table(this.THISREPORT, null, null);
                             mainTable.LOAD(TABLEVO);
                             if (mainTable.ID > 0)
                                 this.AddTable(mainTable);

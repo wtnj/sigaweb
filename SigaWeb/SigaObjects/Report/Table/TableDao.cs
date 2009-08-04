@@ -38,6 +38,13 @@ namespace SigaObjects.Reports.Table
         {
             if (table.ID == 0)
             {
+                // setando propriedades de relacionamento.
+                if ( table.RELATED != null )
+                {
+                    table.RELATEDINDEX = table.RELATED.INDEX;
+                    table.RELATEDTABLE = table.RELATED.TABELA;
+                }
+
                 int i = insert(table);
                 this.load(table, table.IDREPORT, table.MAINID);
 
