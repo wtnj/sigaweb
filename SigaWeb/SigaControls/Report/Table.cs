@@ -85,14 +85,8 @@ namespace SigaControls.Report
         } // ID DESTA TABELA
         public REPORT.Table.TableVo   MAIN      
         {
-            get { return ( main!=null )
-                         ? main.THISTABLE
-                         : null; }
-            set
-            {
-                if( main!=null )
-                    main.THISTABLE = value;
-            }
+            get { return this.THISTABLE.PARENT;   }
+            set { this.THISTABLE.PARENT = value;  }
         }
         public REPORT.Report.ReportVo MAINREPORT
         {
@@ -118,7 +112,7 @@ namespace SigaControls.Report
         {
             get { return this.THISTABLE.RELATED;  }
             set { this.THISTABLE.RELATED = value; }
-        } // TABELA ERALCIONADA
+        } // TABELA RELACIONADA
         /*
         public string        RELATEDTABLE 
         {
@@ -368,7 +362,7 @@ namespace SigaControls.Report
             {
                 string  QryOrdem = ""; // tmp ordem
                 
-                this.THISTABLE.ReSUFIXO();
+                //this.THISTABLE.ReSUFIXO();
 
                 #region CREATING GENERIC QUERY.
                 string tableKey = "@$TABLE$@";
@@ -800,7 +794,11 @@ namespace SigaControls.Report
             this.TOTALIZAR.Visible = this.MAIN != null;
             //this.ReloadRelatedTables();
 
-            this.RELOAD();
+            for(int idx=0; idx<this.THISTABLE.CHILDREN.Count; idx++)
+            {
+                this.CHILDREN[idx].LOAD(this.THISTABLE.CHILDREN[idx]);
+            }
+            //this.RELOAD();
         }
         #region SAVE E LOAD antigo (comantado)
         /*
@@ -872,16 +870,18 @@ namespace SigaControls.Report
         {
             List<string> strTables = new List<string>();
 
-            foreach(Table tabs in this.RELATEDTABLES)
-                strTables.Add(tabs.TABLE);
+            if( this.MAIN != null)
+                foreach(REPORT.Table.TableVo tab in this.MAIN.getTables())//this.RELATEDTABLES)
+                    strTables.Add(tab.TABELA);
 
             return strTables;
         }
-        private void RELOAD()          
+        public void RELOAD()
         {
+            this.ReLoadVO();
             foreach ( Table child in this.linksPainel.Controls)
             {
-                child.ReLoadVO();
+                child.RELOAD(); //.ReLoadVO();
             }
         }
         public  void ReLoadVO()
@@ -889,7 +889,10 @@ namespace SigaControls.Report
             new REPORT.Table.TableDao().load(this.THISTABLE,this.THISTABLE.IDREPORT,this.THISTABLE.MAINID);
 
             string ident      = this.RELATEDIDENT;
-            this.cbRelatedTable.SelectedValue = this.RELATED.INDEX+"|"+this.RELATEDIDENT; //this.RELATEDTABLE;
+            
+            if(this.RELATED != null)
+                this.cbRelatedTable.SelectedValue = this.RELATED.INDEX+"|"+this.RELATEDIDENT; //this.RELATEDTABLE;
+            
             this.RELATEDIDENT = ident;
         }
         public  void LOADJOINS(List<string> relatedtables)
@@ -911,7 +914,7 @@ namespace SigaControls.Report
         public  void ReloadRelatedTables()
         {
             foreach (Table child in this.CHILDREN)
-                child.LOADJOINS(getTables());
+                child.LOADJOINS(child.getTables());
         }
         public  void DELETE()  
         {
@@ -969,15 +972,15 @@ namespace SigaControls.Report
         {
             dataRelatedTable.Rows.Clear();
 
-            foreach(Table tab in this.main.RELATEDTABLES)
+            foreach(REPORT.Table.TableVo tab in this.MAIN.getTables())
                 foreach(DataRow row in dados.Rows)
                 {
                     string tabnome = row["X2_CHAVE"].ToString(); 
-                    if(tab.TABLE == tabnome)
+                    if(tab.TABELA == tabnome)
                     {
-                        int idx = this.main.RELATEDTABLES.IndexOf(tab);
+                        int idx = this.MAIN.getTables().IndexOf(tab); //.main.RELATEDTABLES.IndexOf(tab);
                         dataRelatedTable.Rows.Add( idx+" - "+(string)row["X2_NOME"] +" - "+(string)row["X9_IDENT"]
-                                                 , idx+"|"  +(string)row["X2_CHAVE"]+"|"  +(string)row["X9_IDENT"]);
+                                                 , idx+"|"/*+(string)row["X2_CHAVE"]+"|"//*/  +(string)row["X9_IDENT"]);
                         // TODO: incluir validação e informação na relação de tabelas.
                     }
                 }
@@ -1067,7 +1070,7 @@ namespace SigaControls.Report
             foreach (Control c in linksPainel.Controls)
             {
                 controls.Add(c);
-                (c as Table).THISTABLE.INDEX = linksPainel.Controls.IndexOf(c);
+                //(c as Table).THISTABLE.INDEX = linksPainel.Controls.IndexOf(c);
             }
 
             FormatScreen.Ajust2EqualsWidthControls(controls.ToArray(), linksPainel.Width, false);
@@ -1096,25 +1099,28 @@ namespace SigaControls.Report
 
         private void cbRelatedTable_TextChanged(object sender, EventArgs e)
         {
-            if (cbRelatedTable.SelectedIndex>=0 && cbRelatedTable.SelectedValue != null)
+            if ( cbRelatedTable.SelectedIndex>=0
+              && cbRelatedTable.SelectedValue != null
+              && this.MAINREPORT.LOADED )
             {
                 /// TODO: corrigir relacionamento.
                 //this.RELATED.TABELA = cbRelatedTable.SelectedValue.ToString();
                 string[] strValue = cbRelatedTable.SelectedValue.ToString().Split('|');
                 int      idx      = int.Parse((string)strValue.GetValue(0));
                 this.RELATED      = this.main.RELATEDTABLES[idx].THISTABLE;
-                this.RELATEDIDENT = (string)strValue.GetValue(2);
+                this.RELATEDIDENT = (string)strValue.GetValue(1);
             }
         }
 
         private void cbRelatedType_TextChanged( object sender, EventArgs e)
         {
-            this.RELATEDTYPE = (string)cbRelatedType.SelectedValue;
+            if(this.MAINREPORT.LOADED)
+                this.RELATEDTYPE = (string)cbRelatedType.SelectedValue;
         }
 
         private void cbRelatedTable_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (sender != null)
+            if (sender != null && this.MAINREPORT.LOADED)
             {
                 ComboBox cb = (sender as ComboBox);
                 if (cb.SelectedIndex >= 0 && cb != null)
@@ -1132,13 +1138,13 @@ namespace SigaControls.Report
                     this.RELATED = this.main.RELATEDTABLES[idx].THISTABLE;
 
                     //this.RELATED.TABELA = table.TABELA;
-                    this.RELATEDIDENT = (string)values.GetValue(2);
+                    this.RELATEDIDENT = (string)values.GetValue(1);
                 }
             }
         }
         private void cbRelatedType_SelectedIndexChanged( object sender, EventArgs e)
         {
-            if (sender != null)
+            if (sender != null && this.MAINREPORT.LOADED)
             {
                 ComboBox cb = (sender as ComboBox);
                 if (cb.SelectedIndex >= 0)

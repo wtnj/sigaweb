@@ -6,10 +6,12 @@ namespace SigaObjects.Reports.Params
 {
     public class ParamsVo
     {
-        private int id = 0, mainId = 0;
+        private int id = 0;
 
-        private int tamanho = 0;
-        private string tabela = "", campo = "", formato = "", objeto = "";
+        private int    tamanho = 0;
+        private string campo = "", formato = "", objeto = "";
+
+        private Table.TableVo mainTable = null;
 
         #region Getters & Setters
         public int    ID     
@@ -19,18 +21,18 @@ namespace SigaObjects.Reports.Params
         }
         public int    MAINID 
         {
-            get { return mainId; }
-            set { this.mainId = value; }
+            get { return this.MAINTABLE.ID;  }
+            set { this.MAINTABLE.ID = value; }
+        }
+        public string TABELA 
+        {
+            get { return this.MAINTABLE.TABELA;  }
+            set { this.MAINTABLE.TABELA = value; }
         }
         public int    TAMANHO
         {
             get { return tamanho; }
             set { this.tamanho = value; }
-        }
-        public string TABELA 
-        {
-            get { return tabela; }
-            set { this.tabela = value; }
         }
         public string CAMPO  
         {
@@ -46,6 +48,21 @@ namespace SigaObjects.Reports.Params
         {
             get { return objeto; }
             set { objeto = value;}
+        }
+
+        public Table.TableVo MAINTABLE
+        {
+            get
+            {
+                if ( this.mainTable !=null )
+                    return this.mainTable;
+                else
+                    return new Table.TableVo();
+            }
+            set
+            {
+                this.mainTable = value;
+            }
         }
         #endregion
 

@@ -6,10 +6,11 @@ namespace SigaObjects.Reports.OrderBy
 {
     public class OrderByVo
     {
-        private int id = 0, mainId = 0;
+        private int id = 0;
 
-        private int indice = 0;
-        private string value = "", display = "";
+        private int           indice    = 0;
+        private string        value     = "", display = "";
+        private Table.TableVo mainTable = null;
 
         #region Construtor
         public OrderByVo()
@@ -20,58 +21,66 @@ namespace SigaObjects.Reports.OrderBy
             this.INDICE     = indice;
             this.MAINID     = mainId;
         }
-        public OrderByVo(int indice, int mainId, string value, string display)
+        public OrderByVo(int indice, Table.TableVo table, string value, string display)
         {
             this.INDICE     = indice;
-            this.MAINID     = mainId;
+            this.MAINTABLE  = table;
             this.VALUE      = value;
             this.DISPLAY    = display;
         }
-        public OrderByVo(int id, int indice, int mainId)
+        public OrderByVo(int id, int indice, Table.TableVo table)
         {
             this.ID         = id;
             this.INDICE     = indice;
-            this.MAINID     = mainId;
+            this.MAINTABLE  = table;
         }
-        public OrderByVo(int id, int indice, int mainId, string value, string display)
+        public OrderByVo(int id, int indice, Table.TableVo table, string value, string display)
         {
             this.ID         = id;
             this.INDICE     = indice;
-            this.MAINID     = mainId;
+            this.MAINTABLE  = table;
             this.VALUE      = value;
             this.DISPLAY    = display;
         }
         #endregion
 
         #region Getters & Setters
-        public int ID
+        public int    ID     
         {
             get { return id; }
             set { this.id = value; }
         }
-
-        public int MAINID
+        public int    MAINID 
         {
-            get { return mainId; }
-            set { this.mainId = value; }
+            get { return this.MAINTABLE.ID;  }
+            set { this.MAINTABLE.ID = value; }
         }
-
-        public int INDICE
+        public int    INDICE 
         {
             get { return indice; }
             set { this.indice = value; }
         }
-
-        public string VALUE
+        public string VALUE  
         {
             get { return value; }
             set { this.value = value; }
         }
-
         public string DISPLAY
         {
             get { return display; }
             set { this.display = value; }
+        }
+
+        public Table.TableVo MAINTABLE
+        {
+            get
+            {
+                if( this.mainTable != null )
+                    return this.mainTable;
+                else
+                    return new Table.TableVo();
+            }
+            set { this.mainTable = value; }
         }
         #endregion
     }

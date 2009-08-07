@@ -7,17 +7,15 @@ namespace SigaObjects.Reports.Table
     public class TableVo
     {
         private int    id       =  0;
-        private int    idReport =  0;
-        private int    mainId   =  0;
-        private int    indice   = -1;
         private int    relatedindex = 0;
         private string tabela       = "";
         private string relatedtype  = "";
-        private string relatedtable = "";
         private string relatedident = "";
         private string sufixo       = "";
-
-        private Table.TableVo related = null;
+        
+        private Report.ReportVo mainReport = null;
+        private TableVo         parent     = null;
+        private TableVo         related    = null;
 
         #region [Private Lists]
         private List<TableVo>           children   = new List<TableVo>();
@@ -36,18 +34,43 @@ namespace SigaObjects.Reports.Table
         }
         public int    IDREPORT    
         {
-            get { return idReport; }
-            set { this.idReport = value; }
+            get
+            {
+                if( this.REPORT != null )
+                    return this.REPORT.ID;
+
+                return 0;
+            }
+            set
+            {
+                if( this.REPORT != null )
+                    this.REPORT.ID = value;
+            }
         }
         public int    MAINID      
         {
-            get { return mainId; }
-            set { this.mainId = value; }
+            get
+            {
+                if( parent != null )
+                    return this.PARENT.ID;
+                
+                return 0;
+            }
+            set
+            {
+                if( parent != null )
+                    this.PARENT.ID = value;
+            }
         }
         public int    INDEX       
         {
-            get { return indice; }
-            set { indice = value;}
+            get
+            {
+                if( this.parent != null )
+                    return parent.CHILDREN.IndexOf(this);
+                
+                return 0;
+            }
         }
         public string TABELA      
         {
@@ -61,8 +84,18 @@ namespace SigaObjects.Reports.Table
         }
         public string RELATEDTABLE
         {
-            get { return relatedtable; }
-            set { this.relatedtable = value; }
+            get
+            {
+                if (this.RELATED != null)
+                    return this.RELATED.TABELA;
+                else
+                    return "";
+            }
+            set
+            {
+                if( this.RELATED != null )
+                    this.RELATED.TABELA = value;
+            }
         }
         public int    RELATEDINDEX
         {
@@ -76,13 +109,41 @@ namespace SigaObjects.Reports.Table
         }
         public string SUFIXO      
         {
-            get{ return sufixo;  }
+            get
+            {
+                return this.PARENT.SUFIXO+"_"+this.INDEX;
+            }
             set{ sufixo = value; }
         }
-
-        public Table.TableVo RELATED
+        
+        public Report.ReportVo REPORT 
         {
-            get { return related;  }
+            get
+            {
+                //if ( this.mainReport != null )
+                    return this.mainReport;
+            }
+            set { this.mainReport = value; }
+        }
+        public TableVo         PARENT 
+        {
+            get
+            {
+                //if( this.parent != null )
+                    return parent;
+            }
+            set
+            {
+                this.parent = value;
+            }
+        }
+        public TableVo         RELATED
+        {
+            get
+            {
+                //if( this.related != null )
+                    return related;
+            }
             set { related = value; }
         }
 
@@ -121,14 +182,14 @@ namespace SigaObjects.Reports.Table
         #endregion
 
         #region [CONSTRUCTOR]
-        public TableVo():this(0)
+        public TableVo() : this(0)
         {
         }
-        public TableVo(int id):this(id, 0)
+        public TableVo(int id) : this(id, 0)
         {
             this.ID = id;
         }
-        public TableVo(int id, int idReport):this(id, idReport, "", "", "", "")
+        public TableVo(int id, int idReport) : this(id, idReport, "", "", "", "")
         {
             this.ID       = id;
             this.IDREPORT = idReport;
@@ -201,25 +262,34 @@ namespace SigaObjects.Reports.Table
         public void AddField(  Fields.FieldsVo   field )
         {
             if(this.FindField(field.CODIGO)<0)
+            {
+                field.MAINTABLE = this;
                 this.FIELDS.Add(field);
+            }
         }
         public void AddFilter( Filters.FiltersVo filter)
         {
+            filter.MAINTABLE = this;
             this.FILTERS.Add(filter);
         }
         public void AddOrderBy(OrderBy.OrderByVo order )
         {
+            order.MAINTABLE = this;
             this.ORDERBY.Add(order);
         }
         public void AddParam(  Params.ParamsVo   parm  )
         {
+            parm.MAINTABLE = this;
             this.PARAMS.Add(parm);
         }
         public void AddChild(  Table.TableVo     child )
         {
             child.MAINID = this.ID;
-            child.INDEX  = this.CHILDREN.Count;
-            child.SUFIXO = this.SUFIXO+"_"+child.INDEX;
+            //child.INDEX  = this.CHILDREN.Count;
+            //child.SUFIXO = this.SUFIXO+"_"+child.INDEX;
+
+            child.PARENT = this;
+            child.REPORT = this.REPORT;
 
             this.CHILDREN.Add(child);
         }
@@ -247,14 +317,18 @@ namespace SigaObjects.Reports.Table
         public void RemoveTable(    Table.TableVo     child )
         {
             this.CHILDREN.Remove(child);
+
+            /*
             foreach(Table.TableVo _child in this.CHILDREN)
             {
                 _child.INDEX  = this.CHILDREN.IndexOf(_child);
                 _child.SUFIXO = this.SUFIXO+"_"+_child.INDEX;
             }
+            //*/
         }
         #endregion
 
+        /*
         public void ReSUFIXO()
         {
             foreach(Table.TableVo _child in this.CHILDREN)
@@ -263,6 +337,29 @@ namespace SigaObjects.Reports.Table
                 _child.SUFIXO = this.SUFIXO+"_"+_child.INDEX;
 
                 _child.ReSUFIXO();
+            }
+        }//*/
+
+        public List<TableVo> getTables()
+        {
+            List<TableVo> tabRelations = new List<TableVo>();
+            tabRelations.Add(this);
+
+            foreach(TableVo tabChild in this.CHILDREN)
+            {
+                tabRelations.Add(tabChild);
+            }
+
+            return tabRelations;
+        }
+
+        public void RealocRelations()
+        {
+            foreach(TableVo tabChild in this.CHILDREN)
+            {
+                tabChild.RELATED = this.getTables()[tabChild.RELATEDINDEX];
+
+                tabChild.RealocRelations();
             }
         }
         #endregion

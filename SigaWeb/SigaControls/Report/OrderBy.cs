@@ -116,11 +116,13 @@ namespace SigaControls.Report
         {
             if (this.MAIN != null)
             {
+                /*
                 /// CARREGAR TABELAS RELACIONADAS.
                 cmbTabela.DataSource = 
                     new SXManager(sigaSession.EMPRESAS[0].CODIGO)
                     .getTables("X2_CHAVE IN (" + SXManager.getStringArr(this.MAIN.getTables()) + ")")
                     .DefaultView;
+                //*/
 
                 /// CARREGAR CONFIGURACAO DE FILDS DO BANCO
                 dados = new REPORT.OrderBy.OrderByDao().select(this.MAIN.ID);

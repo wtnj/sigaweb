@@ -29,7 +29,7 @@ namespace SigaObjects.Reports.Table
             {
                 Table.TableVo table = tables[idx];
 
-                table.INDEX = idx;
+                //table.INDEX = idx;
                 cont += save(table);
             }
             return cont;
@@ -223,7 +223,7 @@ namespace SigaObjects.Reports.Table
                 table.RELATEDIDENT = (string)dtTable.DefaultView[0]["relatedident"];
                 table.RELATEDTYPE  = (string)dtTable.DefaultView[0]["relatedtype"];
                 table.TABELA       = (string)dtTable.DefaultView[0]["tabela"];
-                table.INDEX        = (int)   dtTable.DefaultView[0]["indice"];
+                //table.INDEX        = (int)   dtTable.DefaultView[0]["indice"];
             }
         }
         public void load(List<TableVo> tables, int idReport, int mainId)

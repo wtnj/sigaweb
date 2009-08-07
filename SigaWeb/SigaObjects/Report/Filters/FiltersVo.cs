@@ -6,9 +6,10 @@ namespace SigaObjects.Reports.Filters
 {
     public class FiltersVo
     {
-        private int id = 0, mainId = 0;
+        private int id = 0;
 
-        private string tabela = "", campo = "", filtro = "", tipofiltro = "";
+        private string campo = "", filtro = "", tipofiltro = "";
+        private Table.TableVo mainTable = null;
 
         #region Construtor
         public FiltersVo() { }
@@ -41,40 +42,47 @@ namespace SigaObjects.Reports.Filters
         #endregion
 
         #region Getters & Setters
-        public int ID
+        public int    ID        
         {
             get { return id; }
             set { this.id = value;  }
         }
-
-        public int MAINID
+        public int    MAINID    
         {
-            get { return mainId; }
-            set { this.mainId = value;  }
+            get { return this.MAINTABLE.ID;  }
+            set { this.MAINTABLE.ID = value; }
         }
-
-        public string TABELA
+        public string TABELA    
         {
-            get { return tabela; }
-            set { this.tabela = value;  }
+            get { return this.MAINTABLE.TABELA;  }
+            set { this.MAINTABLE.TABELA = value; }
         }
-
-        public string CAMPO
+        public string CAMPO     
         {
             get { return campo; }
             set { this.campo = value;  }
         }
-
-        public string FILTRO
+        public string FILTRO    
         {
             get { return filtro; }
             set { this.filtro = value;  }
         }
-
         public string TIPOFILTRO
         {
             get { return tipofiltro; }
             set { this.tipofiltro = value;  }
+        }
+
+        public Table.TableVo MAINTABLE
+        {
+            get
+            {
+                if( this.mainTable != null )
+                    return this.mainTable;
+                else
+                    return new Table.TableVo();
+            }
+            set { this.mainTable = value; }
         }
         #endregion
     }
