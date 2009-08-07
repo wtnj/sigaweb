@@ -6,6 +6,8 @@ namespace SigaObjects.Reports.Report
 {
     public class ReportVo
     {
+        private bool isLoaded = false;
+
         private int id = 0;
         private int idReportGroup = 0;
         private string nome = "", empresa = "", filial = "", username = "";
@@ -13,6 +15,12 @@ namespace SigaObjects.Reports.Report
         private Table.TableVo table = new Table.TableVo();
 
         #region Getters & Setters
+        public bool LOADED
+        {
+            get{ return isLoaded;  }
+            set{ isLoaded = value; }
+        }
+
         public int    ID           
         {
             get { return id;}

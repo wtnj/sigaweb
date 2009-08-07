@@ -59,11 +59,13 @@ namespace SigaControls.Report
         {
              if (this.MAIN != null)
             {
-                /// CARREGAR TABELAS RELACIONADAS.
-                cmbTabela.DataSource = 
-                    new SXManager(sigaSession.EMPRESAS[0].CODIGO)
-                    .getTables("X2_CHAVE IN (" + SXManager.getStringArr(this.MAIN.getTables()) + ")")
-                    .DefaultView;
+                 /*
+                 /// CARREGAR TABELAS RELACIONADAS.
+                 cmbTabela.DataSource = 
+                     new SXManager(sigaSession.EMPRESAS[0].CODIGO)
+                     .getTables("X2_CHAVE IN (" + SXManager.getStringArr(this.MAIN.getTables()) + ")")
+                     .DefaultView;
+                 //*/
 
                  cmbCampos.DataSource = 
                      new SXManager(sigaSession.EMPRESAS[0].CODIGO)

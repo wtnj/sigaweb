@@ -89,6 +89,12 @@ namespace SigaControls.Report
             get { return this.THISREPORT.TABLE;  }
             set { this.THISREPORT.TABLE = value; }
         }
+
+        public bool LOADED
+        {
+            get{ return this.THISREPORT.LOADED;  }
+            set{ this.THISREPORT.LOADED = value; }
+        }
         #endregion
 
         #region CONSTRUTOR
@@ -167,6 +173,7 @@ namespace SigaControls.Report
         }
         public void LOAD(string reportName, bool isFirst)
         {
+            this.LOADED = false;
             try
             {
                 this.cbReportGroup.DisplayMember = "descricao";
@@ -184,8 +191,8 @@ namespace SigaControls.Report
                     //this.ID     = report.ID;
                     this.cbReportGroup.SelectedValue = this.THISREPORT.IDREPORTGROUP;
 
-                    if (this.TABLEVO != null)
-                        this.TABLEVO.INDEX = 0;
+                    //if (this.TABLEVO != null)
+                    //    this.TABLEVO.INDEX = 0;
 
                     if (this.ID > 0)
                     {
@@ -193,6 +200,8 @@ namespace SigaControls.Report
 
                         //List<REPORT.Table.TableVo> tabelas = new List<REPORT.Table.TableVo>();
                         new SigaObjects.Reports.Table.TableDao().load(this.TABLEVO, this.ID, 0);
+                        this.TABLEVO.RealocRelations();
+
                         //if (tabelas.Count > 0)
                         if (this.TABLEVO.ID != 0)
                         {
@@ -200,6 +209,8 @@ namespace SigaControls.Report
                             mainTable.LOAD(TABLEVO);
                             if (mainTable.ID > 0)
                                 this.AddTable(mainTable);
+
+                            this.TABLE.RELOAD(); //recarrega as tabelas.
                         }
                     }
                 }
@@ -208,6 +219,10 @@ namespace SigaControls.Report
             {
                 new ERROR(Carralero.ExceptionControler.getFullException(e)).SHOW();
                 //MessageBox.Show(Carralero.ExceptionControler.getFullException(e).Message);
+            }
+            finally
+            {
+                this.LOADED = true;
             }
         }
         public void DELETE()
@@ -313,7 +328,7 @@ namespace SigaControls.Report
         private void reportPanel_ControlAdded(object sender, ControlEventArgs e)
         {
             (e.Control as Table).ChangeRootTable(true);
-            (e.Control as Table).THISTABLE.INDEX = 0;
+            //(e.Control as Table).THISTABLE.INDEX = 0;
         }
     }
 }
