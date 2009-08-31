@@ -286,7 +286,7 @@ namespace SigaControls.Report
                         bool isMark = field != null;
 
                         dgvFields.Rows[indice].Cells[0].Value = isMark;
-                        dgvFields.Rows[indice].Cells[1].Value = (string)drv[SXManager.FieldValueMember];
+                        dgvFields.Rows[indice].Cells[1].Value = (string)drv[SXManager.FieldValueMember  ];
                         dgvFields.Rows[indice].Cells[2].Value = (string)drv[SXManager.FieldDisplayMember];
                         dgvFields.Rows[indice].Cells[3].Value = (isMark) ? field.GROUPING                  : "";
                         dgvFields.Rows[indice].Cells[4].Value = (isMark) ? getDisplayCombo(field.GROUPING) : "";
@@ -298,7 +298,7 @@ namespace SigaControls.Report
                 new ERROR(Carralero.ExceptionControler.getFullException(e)).SHOW();
             }
         }
-        public void SAVE()
+        public void SAVE(  )
         {
             //this.DELETE();
             //*

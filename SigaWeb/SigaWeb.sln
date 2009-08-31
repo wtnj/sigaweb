@@ -1,12 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigaControls", "SigaControls\SigaControls.csproj", "{D89284D6-92BB-4811-AA6E-E92F304AEF96}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigaObjects", "SigaObjects\SigaObjects.csproj", "{2CB237EB-69DE-41D0-875A-51183D923050}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
@@ -37,14 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigaWebInstaller", "SigaWeb
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{9ABA83F0-E6A2-4687-99C0-A00FD9AF4938}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigaControls", "SigaControls\SigaControls.csproj", "{D89284D6-92BB-4811-AA6E-E92F304AEF96}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\_componentes e tools\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter.dll = ..\..\..\_componentes e tools\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter\CarlosAg.ExcelXmlWriter.dll
-		..\..\..\..\SGDB\QUERYES\SigaWeb\CARRALERO_SigaWeb_2009-07-21.sql = ..\..\..\..\SGDB\QUERYES\SigaWeb\CARRALERO_SigaWeb_2009-07-21.sql
 	EndProjectSection
 EndProject
 Global
@@ -57,10 +47,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D89284D6-92BB-4811-AA6E-E92F304AEF96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D89284D6-92BB-4811-AA6E-E92F304AEF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D89284D6-92BB-4811-AA6E-E92F304AEF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D89284D6-92BB-4811-AA6E-E92F304AEF96}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2CB237EB-69DE-41D0-875A-51183D923050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2CB237EB-69DE-41D0-875A-51183D923050}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CB237EB-69DE-41D0-875A-51183D923050}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +67,10 @@ Global
 		{18A6169A-1193-41AB-A600-3CF09B315224}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18A6169A-1193-41AB-A600-3CF09B315224}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18A6169A-1193-41AB-A600-3CF09B315224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89284D6-92BB-4811-AA6E-E92F304AEF96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89284D6-92BB-4811-AA6E-E92F304AEF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89284D6-92BB-4811-AA6E-E92F304AEF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89284D6-92BB-4811-AA6E-E92F304AEF96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

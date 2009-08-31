@@ -105,7 +105,45 @@ namespace SigaObjects
                 sqlDA.Fill(dtNew);
             }
             catch (Exception e)
-            { throw ExceptionControler.getFullException(e); }
+            {
+                /*
+                SELECT errorSelect = new SELECT();
+                errorSelect.addInQuery("BEGIN TRY");
+                errorSelect.addInQuery("--- ----- ---");
+                errorSelect.addInQuery( sQuery + ";");
+                errorSelect.addInQuery("--- ----- ---");
+                errorSelect.addInQuery("  END TRY  ");
+                errorSelect.addInQuery("BEGIN CATCH");
+                errorSelect.addInQuery("    SELECT ERROR_NUMBER()    AS ErrorNumber    ");
+                errorSelect.addInQuery("         , ERROR_SEVERITY()  AS ErrorSeverity  ");
+                errorSelect.addInQuery("         , ERROR_STATE()     AS ErrorState     ");
+                errorSelect.addInQuery("         , ERROR_PROCEDURE() AS ErrorProcedure ");
+                errorSelect.addInQuery("         , ERROR_LINE()      AS ErrorLine      ");
+                errorSelect.addInQuery("         , ERROR_MESSAGE()   AS ErrorMessage   ");
+                errorSelect.addInQuery("  END CATCH;");
+
+                DataTable     dtError      = errorSelect.getData();
+
+                StringBuilder errorMessage = new StringBuilder("Erro(s) = "+dtError.DefaultView.Count);
+
+                foreach(DataRow row in dtError.Rows)
+                {
+                    errorMessage.Append("Error( "           +row[0].ToString()+" )");
+                    errorMessage.Append(", Severity( "      +row[1].ToString()+" )");
+                    errorMessage.Append(", State( "         +row[2].ToString()+" )");
+                    errorMessage.AppendLine(", Procedure( " +row[3].ToString()+" )");
+                    errorMessage.Append(", Line: "          +row[4].ToString() );
+                    errorMessage.AppendLine(" - Message \" "+row[5].ToString()+" \"");
+
+                    errorMessage.AppendLine(new string('=', 100));
+                }
+
+                errorMessage.Append(ExceptionControler.getFullException(e));
+                throw new Exception( errorMessage.ToString() );
+                //*/
+
+                throw ExceptionControler.getFullException(e);
+            }
 
             return dtNew;
         }

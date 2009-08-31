@@ -98,6 +98,7 @@ namespace SigaControls.Report
         #endregion
 
         #region CONSTRUTOR
+        // inicializador
         private void initializer(string reportName)
         {
             InitializeComponent();
@@ -105,6 +106,8 @@ namespace SigaControls.Report
             this.TABLE = new Table(this.THISREPORT);
             this.Dock = DockStyle.Fill;
         }
+
+        // construtor
         public Report()
         { initializer(null); }
         public Report(string reportName)
@@ -167,6 +170,7 @@ namespace SigaControls.Report
             }
             catch (Exception e)
             {
+                STATUS.VALOR = e.Message;
                 new ERROR(Carralero.ExceptionControler.getFullException(e)).SHOW();
                 //MessageBox.Show(Carralero.ExceptionControler.getFullException(e).Message);
             }
@@ -217,6 +221,7 @@ namespace SigaControls.Report
             }
             catch (Exception e)
             {
+                STATUS.VALOR = e.Message;
                 new ERROR(Carralero.ExceptionControler.getFullException(e)).SHOW();
                 //MessageBox.Show(Carralero.ExceptionControler.getFullException(e).Message);
             }
@@ -303,10 +308,12 @@ namespace SigaControls.Report
         {
             try
             {
+                STATUS.VALOR = this.TABLE.QUERY.ToString();
                 new ERROR(new Exception(this.TABLE.QUERY.ToString()), "CONSULTA SQL").SHOW();
             }
             catch (Exception EX)
             {
+                STATUS.VALOR = EX.Message;
                 new ERROR(Carralero.ExceptionControler.getFullException(EX)).SHOW();
             }
         }

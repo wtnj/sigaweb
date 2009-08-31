@@ -658,11 +658,11 @@ namespace SigaControls.Report
             this.PARAMS   = new Params( this);
 
             /// ADCIONANDO OBJETOS NAS ABAS
-            FormatScreen.AddControl(tpFieldsReturn, this.FIELDS);
+            FormatScreen.AddControl( tpFieldsReturn, this.FIELDS);
             //FormatScreen.AddControl(tpGourp       , this.GROUPBY);
-            FormatScreen.AddControl(tpFilter, this.FILTERS);
-            FormatScreen.AddControl(tpOrder , this.ORDERBY);
-            FormatScreen.AddControl(tpParms , this.PARAMS);
+            FormatScreen.AddControl( tpFilter, this.FILTERS);
+            FormatScreen.AddControl( tpOrder , this.ORDERBY);
+            FormatScreen.AddControl( tpParms , this.PARAMS);
 
             DataTable dtRelType = new DataTable();
             string typeDisplay  = "display";
@@ -720,7 +720,7 @@ namespace SigaControls.Report
         /// <summary>
         /// NEW SAVE METHOD
         /// </summary>
-        public  void SAVE()
+        public void SAVE()
         {
             //this.DELETE();
             this.THISTABLE.ID = 0;
@@ -764,17 +764,17 @@ namespace SigaControls.Report
             //*
             new REPORT.Fields.FieldsDao().load(  this.THISTABLE.FIELDS , this.ID);
             //new REPORT.GroupBy.GroupByDao().load(this.THISTABLE.GROUPBY, this.ID);
-            new REPORT.Filters.FiltersDao().Load(this.THISTABLE.FILTERS, this.ID);
-            new REPORT.OrderBy.OrderByDao().load(this.THISTABLE.ORDERBY, this.ID);
-            new REPORT.Params.ParamsDao().Load(  this.THISTABLE.PARAMS , this.ID);
+            //new REPORT.Filters.FiltersDao().Load(this.THISTABLE.FILTERS, this.ID);
+            //new REPORT.OrderBy.OrderByDao().load(this.THISTABLE.ORDERBY, this.ID);
+            //new REPORT.Params.ParamsDao().Load(  this.THISTABLE.PARAMS , this.ID);
             //*/
 
             //*
             this.FIELDS.LOAD(this.THISTABLE.FIELDS);
             //this.GROUPBY.LOAD();
-            this.FILTERS.LOAD();
-            this.ORDERBY.LOAD();
-            this.PARAMS.LOAD( );
+            //this.FILTERS.LOAD();
+            //this.ORDERBY.LOAD();
+            //this.PARAMS.LOAD( );
             //*/
             if (this.ID != 0)
             {
@@ -794,13 +794,16 @@ namespace SigaControls.Report
             this.TOTALIZAR.Visible = this.MAIN != null;
             //this.ReloadRelatedTables();
 
-            for(int idx=0; idx<this.THISTABLE.CHILDREN.Count; idx++)
-            {
-                this.CHILDREN[idx].LOAD(this.THISTABLE.CHILDREN[idx]);
-            }
+            if(  this.CHILDREN           != null
+              && this.THISTABLE          != null
+              && this.THISTABLE.CHILDREN != null )
+                for(int idx=0; idx<this.THISTABLE.CHILDREN.Count; idx++)
+                {
+                    this.CHILDREN[idx].LOAD(this.THISTABLE.CHILDREN[idx]);
+                }
             //this.RELOAD();
         }
-        #region SAVE E LOAD antigo (comantado)
+        #region SAVE E LOAD antigo (comentado)
         /*
         public  void SAVE()
         {
@@ -871,7 +874,7 @@ namespace SigaControls.Report
             List<string> strTables = new List<string>();
 
             if( this.MAIN != null)
-                foreach(REPORT.Table.TableVo tab in this.MAIN.getTables())//this.RELATEDTABLES)
+                foreach(REPORT.Table.TableVo tab in this.MAIN.getTables()) //this.RELATEDTABLES)
                     strTables.Add(tab.TABELA);
 
             return strTables;
@@ -884,7 +887,7 @@ namespace SigaControls.Report
                 child.RELOAD(); //.ReLoadVO();
             }
         }
-        public  void ReLoadVO()
+        public void ReLoadVO()
         {
             new REPORT.Table.TableDao().load(this.THISTABLE,this.THISTABLE.IDREPORT,this.THISTABLE.MAINID);
 
@@ -895,7 +898,7 @@ namespace SigaControls.Report
             
             this.RELATEDIDENT = ident;
         }
-        public  void LOADJOINS(List<string> relatedtables)
+        public void LOADJOINS(List<string> relatedtables)
         {
             DataTable dtRelTable = new SXManager(sigaSession.EMPRESAS[0].CODIGO)
                                        //.getParentTables(relatedtables, "SX9.X9_CDOM = '" + this.TABLE + "'");
@@ -911,12 +914,12 @@ namespace SigaControls.Report
             if (cbRelatedTable.Items.Contains(oIdx))
                 cbRelatedTable.SelectedItem = oIdx;
         }
-        public  void ReloadRelatedTables()
+        public void ReloadRelatedTables()
         {
             foreach (Table child in this.CHILDREN)
                 child.LOADJOINS(child.getTables());
         }
-        public  void DELETE()  
+        public void DELETE()  
         {
             this.FIELDS.DELETE();
             this.FILTERS.DELETE();
@@ -928,7 +931,7 @@ namespace SigaControls.Report
             new REPORT.Table.TableDao().delete(this.REPORTID, this.MAINID);
             this.ID = 0;
         }
-        public  void ChangeRootTable(bool isRootTable)
+        public void ChangeRootTable(bool isRootTable)
         {
             this.IsRootTable = isRootTable;
 
@@ -1059,7 +1062,7 @@ namespace SigaControls.Report
         protected void strIdent_TextChanged(object sender, EventArgs e)
         {
             //this.RELATEDIDENT = (sender as Control).Text;
-            CHILDREN[CHILDREN.Count-1].RELATEDIDENT = (sender as Control).Text;
+            this.CHILDREN[this.CHILDREN.Count-1].RELATEDIDENT = (sender as Control).Text;
             MessageBox.Show(this.RELATEDIDENT);
         }
         #endregion

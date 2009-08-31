@@ -6,7 +6,7 @@ namespace SigaObjects.Reports.Table
 {
     public class TableVo
     {
-        private int    id       =  0;
+        private int    id           = 0;
         private int    relatedindex = 0;
         private string tabela       = "";
         private string relatedtype  = "";
@@ -18,12 +18,12 @@ namespace SigaObjects.Reports.Table
         private TableVo         related    = null;
 
         #region [Private Lists]
-        private List<TableVo>           children   = new List<TableVo>();
-        private List<Fields.FieldsVo  > fields     = new List<Fields.FieldsVo  >();
-        private List<GroupBy.GroupByVo> groupby    = new List<GroupBy.GroupByVo>();
-        private List<Filters.FiltersVo> filters    = new List<Filters.FiltersVo>();
-        private List<OrderBy.OrderByVo> orderby    = new List<OrderBy.OrderByVo>();
-        private List<Params.ParamsVo  > parameters = new List<Params.ParamsVo  >();
+        private List<TableVo>           children;   //= new List<TableVo>();
+        private List<Fields.FieldsVo  > fields;     //= new List<Fields.FieldsVo  >();
+        private List<GroupBy.GroupByVo> groupby;    //= new List<GroupBy.GroupByVo>();
+        private List<Filters.FiltersVo> filters;    //= new List<Filters.FiltersVo>();
+        private List<OrderBy.OrderByVo> orderby;    //= new List<OrderBy.OrderByVo>();
+        private List<Params.ParamsVo  > parameters; //= new List<Params.ParamsVo  >();
         #endregion
 
         #region [Getters & Setters]
@@ -31,7 +31,7 @@ namespace SigaObjects.Reports.Table
         {
             get { return id; }
             set { this.id = value; }
-        }
+        } // campo no banco
         public int    IDREPORT    
         {
             get
@@ -46,7 +46,7 @@ namespace SigaObjects.Reports.Table
                 if( this.REPORT != null )
                     this.REPORT.ID = value;
             }
-        }
+        } // campo no banco
         public int    MAINID      
         {
             get
@@ -61,7 +61,7 @@ namespace SigaObjects.Reports.Table
                 if( parent != null )
                     this.PARENT.ID = value;
             }
-        }
+        } // campo no banco
         public int    INDEX       
         {
             get
@@ -71,17 +71,17 @@ namespace SigaObjects.Reports.Table
                 
                 return 0;
             }
-        }
+        } // campo no banco
         public string TABELA      
         {
             get { return tabela; }
             set { this.tabela = value; }
-        }
+        } // campo no banco
         public string RELATEDTYPE 
         {
             get { return relatedtype; }
             set { this.relatedtype = value; }
-        }
+        } // campo no banco
         public string RELATEDTABLE
         {
             get
@@ -101,17 +101,17 @@ namespace SigaObjects.Reports.Table
         {
             get { return relatedindex;  }
             set { relatedindex = value; }
-        }
+        } // campo no banco
         public string RELATEDIDENT
         {
             get { return this.relatedident; }
             set { this.relatedident = value; }
-        }
+        } // campo no banco
         public string SUFIXO      
         {
             get
             {
-                return this.PARENT.SUFIXO+"_"+this.INDEX;
+                return (this.PARENT!=null) ? this.PARENT.SUFIXO+"_"+this.INDEX : "";
             }
             set{ sufixo = value; }
         }
@@ -129,8 +129,7 @@ namespace SigaObjects.Reports.Table
         {
             get
             {
-                //if( this.parent != null )
-                    return parent;
+                return parent;
             }
             set
             {
@@ -182,34 +181,17 @@ namespace SigaObjects.Reports.Table
         #endregion
 
         #region [CONSTRUCTOR]
-        public TableVo() : this(0)
-        {
-        }
-        public TableVo(int id) : this(id, 0)
-        {
-            this.ID = id;
-        }
-        public TableVo(int id, int idReport) : this(id, idReport, "", "", "", "")
-        {
-            this.ID       = id;
-            this.IDREPORT = idReport;
-        }
-        public TableVo(string table, string relatedtype, string relatedtable, string relatedident)
-        {
-            this.TABELA       = table;
-            this.RELATEDTYPE  = relatedtype;
-            this.RELATEDTABLE = relatedtable;
-            this.RELATEDIDENT = relatedident;
-        }
-        public TableVo(int idReport, string table, string relatedtype, string relatedtable, string relatedident)
-        {
-            this.IDREPORT     = idReport;
-            this.TABELA       = table;
-            this.RELATEDTYPE  = relatedtype;
-            this.RELATEDTABLE = relatedtable;
-            this.RELATEDIDENT = relatedident;
-        }
-        public TableVo(int id, int idReport, string table, string relatedtype, string relatedtable, string relatedident)
+        public TableVo()
+            : this(0) {}
+        public TableVo(int    id)
+            : this(id, 0) {}
+        public TableVo(int    id      , int    idReport)
+            : this(id, idReport, "", "", "", "") {}
+        public TableVo(string table   , string relatedtype, string relatedtable, string relatedident)
+            : this(0, 0, table, relatedtype, relatedtable, relatedident) {}
+        public TableVo(int    idReport, string table      , string relatedtype , string relatedtable, string relatedident)
+            : this(0, idReport, table, relatedtype, relatedtable, relatedident) {}
+        public TableVo(int    id      , int    idReport   , string table       , string relatedtype , string relatedtable, string relatedident)
         {
             this.ID           = id;
             this.IDREPORT     = idReport;
@@ -217,6 +199,13 @@ namespace SigaObjects.Reports.Table
             this.RELATEDTYPE  = relatedtype;
             this.RELATEDTABLE = relatedtable;
             this.RELATEDIDENT = relatedident;
+
+            this.FIELDS   = new List<Fields.FieldsVo>();
+            this.FILTERS  = new List<Filters.FiltersVo>();
+            //this.ORDERBY  = new List<OrderBy.OrderByVo>();
+            this.PARAMS   = new List<Params.ParamsVo>();
+
+            this.CHILDREN = new List<TableVo>();
         }
         #endregion
 
@@ -235,7 +224,7 @@ namespace SigaObjects.Reports.Table
         {
             foreach(Filters.FiltersVo filter in this.FILTERS)
                 return -1; // TODO: implementar metodo de pesquisa para este objeto, de forma a trazer unico.
-            
+
             return -1;
         }
         public int FindOrderBy(  string strFilter)
@@ -339,6 +328,16 @@ namespace SigaObjects.Reports.Table
                 _child.ReSUFIXO();
             }
         }//*/
+
+        public List<string>  getStrTables()
+        {
+            List<string> strTables = new List<string>();
+
+            foreach(TableVo tab in this.getTables())
+                strTables.Add(tab.TABELA);
+
+            return strTables;
+        }
 
         public List<TableVo> getTables()
         {

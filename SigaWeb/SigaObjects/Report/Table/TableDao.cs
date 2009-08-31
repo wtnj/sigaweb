@@ -49,28 +49,35 @@ namespace SigaObjects.Reports.Table
                 this.load(table, table.IDREPORT, table.MAINID);
 
                 #region RESET MAINIDs
+                
                 foreach (Fields.FieldsVo   field  in table.FIELDS  )
-                    field.MAINID  = table.ID;
+                    field.MAINTABLE  = table;
+                /*
                 foreach (Filters.FiltersVo filter in table.FILTERS )
-                    filter.MAINID = table.ID;
+                    filter.MAINTABLE = table;
                 foreach (OrderBy.OrderByVo order  in table.ORDERBY )
-                    order.MAINID  = table.ID;
+                    order.MAINTABLE  = table;
                 foreach (Params.ParamsVo   parms  in table.PARAMS  )
-                    parms.MAINID  = table.ID;
-                foreach (Table.TableVo child in table.CHILDREN)
+                    parms.MAINTABLE  = table;
+                //*/
+                if(table.CHILDREN != null)
+                table.CHILDREN.ForEach(delegate(Table.TableVo child)
                 {
-                    child.MAINID   = table.ID;
-                    child.IDREPORT = table.IDREPORT;
+                    child.PARENT = table;
+                    child.REPORT = table.REPORT;
                     //child.INDEX    = table.CHILDREN.IndexOf(child);
-                }
+                });
                 #endregion
 
                 #region SAVE PROPRIEDADES
+                
                 new Fields.FieldsDao(  ).save(table.FIELDS  );
+                /*
                 new Filters.FiltersDao().save(table.FILTERS );
                 new OrderBy.OrderByDao().save(table.ORDERBY );
                 new Params.ParamsDao(  ).save(table.PARAMS  );
                 new Table.TableDao(    ).save(table.CHILDREN);
+                //*/
                 #endregion
 
                 return i;
@@ -86,17 +93,22 @@ namespace SigaObjects.Reports.Table
             this.QUERY = new StringBuilder(fromDatabase);
 
             this.QUERY.Append("INSERT INTO [RTable]");
-            this.QUERY.AppendLine("(idReport, mainId, relatedtable, relatedident, relatedtype, tabela, indice)");
+            this.QUERY.AppendLine("( idReport    "
+                                 +", relatedindex"
+                                 +", mainId      "
+                                 +", relatedident"
+                                 +", relatedtype "
+                                 +", tabela      "
+                                 +", indice     )");
 
-            this.QUERY.Append("VALUES( ");
-            this.QUERY.Append("        " + table.IDREPORT          );
+            this.QUERY.Append("VALUES( " + table.IDREPORT          );
+            this.QUERY.Append("      , " + table.RELATEDINDEX      );
             this.QUERY.Append("      , " + table.MAINID            );
-            this.QUERY.Append("      ,'" + table.RELATEDTABLE + "'");
             this.QUERY.Append("      ,'" + table.RELATEDIDENT + "'");
             this.QUERY.Append("      ,'" + table.RELATEDTYPE  + "'");
             this.QUERY.Append("      ,'" + table.TABELA       + "'");
-            this.QUERY.Append("      ,'" + table.INDEX        + "'");
-            this.QUERY.AppendLine("      )");
+            this.QUERY.Append("      , " + table.INDEX             );
+            this.QUERY.AppendLine("  )");
 
             return getData().DefaultView.Count;
         }
@@ -109,13 +121,14 @@ namespace SigaObjects.Reports.Table
 
             this.QUERY.AppendLine("UPDATE [RTable]");
             this.QUERY.AppendLine("   SET idReport     =  " + table.IDREPORT     );
+            this.QUERY.AppendLine("     , relatedindex =  " + table.RELATEDINDEX );
             this.QUERY.AppendLine("     , mainId       =  " + table.MAINID       );
-            this.QUERY.AppendLine("     , relatedtable = '" + table.RELATEDTABLE + "'");
             this.QUERY.AppendLine("     , relatedident = '" + table.RELATEDIDENT + "'");
             this.QUERY.AppendLine("     , relatedtype  = '" + table.RELATEDTYPE  + "'");
             this.QUERY.AppendLine("     , tabela       = '" + table.TABELA       + "'");
             this.QUERY.AppendLine("     , indice       = '" + table.INDEX        + "'");
-            this.QUERY.AppendLine(" WHERE id    = " + table.ID);
+            this.QUERY.AppendLine(" WHERE id = " + table.ID);
+            this.QUERY.AppendLine(" ORDER BY indice");
 
             return getData().DefaultView.Count;
         }
@@ -129,23 +142,36 @@ namespace SigaObjects.Reports.Table
                 cont += delete(table);
             return cont;
         }
+        public int delete(int id)
+        {
+            return delete("id = " + id);
+        }
         public int delete(TableVo table)
         {
             return delete(table.IDREPORT, table.MAINID, "id = " + table.ID);
         }
-        public int delete(int idReport, int mainId)
+        public int delete(int     idReport, int mainId)
         {
             return delete(idReport, mainId, null);
         }
-        public int delete(int idReport, int mainId, string filtro)
+        public int delete(int     idReport, int mainId, string filtro)
+        {
+            string filtrar = "";
+            filtrar += " idReport = " + idReport;
+            filtrar += "   AND mainId = " + mainId;
+
+            if (filtro != null)
+                filtrar += "   AND " + filtro;
+
+            return getData().DefaultView.Count;
+        }
+        public int delete(string filtro)
         {
             this.QUERY = new StringBuilder(fromDatabase);
 
             this.QUERY.AppendLine("DELETE FROM [RTable]");
-            this.QUERY.AppendLine(" WHERE idReport = " + idReport);
-            this.QUERY.AppendLine("   AND mainId = " + mainId);
             if (filtro != null)
-                this.QUERY.AppendLine("   AND " + filtro);
+                this.QUERY.AppendLine(" WHERE " + filtro);
 
             return getData().DefaultView.Count;
         }
@@ -181,15 +207,15 @@ namespace SigaObjects.Reports.Table
         {
             return select(idReport, mainId, null, false);
         }
-        public DataTable select(int idReport, int mainId, string filtro)
+        public DataTable select(int idReport, int mainId, string filtro   )
         {
             return select(idReport, mainId, filtro, false);
         }
-        public DataTable select(int idReport, int mainId, bool firstOnly)
+        public DataTable select(int idReport, int mainId, bool   firstOnly)
         {
             return select(idReport, mainId, null, false);
         }
-        public DataTable select(int idReport, int mainId, string filtro, bool firstOnly)
+        public DataTable select(int idReport, int mainId, string filtro   , bool firstOnly)
         {
             new SELECT(firstOnly ? "TOP 1 *" : "*")
                 .From("[RTable]")
@@ -202,36 +228,41 @@ namespace SigaObjects.Reports.Table
         #endregion
 
         #region Load
+        // load unico
         public void load(TableVo table, int idReport, int mainId)
         {
             load(table, idReport, mainId, "indice = "+table.INDEX);
         }
-        public void load(TableVo table, int idReport, int mainId, bool filterTable)
+        public void load(TableVo table, int idReport, int mainId, bool   filterTable)
         {
             load(table, idReport, mainId, "tabela = '" + table.TABELA + "' AND indice = "+table.INDEX);
         }
-        public void load(TableVo table, int idReport, int mainId, string filtro)
+        public void load(TableVo table, int idReport, int mainId, string filtro     )
         {
             DataTable dtTable = select(idReport, mainId, filtro);
             if(dtTable.DefaultView.Count > 0)
             {
-                table.IDREPORT = idReport;
-                table.MAINID   = mainId;
-
+                table.IDREPORT     = idReport;
+                table.MAINID       = mainId;
+                
                 table.ID           = (int)   dtTable.DefaultView[0]["id"];
-                table.RELATEDTABLE = (string)dtTable.DefaultView[0]["relatedtable"];
+                table.RELATEDINDEX = (int)   dtTable.DefaultView[0]["relatedindex"];
                 table.RELATEDIDENT = (string)dtTable.DefaultView[0]["relatedident"];
-                table.RELATEDTYPE  = (string)dtTable.DefaultView[0]["relatedtype"];
+                table.RELATEDTYPE  = (string)dtTable.DefaultView[0]["relatedtype" ];
                 table.TABELA       = (string)dtTable.DefaultView[0]["tabela"];
                 //table.INDEX        = (int)   dtTable.DefaultView[0]["indice"];
             }
         }
+
+        // load lista
         public void load(List<TableVo> tables, int idReport, int mainId)
         {
             load(tables, idReport, mainId, null);
         }
         public void load(List<TableVo> tables, int idReport, int mainId, string filtro)
         {
+            tables = new List<TableVo>();
+
             string sFiltro;
             sFiltro  = filtro;
             sFiltro += string.IsNullOrEmpty(sFiltro) ? "" : " AND ";

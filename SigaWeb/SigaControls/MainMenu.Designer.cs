@@ -40,6 +40,9 @@ namespace SigaControls
             this.btnSair = new Gizmox.WebGUI.Forms.Button();
             this.btnCadCompPg = new Gizmox.WebGUI.Forms.Button();
             this.label1 = new Gizmox.WebGUI.Forms.Label();
+            this.label2 = new Gizmox.WebGUI.Forms.Label();
+            this.carraleroLOGO = new Gizmox.WebGUI.Forms.PictureBox();
+            txtSTATUS = new Gizmox.WebGUI.Forms.TextBox();
             this.SuspendLayout();
             // 
             // CadUsu
@@ -129,7 +132,7 @@ namespace SigaControls
                         | Gizmox.WebGUI.Forms.AnchorStyles.Right)));
             this.Painel.Location = new System.Drawing.Point(3, 35);
             this.Painel.Name = "Painel";
-            this.Painel.Size = new System.Drawing.Size(769, 442);
+            this.Painel.Size = new System.Drawing.Size(769, 360);
             this.Painel.TabIndex = 5;
             // 
             // btnSair
@@ -162,8 +165,51 @@ namespace SigaControls
             this.label1.Size = new System.Drawing.Size(769, 2);
             this.label1.TabIndex = 6;
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((Gizmox.WebGUI.Forms.AnchorStyles)((Gizmox.WebGUI.Forms.AnchorStyles.Bottom | Gizmox.WebGUI.Forms.AnchorStyles.Right)));
+            this.label2.Location = new System.Drawing.Point(591, 401);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(125, 50);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "powered by Carralero";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // carraleroLOGO
+            // 
+            this.carraleroLOGO.Anchor = ((Gizmox.WebGUI.Forms.AnchorStyles)((Gizmox.WebGUI.Forms.AnchorStyles.Bottom | Gizmox.WebGUI.Forms.AnchorStyles.Right)));
+            this.carraleroLOGO.BackgroundImageLayout = Gizmox.WebGUI.Forms.ImageLayout.Zoom;
+            this.carraleroLOGO.Image = null;
+            this.carraleroLOGO.Location = new System.Drawing.Point(722, 401);
+            this.carraleroLOGO.Name = "carraleroLOGO";
+            this.carraleroLOGO.Size = new System.Drawing.Size(50, 50);
+            this.carraleroLOGO.SizeMode = Gizmox.WebGUI.Forms.PictureBoxSizeMode.Normal;
+            this.carraleroLOGO.TabIndex = 8;
+            // 
+            // txtSTATUS
+            // 
+            txtSTATUS.Anchor = ((Gizmox.WebGUI.Forms.AnchorStyles)(((Gizmox.WebGUI.Forms.AnchorStyles.Bottom | Gizmox.WebGUI.Forms.AnchorStyles.Left)
+                        | Gizmox.WebGUI.Forms.AnchorStyles.Right)));
+            txtSTATUS.BackColor = System.Drawing.Color.Transparent;
+            txtSTATUS.BackgroundImageLayout = Gizmox.WebGUI.Forms.ImageLayout.None;
+            txtSTATUS.BorderColor = System.Drawing.Color.DodgerBlue;
+            txtSTATUS.BorderStyle = Gizmox.WebGUI.Forms.BorderStyle.FixedSingle;
+            txtSTATUS.Location = new System.Drawing.Point(6, 401);
+            txtSTATUS.Multiline = true;
+            txtSTATUS.Name = "txtSTATUS";
+            txtSTATUS.ReadOnly = true;
+            txtSTATUS.ScrollBars = Gizmox.WebGUI.Forms.ScrollBars.Both;
+            txtSTATUS.Size = new System.Drawing.Size(579, 50);
+            txtSTATUS.TabIndex = 9;
+            txtSTATUS.TabStop = false;
+            txtSTATUS.WordWrap = false;
+            txtSTATUS.DoubleClick += new System.EventHandler(this.txtSTATUS_DoubleClick);
+            // 
             // MainMenu
             // 
+            this.Controls.Add(txtSTATUS);
+            this.Controls.Add(this.carraleroLOGO);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCadCompPg);
             this.Controls.Add(this.btnSair);
@@ -173,7 +219,7 @@ namespace SigaControls
             this.Controls.Add(this.CriarRelatorio);
             this.Controls.Add(this.CadUsuario);
             this.Location = new System.Drawing.Point(15, 15);
-            this.Size = new System.Drawing.Size(775, 477);
+            this.Size = new System.Drawing.Size(775, 454);
             this.Text = "MainMenu";
             this.Load += new System.EventHandler(this.MainMenu_Load);
             this.ResumeLayout(false);
@@ -194,7 +240,8 @@ namespace SigaControls
         private Gizmox.WebGUI.Forms.Button btnSair;
         private Gizmox.WebGUI.Forms.Button btnCadCompPg;
         private Gizmox.WebGUI.Forms.Label label1;
-
-
+        private Gizmox.WebGUI.Forms.Label label2;
+        private Gizmox.WebGUI.Forms.PictureBox carraleroLOGO;
+        public  static Gizmox.WebGUI.Forms.TextBox txtSTATUS;
     }
 }

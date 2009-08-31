@@ -32,8 +32,6 @@ namespace SigaControls
 
             /// Empresa.fillControls(cmbEmpresas);
             checkListEmpresas.DataSource = new EmpresaDao().getEmpresas();
-
-            txtLogin.Focus();
         }
 
         private void btnLogar_Click(object sender, EventArgs e)
@@ -75,6 +73,35 @@ namespace SigaControls
         {
             for(int idx =0; idx<checkListEmpresas.Items.Count; idx++)
                 checkListEmpresas.SetItemChecked(idx, (sender as CheckBox).Checked);
+        }
+
+        private void txtKeyPress(object objSender, KeyEventArgs objArgs)
+        {
+            if ( objArgs.KeyCode == Keys.Enter )
+            {
+                if ( objSender.GetType() == typeof(TextBox) )
+                {
+                    if ( (objSender as TextBox).Name == "txtLogin" )
+                        txtSenha.Focus();
+                    if ( (objSender as TextBox).Name == "txtSenha" )
+                        checkListEmpresas.Focus();
+                }
+                if( objSender.GetType() == typeof(CheckedListBox) )
+                {
+                    if( (objSender as CheckedListBox).Name == "checkListEmpresas" )
+                        btnLogar.Focus();
+                }
+            }
+
+            if ( objArgs.KeyCode == Keys.X )
+                if ( objSender.GetType() == typeof(CheckedListBox) )
+                    if ( (objSender as CheckedListBox).Name == "checkListEmpresas" )
+                    {
+                        int idx = checkListEmpresas.SelectedIndex;
+                        checkListEmpresas.SetItemChecked( idx
+                                                        , !checkListEmpresas.CheckedIndices.Contains( idx ) );
+                        checkListEmpresas.Focus();
+                    }
         }
     }
 }
