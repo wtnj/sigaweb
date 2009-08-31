@@ -74,6 +74,8 @@
     <None Include="Web.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="_scripts\CARRALERO_SigaWeb_2009-07-21.sql" />
+    <None Include="_scripts\CARRALERO_SigaWeb_2009-08-18.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormTeste.resx">
@@ -108,8 +110,10 @@
     <Content Include="Resources\Icons\status\aprovado.png" />
     <Content Include="Resources\Icons\status\bloqueado.png" />
     <Content Include="Resources\Icons\status\recusado.png" />
+    <Content Include="Resources\Images\carralero.png" />
     <Content Include="Resources\Images\logo.png" />
     <Content Include="teste.html" />
+    <Content Include="_libs\CarlosAg.ExcelXmlWriter.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="arquivos\" />

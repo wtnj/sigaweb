@@ -19,6 +19,16 @@ namespace SigaControls.Resources.Images
             {
                 _logo = new List<object>();
                 _logo.Add(new ImageResourceHandle("logo.png"));
+                _logo.Add("");
+                return _logo;
+            }
+        }
+        public static List<object> LOGOCARALERO
+        {
+            get
+            {
+                _logo = new List<object>();
+                _logo.Add(new ImageResourceHandle("carralero.png"));
                 _logo.Add("Carralero Consultoria e Desenvolvimento LTDA");
                 return _logo;
             }

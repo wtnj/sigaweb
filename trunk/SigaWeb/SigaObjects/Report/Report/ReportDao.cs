@@ -34,10 +34,9 @@ namespace SigaObjects.Reports.Report
             if (report.ID == 0)
             {
                 int i = insert(report);
-                
                 this.load(report);
 
-                report.TABLE.IDREPORT = report.ID;
+                report.TABLE.REPORT = report;
                 new Table.TableDao().save(report.TABLE);
 
                 return i;

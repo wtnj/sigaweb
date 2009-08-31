@@ -1,0 +1,517 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Font Name="Segoe UI" Size="9" />
+  <Class Name="SigaObjects.Cadastros.ContasAPagar.ContasAPagarDAO">
+    <Position X="20.75" Y="11.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Cadastros\ContasAPagar\ContasAPagarDAO.cs</FileName>
+      <HashCode>AgAAAAAAAIDAAAAAQAEAAQAAAAAAAABAAAAAEAAEABA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Cadastros.ContasAPagar.ContasAPagarVO" Collapsed="true">
+    <Position X="12.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Cadastros\ContasAPagar\ContasAPagarVO.cs</FileName>
+      <HashCode>CA4CCBgQICQQgAAICAAJAAAAUCQAhc0kSAAEAACAUiU=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Comunicacao.Email" Collapsed="true">
+    <Position X="14" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Comunicacao\Email.cs</FileName>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAEAAAAABAAEAgE=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.CONFIG.AssemblySettings" Collapsed="true">
+    <Position X="10.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CONFIG\AssemblySettings.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAICAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SigaObjects.CONFIG.ExternalConfiguration" Collapsed="true">
+    <Position X="10.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CONFIG\ExternalConfiguration.cs</FileName>
+      <HashCode>AAAAAAAAAAAIAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SigaObjects.DataMaster">
+    <Position X="27" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>DataMaster.cs</FileName>
+      <HashCode>AAAAAAAAAAAEAAEAAgQABACAAEACgAgAACAEIAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Empresa">
+    <Position X="23.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Empresa.cs</FileName>
+      <HashCode>AAABAAAQIAAAAAAAAQAAACAAAAAAAAAJQAAAAAAgAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.SELECT">
+    <Position X="24.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SELECT.cs</FileName>
+      <HashCode>AgAQAAAgAAABIAAAACAAAAAAAAAAAICAAAgIAACIAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="SigaObjects.SELECT.GROUPBY" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.MORE" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.AND" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.AS" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.BETWEEN" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.LEFT" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.LOWER" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.INNER" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.RIGHT" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.OR" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.JOIN" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Struct Name="SigaObjects.SELECT.AndOrNone" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Class Name="SigaObjects.SELECT.ORDERBY" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.FROM" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.CLOSE" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.OPEN" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.WHERE" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="SigaObjects.SELECT.ON" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SELECT.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+  </Class>
+  <Class Name="SigaObjects.SIGAMAT" Collapsed="true">
+    <Position X="10.5" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SIGAMAT.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SigaObjects.SXManager">
+    <Position X="32.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SXManager.cs</FileName>
+      <HashCode>CAqGhABIBAEIRAAHIABIDEAAAAGAgBkFwIAEDAgKEAg=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="SigaObjects.SXManager.SX" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SXManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Compartments>
+          <Compartment Name="Fields" Collapsed="true" />
+        </Compartments>
+      </Struct>
+      <Struct Name="SigaObjects.SXManager.Parms" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SXManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Compartments>
+          <Compartment Name="Fields" Collapsed="true" />
+        </Compartments>
+      </Struct>
+    </NestedTypes>
+  </Class>
+  <Class Name="SigaObjects.Permissoes.RelGrupo.RelGrupoDao">
+    <Position X="21" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Permissoes\RelGrupo\RelGrupoDao.cs</FileName>
+      <HashCode>QAAAAAAAAABAAABAAAAAAQAAAAAAAABAAAAAQBAEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Permissoes.RelGrupo.RelGrupoVo" Collapsed="true">
+    <Position X="12.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Permissoes\RelGrupo\RelGrupoVo.cs</FileName>
+      <HashCode>AAAEAAAAIAAAgAQAAAgAAAAAAAAAABAAAAAAAAAAEgA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Permissoes.RelUsu.RelUsuDao">
+    <Position X="30" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Permissoes\RelUsu\RelUsuDao.cs</FileName>
+      <HashCode>QAAAAAAAAABAAABAAAAAAQAAAAAAAABAAAAAQBAEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Permissoes.RelUsu.RelUsuVo" Collapsed="true">
+    <Position X="14" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Permissoes\RelUsu\RelUsuVo.cs</FileName>
+      <HashCode>AAAEAAAAAAAAgAwAAAAAAAAAAAAAABAAAAAAAAAgEgA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Fields.FieldsDao">
+    <Position X="23.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Report\Fields\FieldsDao.cs</FileName>
+      <HashCode>AAAAAAAAAIDAAAABAAABAQAAAAAAEABAAAAAQBAEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Fields.FieldsVo">
+    <Position X="9.25" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <FileName>Report\Fields\FieldsVo.cs</FileName>
+      <HashCode>AAABAAAAAACAgAAAgAAAAAAAAAAAAAAAAAAAAAAAAwI=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MAINTABLE" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Filters.FiltersDao">
+    <Position X="25.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Report\Filters\FiltersDao.cs</FileName>
+      <HashCode>AAAAhAAAAADAAgCAAAACAQAEAAAAEABABAAAQBAEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Filters.FiltersVo">
+    <Position X="4.25" Y="13" Width="2" />
+    <TypeIdentifier>
+      <FileName>Report\Filters\FiltersVo.cs</FileName>
+      <HashCode>AAAJEAAAAAAAgAAAgAAIAAAAAAAAIAAAACAAAAAgCwA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MAINTABLE" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.GroupBy.GroupByDao">
+    <Position X="32.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Report\GroupBy\GroupByDao.cs</FileName>
+      <HashCode>AAAAAAAAAIDAACAAAAAAAQAAAAAAEABgAAAAQBAEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.GroupBy.GroupByVo">
+    <Position X="2" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Report\GroupBy\GroupByVo.cs</FileName>
+      <HashCode>AAAAAAAAAAEAoAAAgAAAAAAgAAEAACAAgAAAAAAAIgA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.OrderBy.OrderByDao">
+    <Position X="27.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Report\OrderBy\OrderByDao.cs</FileName>
+      <HashCode>AAAAAAAAAIDAACAAAAAAAQAAAAAAEABgAAAAQBAEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.OrderBy.OrderByVo">
+    <Position X="3" Y="8" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Report\OrderBy\OrderByVo.cs</FileName>
+      <HashCode>AAABAAAAAAEAoAAAgAAAAAAgAAEAACAAAAAAAAAAIwA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MAINTABLE" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Params.ParamsDao">
+    <Position X="16.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Report\Params\ParamsDao.cs</FileName>
+      <HashCode>AAAAgAACAADAAhCQEAAIAQAABAIQEABAAAAAQBAEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Params.ParamsVo">
+    <Position X="6" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Report\Params\ParamsVo.cs</FileName>
+      <HashCode>AAAJEAAAAAAAgAAAgMEAAAAAAAAAQAIBAAAAAAAgAwA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MAINTABLE" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Report.ReportDao">
+    <Position X="27.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Report\Report\ReportDao.cs</FileName>
+      <HashCode>AAAAACAAAIDgAAABAAAAAQAAAAAAEABAAAAAQBAEAAI=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Report.ReportVo">
+    <Position X="10" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Report\Report\ReportVo.cs</FileName>
+      <HashCode>AQgAAAAQIAAAgABAAQggCAEAAEAAAAAAAQAAAAABEgA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TABLE" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.ReportGroup.ReportGroupDao">
+    <Position X="25.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Report\ReportGroup\ReportGroupDao.cs</FileName>
+      <HashCode>AAAAAAAAAIDAAAABAAAAAQAAAAAAEABAAAAAQBAEEAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.ReportGroup.ReportGroupVo" Collapsed="true">
+    <Position X="15.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Report\ReportGroup\ReportGroupVo.cs</FileName>
+      <HashCode>AAAAAAAAAAAAgAAAAQAAAAAAAAABAAAAAAAAAAAAAgA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Table.TableDao">
+    <Position X="30" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Report\Table\TableDao.cs</FileName>
+      <HashCode>AAAAAAAAAIDAAAAAAAAAAQAAAAAAAABAAAAAQBAEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Reports.Table.TableVo">
+    <Position X="6.75" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <FileName>Report\Table\TableVo.cs</FileName>
+      <HashCode>gATAEDBGBAGAkERQpRIQAgCAAIQAhRQQAACGAACAAoA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PARENT" />
+      <Property Name="RELATED" />
+      <Property Name="REPORT" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="CHILDREN" />
+      <Property Name="FIELDS" />
+      <Property Name="FILTERS" />
+      <Property Name="GROUPBY" />
+      <Property Name="ORDERBY" />
+      <Property Name="PARAMS" />
+    </ShowAsCollectionAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Session.Empresa.EmpresaDao">
+    <Position X="16.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Session\Empresa\EmpresaDao.cs</FileName>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAiAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Session.Empresa.EmpresaVo" Collapsed="true">
+    <Position X="15.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Session\Empresa\EmpresaVo.cs</FileName>
+      <HashCode>AAABAAAQIAAAAAAAAQAAAAAAAAAAAAAJQAAAAAAgAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SigaObjects.Session.SysUsers.SysUserDao">
+    <Position X="18.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Session\SysUsers\SysUserDao.cs</FileName>
+      <HashCode>AAAAAAAAAIDAAAAAAAAICSEIAAkAEABgAAAAQBgEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Session.SysUsers.SysUserVo" Collapsed="true">
+    <Position X="12.25" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Session\SysUsers\SysUserVo.cs</FileName>
+      <HashCode>AAKAAIAEYAAAgAACIAgBAAEAAAIkAgAAAQAAAgACA0A=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Session.UsersGroups.UserGroupDao">
+    <Position X="18.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Session\UsersGroups\UserGroupDao.cs</FileName>
+      <HashCode>AAAAAAAAAIDAAAAACAAACQAAAAAAMABAAAAAQBgEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="SigaObjects.Session.UsersGroups.UserGroupVo" Collapsed="true">
+    <Position X="14" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Session\UsersGroups\UserGroupVo.cs</FileName>
+      <HashCode>AAAAAAAAAAAAgAAAAQAAAAAAAAAFAAAAAAAAAAAAAkA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Enum Name="SigaObjects.Permissoes.Nivel" Collapsed="true">
+    <Position X="10.5" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Permissoes\Nivel.cs</FileName>
+      <HashCode>BAAAAAAAAAAACAEAQABAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

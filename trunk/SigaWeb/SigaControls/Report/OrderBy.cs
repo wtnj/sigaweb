@@ -98,15 +98,15 @@ namespace SigaControls.Report
             for (int i = 0; i < lbCampos.Items.Count; i++)
             {
                 REPORT.OrderBy.OrderByVo order = new REPORT.OrderBy.OrderByVo();
-
+                
                 order.MAINID = this.MAIN.ID;
                 order.INDICE = i;
-
+                
                 DataRowView valor = (lbCampos.Items[i] as DataRowView);
-
+                
                 order.VALUE   = valor[REPORT.OrderBy.OrderByDao.ValueMember].ToString();
                 order.DISPLAY = valor[REPORT.OrderBy.OrderByDao.DisplayMember].ToString();
-
+                
                 orders.Add(order);
             }
             //*/

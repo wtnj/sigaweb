@@ -47,7 +47,7 @@ namespace SigaControls
             this.btnLogar.Location = new System.Drawing.Point(112, 339);
             this.btnLogar.Name = "btnLogar";
             this.btnLogar.Size = new System.Drawing.Size(75, 25);
-            this.btnLogar.TabIndex = 0;
+            this.btnLogar.TabIndex = 3;
             this.btnLogar.Text = "Logar";
             this.btnLogar.Click += new System.EventHandler(this.btnLogar_Click);
             // 
@@ -75,7 +75,8 @@ namespace SigaControls
             this.txtLogin.Location = new System.Drawing.Point(112, 156);
             this.txtLogin.Name = "txtLogin";
             this.txtLogin.Size = new System.Drawing.Size(155, 20);
-            this.txtLogin.TabIndex = 3;
+            this.txtLogin.TabIndex = 0;
+            this.txtLogin.KeyUp += new Gizmox.WebGUI.Forms.KeyEventHandler(this.txtKeyPress);
             // 
             // txtSenha
             // 
@@ -84,7 +85,8 @@ namespace SigaControls
             this.txtSenha.Name = "txtSenha";
             this.txtSenha.PasswordChar = '*';
             this.txtSenha.Size = new System.Drawing.Size(155, 20);
-            this.txtSenha.TabIndex = 4;
+            this.txtSenha.TabIndex = 1;
+            this.txtSenha.KeyUp += new Gizmox.WebGUI.Forms.KeyEventHandler(this.txtKeyPress);
             // 
             // lblInforme
             // 
@@ -123,8 +125,9 @@ namespace SigaControls
             this.checkListEmpresas.Name = "checkListEmpresas";
             this.checkListEmpresas.SelectionMode = Gizmox.WebGUI.Forms.SelectionMode.One;
             this.checkListEmpresas.Size = new System.Drawing.Size(155, 95);
-            this.checkListEmpresas.TabIndex = 9;
+            this.checkListEmpresas.TabIndex = 2;
             this.checkListEmpresas.ValueMember = "M0_CODIGO";
+            this.checkListEmpresas.KeyUp += new Gizmox.WebGUI.Forms.KeyEventHandler(this.txtKeyPress);
             // 
             // panel1
             // 
@@ -153,7 +156,7 @@ namespace SigaControls
             this.cbEmpresas.Location = new System.Drawing.Point(112, 208);
             this.cbEmpresas.Name = "cbEmpresas";
             this.cbEmpresas.Size = new System.Drawing.Size(155, 24);
-            this.cbEmpresas.TabIndex = 10;
+            this.cbEmpresas.TabIndex = 4;
             this.cbEmpresas.Text = "Marcar Todos";
             this.cbEmpresas.ThreeState = false;
             this.cbEmpresas.CheckedChanged += new System.EventHandler(this.cbEmpresas_CheckedChanged);

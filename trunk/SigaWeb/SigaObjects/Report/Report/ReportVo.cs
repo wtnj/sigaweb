@@ -8,14 +8,14 @@ namespace SigaObjects.Reports.Report
     {
         private bool isLoaded = false;
 
-        private int id = 0;
-        private int idReportGroup = 0;
+        private int    id = 0;
+        private int    idReportGroup = 0;
         private string nome = "", empresa = "", filial = "", username = "";
 
-        private Table.TableVo table = new Table.TableVo();
+        private Table.TableVo table;// = new Table.TableVo();
 
         #region Getters & Setters
-        public bool LOADED
+        public bool   LOADED       
         {
             get{ return isLoaded;  }
             set{ isLoaded = value; }
@@ -54,7 +54,13 @@ namespace SigaObjects.Reports.Report
 
         public Table.TableVo TABLE 
         {
-            get { return table;  }
+            get
+            {
+                if( table!=null)
+                    return table;
+                
+                return new Table.TableVo();
+            }
             set { table = value; }
         }
         #endregion

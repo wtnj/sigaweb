@@ -12,17 +12,45 @@ using Gizmox.WebGUI.Forms;
 
 using SigaControls.Report;
 using SigaControls.Session;
+using Gizmox.WebGUI.Common.Resources;
 
 #endregion
 
 namespace SigaControls
 {
+    public class STATUS
+    {
+        private static string valor = "";
+        
+        public static string VALOR
+        {
+            get{ return valor;   }
+            set
+            {
+                valor += value;
+                SetInStatus();
+            }
+        }
+
+        public static void Clear()
+        {
+            valor = "";
+            SetInStatus();
+        }
+
+        public static void SetInStatus()
+        { MainMenu.txtSTATUS.Text = valor; }
+    }
+
     public partial class MainMenu : UserControl
     {
         public MainMenu()
         {
             InitializeComponent();
             this.Dock = DockStyle.Fill;
+            this.carraleroLOGO.BackgroundImage = (ResourceHandle)Resources.Images.basic.LOGO[0];
+            this.carraleroLOGO.Text            = (string)Resources.Images.basic.LOGO[1];
+            this.carraleroLOGO.BackgroundImageLayout = ImageLayout.Zoom;
         }
         public MainMenu(DataGridView gridUsuarios)
         {
@@ -81,6 +109,11 @@ namespace SigaControls
         {
             this.Painel.Controls.Clear();
             FormatScreen.AddControl(Painel, new Cadastros.ContasAPagarList(), true, 1, true, false);
+        }
+
+        private void txtSTATUS_DoubleClick(object sender, EventArgs e)
+        {
+            new ERROR(new Exception(txtSTATUS.Text),"LOG DO SISTEMA").SHOW();
         }
     }
 }

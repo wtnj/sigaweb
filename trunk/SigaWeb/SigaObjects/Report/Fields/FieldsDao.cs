@@ -8,7 +8,7 @@ namespace SigaObjects.Reports.Fields
     public class FieldsDao : SELECT
     {
         #region Members
-        public static String ValueMember
+        public static String ValueMember  
         {
             get { return ""; }
         }
@@ -146,6 +146,7 @@ namespace SigaObjects.Reports.Fields
         #endregion
 
         #region Load
+        // load unico
         public void load(FieldsVo field, int mainId)
         {
             load(field, mainId, null);
@@ -157,6 +158,8 @@ namespace SigaObjects.Reports.Fields
 
             load(fields, mainId, null);
         }
+
+        // load lista
         public void load(List<FieldsVo> fields, int mainId)
         {
             load(fields, mainId, null);
@@ -168,11 +171,11 @@ namespace SigaObjects.Reports.Fields
             {
                 FieldsVo field  = new FieldsVo();
                 field.MAINID    = mainId;
-                field.ID        = (int)table.DefaultView[i]["id"];
-                field.CODIGO    = (string)table.DefaultView[i]["codigo"];
+                field.ID        = (int   )table.DefaultView[i]["id"      ];
+                field.CODIGO    = (string)table.DefaultView[i]["codigo"  ];
                 field.GROUPING  = (string)table.DefaultView[i]["grouping"];
 
-                fields.Add(field);
+                fields.Add( field );
             }
         }
         #endregion
